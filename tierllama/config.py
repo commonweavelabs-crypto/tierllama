@@ -1,7 +1,7 @@
 """Tierllama config: lanes, models, machines. Edit here; no YAML yet (MVP)."""
 LANES = {
-    "LOCAL":  {"models": ["ornith-1.5:9b", "qwen3:4b"], "cost_per_mtok": 0.0},
-    "CLOUD_MEDIUM": {"models": ["deepseek-v4.1-flash"], "cost_in": 0.15, "cost_out": 0.60},
+    "LOCAL":  {"models": ["qwen3:4b", "ornith-1.5:9b"], "cost_per_mtok": 0.0},
+    "CLOUD_MEDIUM": {"models": ["glm-5.3-flash:cloud"], "cost_in": 0.15, "cost_out": 0.60},
     "CLOUD_HARD":   {"models": ["kimi-k3"], "cost_in": 3.00, "cost_out": 15.00},
     "BOX":    {"models": ["qwen38-27b-iq3s"], "cost_per_mtok": 0.0, "note": "overnight async"},
 }

@@ -3,10 +3,11 @@ import json, time, datetime
 from pathlib import Path
 from .classifier import classify
 from .config import lane_for
+from .adapters import dispatch
 
 LOG = Path(__file__).parent.parent / "logs" / "decisions.jsonl"
 
-def route(message, dispatch=False, last_exchanges=None):
+def route(message, dispatch=True, last_exchanges=None):
     c = classify(message, last_exchanges)
     conf = min(c["role_conf"], c["difficulty_conf"], c["timing_conf"])
     lane = lane_for(c["difficulty"], c["timing"], conf)
@@ -21,8 +22,12 @@ def route(message, dispatch=False, last_exchanges=None):
         "dispatched": False,
         "classifier_latency_s": c["latency_s"],
     }
-    # dispatch adapters (J3): LOCAL/CLOUD_MEDIUM/CLOUD_HARD/BOX. MVP: log-only.
-    record["dispatched"] = lane in ("LOCAL",)
+    # dispatch adapters (J3): execute on the lane unless dispatch=False
+    if dispatch:
+        from .adapters import dispatch as _dispatch
+        res = _dispatch(lane, message)
+        record["dispatch"] = res
+        record["dispatched"] = res.get("status") in ("ok", "queued")
     LOG.parent.mkdir(exist_ok=True)
     with LOG.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
