@@ -7,7 +7,7 @@ BOX          -> overnight job queue on the mini box (UNC share \\192.168.12.150\
 
 Every dispatch is recorded in the decision log with result + latency. Adapters never
 raise: failures return {"status": "error", ...} so the router can escalate (J4)."""
-import json, uuid, re, datetime, urllib.request, time
+import json, re, uuid, datetime, urllib.request, urllib.error, time
 from pathlib import Path
 from .config import LANES, CLASSIFIER
 
@@ -20,13 +20,22 @@ def _post_chat(endpoint, body, timeout=120):
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read())
 
-def dispatch_local(message, model=None, system=None, timeout=120):
-    """LOCAL lane: sync inference on a local Ollama model."""
-    model = model or LANES["LOCAL"]["models"][0]
+def _thinking_body(message, model, system, thinking, timeout=120):
+    """J7: unified body builder with thinking-level support.
+    thinking='max' -> think:true (qwen3-class models; cloud models may reject -> retry without)."""
     body = {"model": model, "stream": False,
             "messages": ([{"role": "system", "content": system}] if system else [])
-                       + [{"role": "user", "content": message}],
-            "options": {"temperature": 0.7}}
+                       + [{"role": "user", "content": message}]}
+    if thinking == "max":
+        body["think"] = True
+    elif thinking == "off":
+        body["think"] = False
+    return body
+
+def dispatch_local(message, model=None, system=None, thinking=None, timeout=120):
+    """LOCAL lane: sync inference on a local Ollama model."""
+    model = model or LANES["LOCAL"]["models"][0]
+    body = _thinking_body(message, model, system, thinking)
     t0 = time.time()
     try:
         r = _post_chat(CLASSIFIER["endpoint"], body, timeout)
@@ -36,25 +45,30 @@ def dispatch_local(message, model=None, system=None, timeout=120):
         return {"status": "error", "lane": "LOCAL", "model": model, "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
 
-def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, timeout=120):
+def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, thinking=None, timeout=120):
     """CLOUD lanes: Ollama-served cloud models (glm-5.3-flash:cloud verified) or any
     OpenAI-compatible endpoint via config. model kwarg overrides the lane default
     (J7 decision-tree targets)."""
     lane = LANES[tier]
-    model = model or (lane["models"][0] if tier != "CLOUD_HARD" else "glm-5.3-flash:cloud")
-    body = {"model": model, "stream": False,
-            "messages": ([{"role": "system", "content": system}] if system else [])
-                       + [{"role": "user", "content": message}]}
+    model = model or lane["models"][0]
+    body = _thinking_body(message, model, system, thinking)
     t0 = time.time()
     try:
-        r = _post_chat(CLASSIFIER["endpoint"], body, timeout)
+        try:
+            r = _post_chat(CLASSIFIER["endpoint"], body, timeout)
+        except urllib.error.HTTPError as e:
+            if e.code == 400 and "think" in body:   # model rejects thinking flag (J6-style fix: adapt, don't fail)
+                body.pop("think", None)
+                r = _post_chat(CLASSIFIER["endpoint"], body, timeout)
+            else:
+                raise
         return {"status": "ok", "lane": tier, "model": model,
                 "result": r["message"]["content"], "latency_s": round(time.time()-t0, 2)}
     except Exception as e:
         return {"status": "error", "lane": tier, "model": model, "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
 
-def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", system=None, timeout=30):
+def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", system=None, thinking=None, timeout=30):
     """BOX lane: enqueue an overnight job on the mini box. The box worker consumes
     C:/jobs/pending/*.json files shaped {id, model, system, prompt} and POSTs them to
     local llama-swap; the response lands in done/<id>.response.json. Async by design."""

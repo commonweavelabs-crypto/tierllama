@@ -41,8 +41,7 @@ def route(message, dispatch=True, last_exchanges=None):
         kw = {}
         if target:
             kw["model"] = target["model"]
-            if target.get("thinking") and target["thinking"] != "normal":
-                kw["system"] = f"Think as deeply as possible (level: {target['thinking']})."
+            kw["thinking"] = target.get("thinking", "normal")
         res = _dispatch(lane, message, **kw)
         record["dispatch"] = res
         record["dispatched"] = res.get("status") in ("ok", "queued")
