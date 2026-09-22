@@ -132,6 +132,7 @@ const LOGOS = {
   openai:   {bg:"#10A37F", fg:"#fff", label:"AI"},
   xai:      {bg:"#000", fg:"#fff", label:"𝕏"},
   groq:     {bg:"#F55036", fg:"#fff", label:"G"},
+  deepseek: {bg:"#4D6BFE", fg:"#fff", label:"🐳"},
   tierllama:{bg:"#2b6cb0", fg:"#fff", label:"🦙"},
 };
 async function loadProviders() {

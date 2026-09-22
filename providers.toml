@@ -38,6 +38,34 @@ cost_per_mtok_input = 0.0
 cost_per_mtok_output = 0.0
 [provider.models]
 
+# Groq: ultra-fast LPU inference, Llama-family models, generous free tier.
+[[provider]]
+name = "groq"
+base_url = "https://api.groq.com/openai/v1"
+api_key_env = "GROQ_API_KEY"
+enabled = false
+cost_per_mtok_input = 0.59
+cost_per_mtok_output = 0.79
+[provider.models]
+easy = "llama-3.1-8b-instant"
+medium = "llama-3.3-70b-versatile"
+hard = "llama-3.3-70b-versatile"
+expert = "kimi-k2"
+
+# DeepSeek: cheapest frontier-class API; V4 models, 1M context, cache discounts.
+[[provider]]
+name = "deepseek"
+base_url = "https://api.deepseek.com/v1"
+api_key_env = "DEEPSEEK_API_KEY"
+enabled = false
+cost_per_mtok_input = 0.14
+cost_per_mtok_output = 0.28
+[provider.models]
+easy = "deepseek-chat"
+medium = "deepseek-chat"
+hard = "deepseek-reasoner"
+expert = "deepseek-reasoner"
+
 # Ollama CLOUD (ollama.com direct - no local install needed): requires a free
 # API key from ollama.com. Gui's pushback: fresh users need this option.
 [[provider]]
