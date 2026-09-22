@@ -184,3 +184,27 @@ models = fine; 20 = long). Disclaimer shown BEFORE starting + live progress.
   interval (measured tok/s) mixes units. Instead: seed sets the starting tree,
   bench results overwrite per (model, machine). Conflict = measured wins, seed
   shown greyed out with its rank for reference.
+
+
+## J8 addition (Gui, 2026-09-22): data collection - graceful, legal, user-friendly
+
+### Two-tier data story (baked into the scan/optimize flow)
+TIER 1 - LOCAL (always on, default): bench results + decision log stay on the
+user's machine, used ONLY to improve THEIR recommendations and routing.
+Consent wording at first scan:
+  "Tierllama saves these results on your machine to improve your routing.
+   Nothing leaves this computer unless you allow it."
+TIER 2 - SHARED (opt-in, never pre-checked): anonymized telemetry
+  (model name+quant, hardware class [GPU model / VRAM bucket / CPU],
+  latency + competence scores, NO prompts, NO message text, NO IPs).
+  Checkbox at scan: "Help improve Tierllama: share anonymous performance data"
+  + link to the telemetry page listing EXACTLY the fields.
+Design principles:
+- Local-only is the default; sharing is a separate explicit choice (consent at
+  the moment it's relevant - when data of value is being created)
+- The scan itself asks nothing personal - hardware/model facts only
+- Dashboard shows what was shared last ("last telemetry: 3 records, 9/22")
+- One-click revoke; data already sent is aggregated+compacted (can't un-send,
+  so say so plainly)
+- GDPR-friendly shape: explicit, purpose-bound, minimal, revocable
+PRIVACY.md updated in the same milestone (J8).
