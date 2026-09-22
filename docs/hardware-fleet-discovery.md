@@ -58,3 +58,33 @@ consistent with our spec (hardware auto-discovery = phase 2, locked 2026-09-21).
 - Cloud classifier fallback: 0.73–0.99s (live).
 - Box interactive routing: 24.6s tiny-prompt (rejected for interactive use; stays async).
 - Mac: asleep at test time — will re-measure when Gui wakes it (expect ~0.1s RTT + load).
+
+
+## UPDATE 2026-09-22 (same day): LAN scan discovery — the zero-setup wedge
+
+Ran a live Ollama-port scan of the local subnet from this machine: **6 seconds,
+3 Ollama servers found** — the box (.150 llama-swap :8080), plus two UNEXPECTED hosts
+(.126 with qwen3 models, .199 with the cloud models glm/kimi/minimax/deepseek). The
+user's machines announce themselves by simply running Ollama (port 11434).
+
+**Tiered connectivity design (final for MVP):**
+1. **Tier 0 — zero-setup LAN scan:** on startup, scan the local subnet for Ollama's
+   open port (11434) + llama-swap (8080). Any Ollama on the network = a lane,
+   automatically. No downloads, no logins, no Tailscale. Ollama's entire install base
+   gets fleet routing free on day one. (Measured: ~6s for a /24 with 64 threads.)
+2. **Tier 1 — the Tierllama agent (optional):** install on a machine to add health
+   stats, busy detection, escalation participation. Anything exposing an
+   Ollama-compatible API can be a lane; the agent enriches, never gates.
+3. **Tailscale: recommended, never required** — only needed for machines on DIFFERENT
+   networks or for encryption outside the home LAN. Two-minute install when needed.
+4. **Cloud lane:** needs nothing, ever (Ollama `:cloud` models, key-free, measured
+   0.7–1.0s).
+5. **Accounts: phase 2** — needed only for cross-internet fleet w/o Tailscale +
+   the enterprise dashboards.
+
+Security stance: on the home LAN, Ollama ports are the user's own devices (default
+bind 127.0.0.1 — LAN exposure is opt-in by the user already); anything traversing the
+internet gets encryption via Tailscale OR account tokens (one-click either way).
+
+**Product one-liner:** "If you already run Ollama on more than one machine, Tierllama
+finds them all in six seconds — no accounts, no setup."
