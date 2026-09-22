@@ -22,3 +22,20 @@
 - Bundled-Python runtime installer (needs product decision per stop-when -
   default: system Python + clear error, revisited if user feedback demands)
 - macOS/Linux installers (Windows-first per Gui's machine)
+
+
+## Consolidated final verification (goal contract, fresh clone 9/22)
+| # | Condition | Result |
+|---|-----------|--------|
+| 1 | Python deps install | OK (pip exit 0) |
+| 2 | Ollama detection | OK (7 models; clear message path in install.bat) |
+| 3 | Proxy+dashboard from clone | both serve on :8852/:8853 |
+| 4 | PWA installability | manifest complete, sw 200, icon 200, standalone |
+| 5 | route | live chat answered via clone's proxy |
+| 6 | discover | 4 peers found |
+| 7 | optimize status | endpoint live |
+| 8 | doctor | 7/7 PASS, OVERALL: HEALTHY |
+
+No stop-conditions hit. Bundled-Python runtime deferred by documented default
+(system Python + clear errors) - flagged for product revisit only if user
+feedback demands.
