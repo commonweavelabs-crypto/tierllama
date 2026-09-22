@@ -8,12 +8,17 @@ def main():
     if cmd == "route":
         from tierllama.router import route
         msg = " ".join(sys.argv[2:]) or sys.stdin.read().strip()
+        if len(msg) > 8192:
+            print(json.dumps({"error": "message too long (max 8KB)"})); return
         print(json.dumps(route(msg), indent=2))
     elif cmd == "tail":
         log = Path(__file__).parent / "logs" / "decisions.jsonl"
         if log.exists():
             for l in log.read_text().strip().splitlines()[-10:]:
-                print(json.dumps(json.loads(l)))
+                d = json.loads(l)
+                m = d.get("message", "")
+                if len(m) > 256: d["message"] = m[:120] + f"...[{len(m)} chars masked]"
+                print(json.dumps(d))
         else:
             print("no decisions yet")
     elif cmd == "discover":
