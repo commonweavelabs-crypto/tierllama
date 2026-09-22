@@ -5,8 +5,8 @@ import json, hashlib, urllib.request, shutil, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-SEED_URL = "https://raw.githubusercontent.com/commonweavelabs-crypto/tierllama/main/seed-data/seed-table.json"
-MANIFEST_URL = "https://raw.githubusercontent.com/commonweavelabs-crypto/tierllama/main/seed-data/manifest.json"
+SEED_URL = "https://raw.githubusercontent.com/commonweavelabs-crypto/tierllama/master/seed-data/seed-table.json"
+MANIFEST_URL = "https://raw.githubusercontent.com/commonweavelabs-crypto/tierllama/master/seed-data/manifest.json"
 STAGED = ROOT / "seed-data" / "seed-table.staged.json"
 CURRENT = ROOT / "seed-data" / "seed-table.current.json"
 BACKUP = ROOT / "seed-data" / "seed-table.backup.json"
@@ -48,7 +48,8 @@ def preview_diff(user_edited_tiers: set):
         staged = json.loads(STAGED.read_text(encoding="utf-8"))
     except Exception:
         return {"error": "nothing staged"}
-    current = json.loads((ROOT / "routing.json").read_text(encoding="utf-8"))
+    rdata = json.loads((ROOT / "routing.json").read_text(encoding="utf-8"))
+    current = rdata.get("tiers", rdata) if isinstance(rdata, dict) else {}
     changes = {}
     for tier, new in staged.get("tiers", {}).items():
         if tier in user_edited_tiers:

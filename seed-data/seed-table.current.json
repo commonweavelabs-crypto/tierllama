@@ -1,0 +1,112 @@
+{
+ "version": "2026.09.22.1",
+ "source": "public benchmark consensus + common-sense priors",
+ "tiers": {
+  "EASY/NOW": {
+   "provider": "auto",
+   "model": "qwen3:0.6b",
+   "thinking": "normal"
+  },
+  "EASY/LATER": {
+   "provider": "auto",
+   "model": "ornith-1.5:9b",
+   "thinking": "normal"
+  },
+  "MEDIUM/NOW": {
+   "provider": "auto",
+   "model": "deepseek-v4-flash:cloud",
+   "thinking": "normal"
+  },
+  "MEDIUM/LATER": {
+   "provider": "auto",
+   "model": "ornith-1.5:9b",
+   "thinking": "normal"
+  },
+  "HARD/NOW": {
+   "provider": "auto",
+   "model": "deepseek-v4-flash:cloud",
+   "thinking": "max"
+  },
+  "HARD/LATER": {
+   "provider": "auto",
+   "model": "qwen3-vl:8b",
+   "thinking": "max"
+  },
+  "EXPERT/NOW": {
+   "provider": "auto",
+   "model": "kimi-k3:cloud",
+   "thinking": "max"
+  },
+  "EXPERT/LATER": {
+   "provider": "auto",
+   "model": "kimi-k3:cloud",
+   "thinking": "max"
+  }
+ },
+ "capability": [
+  {
+   "pattern": "kimi-k3",
+   "score": 95
+  },
+  {
+   "pattern": "glm-5.3",
+   "score": 88
+  },
+  {
+   "pattern": "minimax-m2.7",
+   "score": 86
+  },
+  {
+   "pattern": "deepseek-v4",
+   "score": 80
+  },
+  {
+   "pattern": "qwen38-27b",
+   "score": 74
+  },
+  {
+   "pattern": "qwen3-vl",
+   "score": 65
+  },
+  {
+   "pattern": "qwen3:8b",
+   "score": 60
+  },
+  {
+   "pattern": "devstral",
+   "score": 58
+  },
+  {
+   "pattern": "qwen2.5-coder",
+   "score": 57
+  },
+  {
+   "pattern": "gemma3",
+   "score": 55
+  },
+  {
+   "pattern": "ornith-1.5:35b",
+   "score": 45
+  },
+  {
+   "pattern": "qwen3:4b",
+   "score": 40
+  },
+  {
+   "pattern": "k2-",
+   "score": 40
+  },
+  {
+   "pattern": "ornith-1.5:9b",
+   "score": 35
+  },
+  {
+   "pattern": "llama3.2",
+   "score": 30
+  },
+  {
+   "pattern": "qwen3:0.6b",
+   "score": 20
+  }
+ ]
+}

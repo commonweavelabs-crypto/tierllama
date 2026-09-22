@@ -83,6 +83,24 @@ async function pollOptimize() {
   if (st.running) setTimeout(pollOptimize, 3000);
   else { document.getElementById("optDone").textContent = "done - tree refilled"; loadConfig(); }
 }
+async function rescanModels() {
+  const st = document.getElementById("seedStatus");
+  st.textContent = "Checking for newer recommendations...";
+  const chk = await (await fetch("/api/seed/check")).json();
+  if (!chk.staged) { st.textContent = chk.reason || chk.error || "already up to date"; return; }
+  const pv = await (await fetch("/api/seed/preview")).json();
+  const el = document.getElementById("seedStatus");
+  if (!pv.changes || !Object.keys(pv.changes).length) {
+    st.textContent = "New data staged (" + chk.version + ") but no tier changes for you."; return;
+  }
+  let lines = ["Will update:"];
+  for (const [tier, c] of Object.entries(pv.changes)) lines.push(`  ${tier}: ${c.from} -> ${c.to}`);
+  lines.push("", "Your edited tiers are preserved. Apply?");
+  if (!confirm(lines.join("\n"))) { st.textContent = "Cancelled - nothing changed."; return; }
+  const ap = await (await fetch("/api/seed/apply", {method:"POST"})).json();
+  st.textContent = ap.applied ? "Applied v" + ap.version + " - tree updated." : ap.reason;
+  loadConfig();
+}
 function toggleAdvanced() {
   const c = document.getElementById("advancedCard");
   c.style.display = c.style.display === "none" ? "block" : "none";

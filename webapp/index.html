@@ -40,6 +40,14 @@
   <span id="optDone" class="muted"></span>
 </div>
 
+<div class="card" id="seedCard">
+  <h3>Model suggestions <span class="muted">(community data)</span></h3>
+  <div class="muted">Checks for newer compiled model recommendations on startup. Staged data is applied ONLY when you click Re-scan. Your custom edits are preserved.</div>
+  <button onclick="rescanModels()">Re-scan models</button>
+  <span id="seedStatus" class="muted"></span>
+  <pre id="seedDiff" style="display:none"></pre>
+</div>
+
 <div class="card" id="advancedCard" style="display:none">
   <h3>Decision tree <span class="muted">(advanced)</span></h3>
   <div class="muted">Each tier maps to a model + thinking level. Changes save &amp; apply on the next route.</div>
