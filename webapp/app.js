@@ -116,3 +116,60 @@ function toggleAdvanced() {
   c.style.display = c.style.display === "none" ? "block" : "none";
 }
 loadConfig().then(() => { loadStats(); loadLog(); });
+
+// ---------- J11: Providers tab ----------
+const LOGOS = {
+  ollama:   {bg:"#DDD", fg:"#111", label:"ollama"},
+  openai:   {bg:"#10A37F", fg:"#fff", label:"AI"},
+  xai:      {bg:"#000", fg:"#fff", label:"𝕏"},
+  groq:     {bg:"#F55036", fg:"#fff", label:"G"},
+  tierllama:{bg:"#2b6cb0", fg:"#fff", label:"🦙"},
+};
+async function loadProviders() {
+  const grid = document.getElementById("provGrid");
+  const pv = await (await fetch("/api/providers/all")).json();
+  grid.innerHTML = "";
+  for (const p of pv.providers) {
+    const lg = LOGOS[p.provider] || {bg:"#3a434e", fg:"#fff", label:p.provider[0].toUpperCase()};
+    const keyOk = p.key_ready;
+    const card = document.createElement("div");
+    card.className = "prov-card";
+    card.innerHTML = `
+      <div class="prov-head">
+        <div class="prov-logo" style="background:${lg.bg};color:${lg.fg}">${lg.label}</div>
+        <div style="flex:1">
+          <b style="text-transform:capitalize">${p.provider}</b><br>
+          <span class="muted">${p.enabled ? "enabled" : "disabled"}</span>
+        </div>
+        <button class="toggle ${p.enabled ? "on" : ""}" data-provider="${p.provider}" onclick="toggleProvider(this)"></button>
+      </div>
+      <div style="font-size:.8rem;margin:.3rem 0">
+        <span class="key-dot ${keyOk ? "key-ok" : "key-missing"}"></span>
+        ${p.api_key_env === "NONE" ? "no key needed (local)" : keyOk ? "key found: " + p.api_key_env : "missing key: " + p.api_key_env}
+      </div>
+      ${p.api_key_env !== "NONE" && !keyOk ? `
+      <div style="display:flex;gap:.3rem">
+        <input type="password" id="key_${p.provider}" placeholder="paste ${p.provider} API key" style="font-size:.75rem">
+        <button onclick="saveKey('${p.provider}')" style="font-size:.75rem">Save</button>
+      </div>` : ""}
+      <div class="muted" style="margin-top:.4rem">models: ${Object.values(p.models || {}).join(", ") || "—"}</div>
+      <div class="muted">cost: $${p.cost_per_mtok_input}/in · $${p.cost_per_mtok_output}/out per Mtok</div>
+    `;
+    grid.appendChild(card);
+  }
+}
+async function toggleProvider(el) {
+  const name = el.dataset.provider;
+  const on = !el.classList.contains("on");
+  await fetch("/api/providers/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({provider:name, enabled:on})});
+  loadProviders();
+}
+async function saveKey(name) {
+  const key = document.getElementById("key_" + name).value.trim();
+  if (!key) return;
+  const r = await (await fetch("/api/providers/key", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({provider:name, key})})).json();
+  loadProviders();
+}
+loadProviders();

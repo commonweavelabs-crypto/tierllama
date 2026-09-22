@@ -9,7 +9,7 @@ Endpoints:
   GET  /api/savings     savings summary vs always-best baseline
   POST /api/route       route a test message live
 """
-import json, time, datetime
+import json, os, time, datetime
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -171,6 +171,33 @@ def optimize_status():
     return {k: OPT_STATE[k] for k in ["running", "done", "total", "current", "result"]}
 
 # ---- J10 seed refresh endpoints ----
+@app.get("/api/providers/all")
+def providers_all():
+    from .providers import load_providers, _load_keys
+    keys = _load_keys()
+    out = []
+    for p in load_providers():
+        env = p.get("api_key_env", "NONE")
+        key_ok = env == "NONE" or bool(os.environ.get(env) or keys.get(env))
+        out.append({"provider": p["name"], "enabled": p.get("enabled", False),
+                    "api_key_env": env, "key_ready": key_ok,
+                    "models": p.get("models", {}),
+                    "cost_per_mtok_input": p.get("cost_per_mtok_input"),
+                    "cost_per_mtok_output": p.get("cost_per_mtok_output")})
+    return {"providers": out}
+
+@app.post("/api/providers/toggle")
+def providers_toggle(payload: dict = None):
+    from .providers import set_enabled
+    payload = payload or {}
+    return set_enabled(payload.get("provider"), payload.get("enabled", False))
+
+@app.post("/api/providers/key")
+def providers_key(payload: dict = None):
+    from .providers import save_key
+    payload = payload or {}
+    return save_key(payload.get("provider"), payload.get("key", ""))
+
 @app.get("/api/providers")
 def providers():
     from .providers import provider_models

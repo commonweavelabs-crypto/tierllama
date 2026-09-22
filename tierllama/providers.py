@@ -10,6 +10,45 @@ except ImportError:
 ROOT = Path(__file__).parent.parent
 PROVIDERS_TOML = ROOT / "providers.toml"
 COST_LOG = ROOT / "logs" / "costs.jsonl"
+KEYS_FILE = ROOT / ".tierllama_keys.env"  # local, gitignored - keys never in repo
+
+def _load_keys():
+    keys = {}
+    if KEYS_FILE.exists():
+        for line in KEYS_FILE.read_text(encoding="utf-8").splitlines():
+            if "=" in line and not line.strip().startswith("#"):
+                k, _, v = line.partition("=")
+                keys[k.strip()] = v.strip()
+    return keys
+
+def save_key(provider_name, key):
+    """Store a provider key locally (gitignored file). Returns env var name."""
+    for p in load_providers():
+        if p["name"] == provider_name:
+            env = p.get("api_key_env", "NONE")
+            if env == "NONE":
+                return {"ok": False, "reason": "provider needs no key"}
+            keys = _load_keys(); keys[env] = key
+            KEYS_FILE.write_text("\n".join(f"{k}={v}" for k, v in keys.items()) + "\n", encoding="utf-8")
+            os.environ[env] = key  # live for this session too
+            return {"ok": True, "env": env}
+    return {"ok": False, "reason": "unknown provider"}
+
+def set_enabled(provider_name, enabled):
+    """Flip enabled flag in providers.toml (tomlkit-free: regex rewrite)."""
+    txt = PROVIDERS_TOML.read_text(encoding="utf-8")
+    import re as _re
+    # find the [[provider]] block for this name and flip its enabled line
+    blocks = txt.split("[[provider]]")
+    for i, b in enumerate(blocks):
+        if f'name = "{provider_name}"' in b:
+            lines = b.splitlines()
+            for j, ln in enumerate(lines):
+                if ln.strip().startswith("enabled"):
+                    lines[j] = f"enabled = {str(bool(enabled)).lower()}"
+            blocks[i] = "\n".join(lines)
+    PROVIDERS_TOML.write_text("[[provider]]".join(blocks), encoding="utf-8")
+    return {"ok": True}
 
 def load_providers():
     if not PROVIDERS_TOML.exists() or tomllib is None:
@@ -25,7 +64,8 @@ def provider_models():
         if not p.get("enabled", False):
             continue
         key_env = p.get("api_key_env", "NONE")
-        has_key = key_env == "NONE" or bool(os.environ.get(key_env))
+        keys = _load_keys()
+        has_key = key_env == "NONE" or bool(os.environ.get(key_env) or keys.get(key_env))
         for tier, model in p.get("models", {}).items():
             out.append({"model": model, "provider": p["name"],
                         "key_ready": key_env == "NONE" or bool(os.environ.get(key_env)),
