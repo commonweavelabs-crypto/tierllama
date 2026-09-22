@@ -45,11 +45,15 @@ def recommend(models, bench_results=None):
     cloud = [m for m in models if is_cloud(m)]
     local = [m for m in models if not is_cloud(m)]
     def capability(m):
+        """Blend: seed prior (public benchmarks) + measured fit (noisy, n=1-3).
+        Measured alone can't outrank a strong seed contradiction (J8 revision)."""
+        seed = seed_score(m)
         if m in bench and bench[m].get("max_fit"):
-            return {"EASY": 20, "MEDIUM": 50, "HARD": 80, "UNRELIABLE": 5}.get(bench[m]["max_fit"], 50)
-        return seed_score(m)
+            meas = {"EASY": 20, "MEDIUM": 50, "HARD": 80, "UNRELIABLE": 5}.get(bench[m]["max_fit"], 50)
+            return round(0.4 * meas + 0.6 * seed)
+        return seed
     matrix = {}
-    NEED = {"EASY": 20, "MEDIUM": 50, "HARD": 80, "EXPERT": 85}
+    NEED = {"EASY": 25, "MEDIUM": 45, "HARD": 62, "EXPERT": 82}
     COST = {"local": 0, "cloud_lite": 1, "cloud_frontier": 2}
     def cost_rank(m):
         if is_cloud(m):

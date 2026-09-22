@@ -18,10 +18,14 @@ async function loadConfig() {
       if (m === t.model) o.selected = true; sel.appendChild(o);
     });
     const think = document.createElement("select"); think.className = "thinkSel"; think.dataset.key = key;
+    const LABELS = {off: "Thinking: OFF (no reasoning)", normal: "Thinking: NORMAL",
+                    max: "Thinking: MAX (deep reasoning, slower)"};
     ["off","normal","max"].forEach(l => {
-      const o = document.createElement("option"); o.value = l; o.textContent = "thinking: " + l;
+      const o = document.createElement("option"); o.value = l; o.textContent = LABELS[l];
       if (l === (t.thinking || "normal")) o.selected = true; think.appendChild(o);
     });
+    think.className = "thinkSel " + (t.thinking || "normal");
+    think.addEventListener("change", () => think.className = "thinkSel " + think.value);
     row.append(sel, think); el.append(row);
   }
 }
