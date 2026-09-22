@@ -10,7 +10,7 @@ log (status, model, latency).
 |---|---|---|---|
 | LOCAL | qwen3:4b | "J3-LOCAL-OK" | 3.0s cold / ~9-10s in end-to-end runs |
 | CLOUD_MEDIUM | glm-5.3-flash:cloud | "J3-CLOUD-OK" | 2.0s standalone / 23s in run |
-| BOX | job queue enqueue | job-...-j3-lane-test.md written to pending/ | 0.03s |
+| BOX | qwen38-27b-iq3s via job queue | consumed ~60s, result 'J3-BOX-OK' | 0.03s enqueue |
 | CLOUD_HARD | glm-5.3-flash:cloud (stand-in) | ok | 28s |
 
 ## Finding 1: The "cloud lane" needed NO API keys — Ollama serves cloud models
@@ -41,7 +41,16 @@ for explicitly queued batch jobs, not for "hard but deferrable." Decision tree:
 A future refinement (J4): let the escalation ladder offer the user "queue this for
 overnight instead?" when HARD+LATER is detected - saves the expensive call.
 
-## Finding 5: dispatch never raises (J4-ready)
+## Finding 5: Box job format is JSON, not markdown (bug found + fixed)
+The box worker consumes `C:/jobs/pending/*.json` shaped `{id, model, system, prompt}`
+and POSTs them to llama-swap via curl; responses land as `done/<id>.response.json`.
+First BOX test wrote a .md job -> worker ignored it silently (a .md file in pending/
+is invisible to the queue). Fixed adapter to emit proper JSON jobs; retest consumed
+in ~60s with correct result ("J3-BOX-OK"). Lesson: adapters must match the CONSUMER's
+contract exactly - silent format mismatches look like dead queues. A `doctor` check
+(J5) will drop a canary job at startup to prove queue health.
+
+## Finding 6: dispatch never raises (J4-ready)
 All adapters return {status: ok|queued|error, ...}; router records the raw result.
 The escalation ladder (J4) can now read dispatch failures as an escalation signal.
 

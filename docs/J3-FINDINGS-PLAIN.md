@@ -55,5 +55,14 @@ question that turns into real savings.
 - Make dispatch failures data, not exceptions - the next layer (escalation) needs to
   read them.
 
-*J3 live results: all three lanes dispatched and confirmed, decision log records every
-dispatch with model + latency. Open build log; repos are public.*
+One more catch worth telling: our first box test sat untouched for an hour. The code
+was right; the FORMAT was wrong - the box worker reads JSON job files, and we'd written
+a markdown file. The worker didn't complain; it just silently ignored the file. One
+line of format-fixing later, the box consumed the job in about a minute and answered
+correctly. Silent contract mismatches are the sneakiest bug class in distributed
+systems - the fix is a startup canary: send a tiny known job at startup and check it
+comes back. That's going into the doctor command.
+
+*J3 live results: all three lanes dispatched, confirmed, and ANSWERED - local ("OK" in
+3s), cloud ("OK" in 2s), box (consumed and answered in ~60s). Decision log records
+every dispatch with model + latency. Open build log; repos are public.*

@@ -53,17 +53,21 @@ def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, timeou
         return {"status": "error", "lane": tier, "model": model, "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
 
-def dispatch_box(message, title="tierllama-box-job", timeout=30):
-    """BOX lane: enqueue an overnight job on the mini box via the shared jobs folder.
-    Async by design - returns the job id immediately; result picked up later from done/."""
+def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", system=None, timeout=30):
+    """BOX lane: enqueue an overnight job on the mini box. The box worker consumes
+    C:/jobs/pending/*.json files shaped {id, model, system, prompt} and POSTs them to
+    local llama-swap; the response lands in done/<id>.response.json. Async by design."""
     job_id = f"job-{datetime.datetime.now().strftime('%Y%m%d')}t-{uuid.uuid4().hex[:6]}-{title}"
-    job_path = BOX_JOBS / "pending" / f"{job_id}.md"
+    job_path = BOX_JOBS / "pending" / f"{job_id}.json"
+    payload = {"id": job_id, "model": model,
+               "system": system or "You are a careful assistant. Answer completely.",
+               "prompt": message}
     t0 = time.time()
     try:
-        job_path.write_text(message, encoding="utf-8")
+        job_path.write_text(json.dumps(payload), encoding="utf-8")
         return {"status": "queued", "lane": "BOX", "job_id": job_id,
                 "path": str(job_path), "latency_s": round(time.time()-t0, 2),
-                "note": "async - check \\192.168.12.150\C$\jobs\done\ later"}
+                "note": "async - result at \\192.168.12.150\C$\jobs\done\<id>.response.json"}
     except Exception as e:
         return {"status": "error", "lane": "BOX", "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
