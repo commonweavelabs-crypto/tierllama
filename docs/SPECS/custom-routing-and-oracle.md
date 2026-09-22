@@ -111,3 +111,25 @@ capable models). Cross-model specialty choice belongs to the Oracle's per-task-t
 capability scores (already in F2 design). Sequence: ship task-type in Oracle data,
 measure whether routing choices actually change, only then consider a 5th classifier
 dimension. Complexity without measured routing delta = rejected for now.
+
+
+## Additions (Gui, 2026-09-22): auto-tune button + advanced settings
+
+### UI: decision tree moves under Advanced settings
+Default UX = zero decisions (install -> scan -> done). Tree editor behind an
+"Advanced" panel w/ "tweaks are optional" note. J7.5 polish item.
+
+### The Optimize button (J8 core, Gui's vision)
+One button + progress bar: scan hardware -> probe every discovered model
+(golden-set through each, graded) -> measure on-device speed -> write suggestion
+matrix -> pre-fill the decision tree. User tweaks only if advanced.
+Status: speed data ALREADY collecting (proxy.jsonl logs per-call latency per
+model per machine: 32 calls logged). Competence score = `tierllama bench`
+(golden set through each model once, graded).
+
+### SEED not SIMULATE (pushback accepted-pending)
+No synthetic dataset. Cold-start = curated seed table (task-type x difficulty ->
+capable models, from public benchmarks, versioned data file w/ URL refresh).
+Real user measurements OVERWRITE seed entries as they accumulate. Every
+suggestion shows its source: "seed" or "measured (n calls)". Transparency rule
+applies to recommendations, not just marketing claims.
