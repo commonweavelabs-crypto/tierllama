@@ -208,3 +208,13 @@ Design principles:
   so say so plainly)
 - GDPR-friendly shape: explicit, purpose-bound, minimal, revocable
 PRIVACY.md updated in the same milestone (J8).
+
+
+## J9 (Gui, 2026-09-22): installers + PWA app-shell
+- Desktop presence WITHOUT Electron: manifest.json + service worker -> Chrome
+  "Install app" (the Telegram-in-Chrome pattern Gui described): own desktop icon,
+  taskbar entry, own window, no browser chrome - same local dashboard.
+- Installer: pip deps + Ollama detection (clear message if missing) + proxy &
+  dashboard auto-starts + PWA installability.
+- Update model for local installs: git pull or re-run installer; dashboard is a
+  served page so browser refresh = latest UI (server restart required for code).
