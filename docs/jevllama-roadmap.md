@@ -62,8 +62,19 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   onboarding (Tailscale-model), same-account peer matching, agent on each machine.
   Needs identity backend; rides Tailscale/token for transport. (Gui confirmed split
   2026-09-22: scan-and-find = MVP, account matching = phase 2.)
-- **J6 — MVP release**: repo public under commonweave, Apache-2.0, README (Jev-powered +
-  Jev-o-llama easter egg), landing-page A/B for the name (Jevllama vs Tierllama vs Tierup).
+- **J6 — MVP release polish** (ACTIVE): security/bug sweep (input validation, prompt
+  injection surface, path traversal, secrets), README final (mission statement +
+  "powered by Jev" + savings story), repo description/topics, decision-log privacy
+  check (never log user content unmasked in shared exports).
+- **J7 — Web UI dashboard** (Gui 2026-09-22: users expect an interface; Ollama has one):
+  local web app showing fleet (available machines), per-lane latency/cost stats, memory
+  usage, decision log browser, cloud-provider linking (incl. TypeSafe account), config
+  editor. Tech: FastAPI + small SPA (reuse comfyui-video-ui patterns). First-time UX:
+  "model is waking up" indicator.
+- **J8 — TypeSafe/Jev account linking + enterprise console** (post-UI): managed cloud
+  classifier option in-UI, team dashboards, usage analytics.
+- **J9 — Installers/distribution** (post-UI): one-click install per OS, auto-update,
+  bundled Ollama bootstrap for non-Ollama users.
 
 ## Monetization (after MVP proves the router)
 - Free open core: router + classifier + box scheduler + CLI (Apache-2.0).
