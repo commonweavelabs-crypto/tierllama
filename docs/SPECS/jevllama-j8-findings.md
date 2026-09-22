@@ -33,3 +33,23 @@
 - ornith-1.5:9b: 35.5s cold, 62.5 tok/s, HARD, LATER
 - qwen3-vl:8b: 40.2s cold, 128.9 tok/s, HARD, LATER
 - ornith-1.5:35b: 163.2s cold, 37.6 tok/s, HARD, LATER
+
+
+## J8 REVISION (Gui pushback, 9/22): "these picks are wrong"
+Gui correctly flagged: qwen3:0.6b at HARD, ornith-1.5:9b at HARD/LATER, weak EXPERT.
+
+### Root causes (3 stacked flaws)
+- F1: HARD probe luckable (single-number check) - 0.6b 'passed' HARD
+- F2: n=1 measurement instantly overrode seed consensus (noisy probe > benchmarks)
+- F3: recommender ranked pure capability, not cheapest-capable
+
+### Fixes
+- HARD probe = multi-step workers/wall problem (can't luck; answer 3.30h)
+- Capability = 0.6*seed + 0.4*measured (benchmarks anchor; measurements refine)
+- NEED bars raised: EASY 25, MEDIUM 45, HARD 62, EXPERT 82
+- Thinking dropdown UX: explicit labels ("Thinking: MAX (deep reasoning, slower)")
+  + amber badge for max; wiring verified end-to-end (think:true in dispatch body)
+
+### New tree (verified live)
+EASY/NOW qwen3:0.6b | MEDIUM/NOW deepseek-v4-flash | HARD/NOW deepseek-v4-flash max
+HARD/LATER qwen3-vl:8b max | LATER locals ornith-1.5:9b | EXPERT glm-5.3-flash max
