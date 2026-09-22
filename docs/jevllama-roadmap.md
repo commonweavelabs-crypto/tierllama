@@ -62,7 +62,8 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   onboarding (Tailscale-model), same-account peer matching, agent on each machine.
   Needs identity backend; rides Tailscale/token for transport. (Gui confirmed split
   2026-09-22: scan-and-find = MVP, account matching = phase 2.)
-- **J6 — MVP release polish** (ACTIVE): security/bug sweep (input validation, prompt
+- **J6 — MVP release polish** (COMPLETE 2026-09-22: 4 security findings fixed incl.
+  HIGH path-injection; README+mission+topics live; fresh-clone regression PASS): security/bug sweep (input validation, prompt
   injection surface, path traversal, secrets), README final (mission statement +
   "powered by Jev" + savings story), repo description/topics, decision-log privacy
   check (never log user content unmasked in shared exports).
