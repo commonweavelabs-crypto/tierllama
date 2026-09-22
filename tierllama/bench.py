@@ -109,7 +109,10 @@ def probe_model(model):
         out[f"{name.lower()}_pass"] = passed
         out[f"{name.lower()}_s"] = wall
     # 3. classify: NOW vs LATER (speed knob) - steady-state tok/s
-    out["timing_fit"] = "NOW" if out["tok_s"] >= 20 and out["cold_load_s"] < 15 else "LATER"
+    # NOW-fit: conversational speed (tok/s) is the primary signal; cold load only
+    # disqualifies when BOTH slow to load AND slow to respond (J8 revision: ornith
+    # cold 30s but 55+ tok/s = conversational after warmup - keep_alive handles it)
+    out["timing_fit"] = "NOW" if out["tok_s"] >= 40 or (out["tok_s"] >= 20 and out["cold_load_s"] < 15) else "LATER"
     # 4. competence knob: EASY->EASY tier, +MEDIUM->MEDIUM, +HARD->HARD
     if out.get("hard_pass"):
         out["max_fit"] = "HARD"
