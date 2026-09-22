@@ -177,3 +177,19 @@ def index():
 @app.get("/app.js")
 def app_js():
     return FileResponse(ROOT / "webapp" / "app.js")
+
+@app.get("/manifest.json")
+def manifest():
+    return FileResponse(ROOT / "webapp" / "manifest.json", media_type="application/manifest+json")
+
+@app.get("/sw.js")
+def sw_js():
+    return FileResponse(ROOT / "webapp" / "sw.js", media_type="application/javascript")
+
+@app.get("/icon-192.png")
+def icon192():
+    return FileResponse(ROOT / "webapp" / "icon-192.png", media_type="image/png")
+
+@app.get("/icon-512.png")
+def icon512():
+    return FileResponse(ROOT / "webapp" / "icon-512.png", media_type="image/png")

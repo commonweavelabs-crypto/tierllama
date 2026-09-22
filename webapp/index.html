@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tierllama</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#111418">
+<link rel="icon" href="/icon-192.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
 <style>
   :root { --pico-border-radius: 10px; }
@@ -61,6 +64,11 @@
   <table><thead><tr><th>time</th><th>message</th><th>role</th><th>diff</th><th>timing</th><th>lane</th><th>conf</th></tr></thead>
   <tbody id="log"></tbody></table>
 </div>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
 <script src="/app.js"></script>
 </body>
 </html>
