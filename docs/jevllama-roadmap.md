@@ -49,8 +49,16 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   overnight box queue (existing job system). Done = one message routed to each lane live.
 - **J4 — Escalation ladder**: retry-count + confidence nudge up a lane; decision log with
   per-decision cost estimate. Done = a failing easy-route auto-escalates and logs why.
-- **J5 — CLI + config polish** (`tierllama route "msg"`, `tierllama bench`, `tierllama doctor`).
-  Done = fresh install works from README on a second machine.
+- **J5 — CLI + config polish + Tier-0 discovery** (`tierllama route/bench/doctor`).
+  NEW: Tier-0 LAN-scan discovery at startup — find every Ollama/llama-swap on the
+  subnet (measured: 3 servers in 6s), each becomes a lane automatically, no accounts.
+  This is the competitive wedge for the existing Ollama install base ("download one
+  app, your whole fleet routes"). Done = fresh install works from README on a second
+  machine AND finds LAN peers automatically.
+- **Phase 2 (post-MVP): account-secured cross-network fleet** — download-and-connect
+  onboarding (Tailscale-model), same-account peer matching, agent on each machine.
+  Needs identity backend; rides Tailscale/token for transport. (Gui confirmed split
+  2026-09-22: scan-and-find = MVP, account matching = phase 2.)
 - **J6 — MVP release**: repo public under commonweave, Apache-2.0, README (Jev-powered +
   Jev-o-llama easter egg), landing-page A/B for the name (Jevllama vs Tierllama vs Tierup).
 
