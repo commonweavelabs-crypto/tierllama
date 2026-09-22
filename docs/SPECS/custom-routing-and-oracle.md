@@ -274,3 +274,24 @@ Silent background data + explicit application = the standing contract.
 - Tierllama = the META-PROVIDER: Hermes sees one entry (tierllama-local);
   behind it the router sweeps all lanes. Already working in dogfood.
 - Visual polish pass: modern, clean, logos per provider card
+
+
+## OpenRouter overlap analysis (Gui's question, 9/22): did we reinvent the wheel?
+Honest answer: PARTIALLY, on the cloud-only slice. OpenRouter's Auto Router
+(docs: openrouter.ai/docs/guides/routing/routers/auto-router):
+- classifies prompts into ~30 task types (fast classifier - same shape as Jev)
+- ranks by 7-day community SPEND share ("wisdom of the market")
+- cost_tier low..max = cheapest-capable..most-capable (our price/quality modes)
+- fallbacks, conversation memory, provider restrictions
+
+What they CANNOT do (our moat):
+1. LOCAL models - cloud-only by definition; our cheapest lane is often $0
+2. User's own hardware fleet (box, LAN machines, overnight queue)
+3. Measured-per-machine data (cold loads, real GPU latency) vs market spend
+4. Privacy: our routing is local, log local, no third party sees prompts
+5. Transparency: visible editable decision tree + provenance vs black box
+
+Strategic stance: OpenRouter is a LANE (one of our 9 providers), not a rival.
+Where we must catch up: their market-spend signal (telemetry flywheel phase)
+and battle-tested fallback chain.
+TODO: add this comparison to README (users will ask the same question).
