@@ -133,3 +133,27 @@ capable models, from public benchmarks, versioned data file w/ URL refresh).
 Real user measurements OVERWRITE seed entries as they accumulate. Every
 suggestion shows its source: "seed" or "measured (n calls)". Transparency rule
 applies to recommendations, not just marketing claims.
+
+
+## Clarification (Gui, 2026-09-22): "synthetic seed" = public benchmarks + common-sense priors
+
+### The seed table (cold-start recommendations)
+- Public benchmark data (never the model's own claims) + common-sense priors
+- Common-sense rules baked in:
+  1. CLOUD models = default-NOW (expert-run hardware, trust speed; only network
+     latency ping, no speed probes)
+  2. LOCAL models = default-LATER unless proven fast (5 timed probes: probe 1 =
+     cold load, probes 2-5 = steady state)
+  3. Ornith case (fast, low-competence 9B) -> EASY/NOW local
+  4. Box 27B case (slow, capable) -> LATER jobs, never NOW
+
+### The two-knob matrix (explainable)
+- SPEED decides NOW vs LATER (measured, 5 probes, local only)
+- COMPETENCE decides EASY/MEDIUM/HARD/EXPERT (per-difficulty graded check)
+- "hi" probes != real workload: bench classifies NOW/LATER from probes; job-scale
+  data (multi-hour box jobs, tool-heavy prompts) accumulates from real usage
+
+### Phase 2 (aggregate flywheel)
+Opt-in anonymized telemetry -> compacted per (model, hardware-class) ->
+improves everyone's seed table over time. Real user data condensing into
+decisions - Gui's words, the long-term moat.
