@@ -76,8 +76,12 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   data file (versioned, URL-refreshable — never scraped), `tierllama bench` (on-device
   speed for every discovered model), auto-suggest on discovery, suggestion logging.
   PLUS TypeSafe/Jev account linking + enterprise console.
-- **J10 — Providers v2**: OpenAI/xAI/Anthropic TOML descriptors, key management,
-  per-provider cost tracking; EXPERT tier (4th difficulty) after measured bench. (post-UI): managed cloud
+- **J10 — Providers v2 + Seed refresh**: OpenAI/xAI/Anthropic TOML descriptors,
+  key management, per-provider cost tracking; EXPERT tier (4th difficulty).
+  Seed-refresh pipeline: versioned+signed seed-table.json at stable URL, startup
+  check + hot-reload, never overwrites user edits, weekly cadence (free tier).
+  Community-refined seeds (opt-in telemetry) ride the same channel; live oracle
+  API = enterprise tier. (post-UI): managed cloud
   classifier option in-UI, team dashboards, usage analytics.
 - **J9 — Installers/distribution** (post-UI): one-click install per OS, auto-update,
   bundled Ollama bootstrap for non-Ollama users.
