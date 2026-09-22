@@ -218,3 +218,33 @@ PRIVACY.md updated in the same milestone (J8).
   dashboard auto-starts + PWA installability.
 - Update model for local installs: git pull or re-run installer; dashboard is a
   served page so browser refresh = latest UI (server restart required for code).
+
+
+## Seed-refresh distribution design (Gui, 9/22): how compiled selection data reaches users
+
+### The problem
+New models ship weekly. Compiled matrix data (seed tables + aggregate user
+measurements) must reach installs without intrusive updates.
+
+### The answer: THREE channels, escalating intrusiveness (all three, staged)
+1. STATIC FILE + URL (free tier, zero infra): seed-table.json versioned at a
+   stable URL (GitHub raw in the repo / releases). App checks on startup
+   (ETag/If-Modified-Since), downloads if newer, hot-reloads - no app update
+   needed. This is the "data as config" pattern. Shipped in J10.
+2. TELEMETRY-REFINED SEEDS (opt-in): when aggregate user measurements are
+   compacted (phase-2 flywheel), the refreshed seed file ships the SAME way -
+   same URL, new version. Free users get community data if they opted in.
+3. ENTERPRISE TIER: live oracle API (server-side recommender with per-hardware-
+   class models + SLA + freshness guarantees). Not a data push - a query
+   endpoint. Paid because it runs our servers.
+
+### Open-core split (aligned with existing plan)
+- Free: static seed refresh via URL (works offline, no account)
+- Opt-in: community-refined seeds (same channel, richer data)
+- Enterprise: live oracle API + custom hardware classes + priority updates
+### Best practices baked in
+- Data versioned + signed (sha256 in a small manifest - we verify before applying)
+- Local override always wins UI-wise: seed refresh never overwrites USER edits
+  (only fills tiers the user hasn't touched - same measured-wins philosophy)
+- Rollback: previous seed file kept, one-click restore
+- Update cadence: weekly compile, event-driven for major new models
