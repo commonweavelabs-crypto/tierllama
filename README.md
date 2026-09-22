@@ -51,3 +51,7 @@ numbers do NOT claim, too).
 
 ## License
 Apache-2.0 (open core). Enterprise tier: managed cloud routing + dashboards (later).
+
+## Web dashboard
+
+python cli.py serve -> http://127.0.0.1:8848
