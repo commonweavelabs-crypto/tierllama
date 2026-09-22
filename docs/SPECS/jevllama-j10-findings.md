@@ -25,3 +25,19 @@
 - Free: static signed seed refresh + own providers via TOML
 - Opt-in: community-refined seeds (same channel, phase-2 telemetry)
 - Enterprise: live oracle API (not built - future tier)
+
+
+## Consolidated final verification (goal contract, fresh clone 9/22)
+| # | Condition | Result |
+|---|-----------|--------|
+| 1 | Providers via TOML + env keys | OK (4 models exposed; openai/xai in TOML, disabled until keys) |
+| 2 | Models in dropdowns + cost tracking | /api/providers 200; costs.jsonl wired |
+| 3 | Signed seed file | sha256 in manifest; fresh-clone verify TRUE (after .gitattributes CRLF fix) |
+| 4 | Startup check + stage, NEVER auto-apply | check staged/uptodate; routing.json untouched by preview |
+| 5 | Re-scan preview diff | served w/ changes; user_edited tiers skipped (verified) |
+| 6 | Rollback | apply#2 -> rolled_back=True (verified earlier) |
+| 7 | Fresh clone | dashboard/providers/seed-check/fleet all 200 |
+
+Bug found during final verify: git CRLF checkout corrupted the sha (no
+.gitattributes) -> seed-data marked binary, restored exact bytes. Hash now
+verifies on Windows clones.
