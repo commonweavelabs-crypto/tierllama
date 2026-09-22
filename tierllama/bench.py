@@ -119,6 +119,7 @@ def probe_model(model):
         out["max_fit"] = "EASY"
     else:
         out["max_fit"] = "UNRELIABLE"
+    BENCH_LOG.parent.mkdir(exist_ok=True)
     BENCH_LOG.open("a", encoding="utf-8").write(json.dumps(out) + "\n")
     return out
 
