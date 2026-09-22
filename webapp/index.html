@@ -25,13 +25,24 @@
 <h1>🦙 Tierllama <span class="badge">powered by Jev</span></h1>
 <p class="muted">Route every AI call to the cheapest model that can do the job.</p>
 
-<div class="card">
-  <h3>Decision tree</h3>
-  <div class="muted">Each tier maps to a model + thinking level. Changes save & apply on the next route.</div>
+<div class="card" id="optimizeCard">
+  <h3>Optimize routing</h3>
+  <div class="muted" id="optDisclaimer">One click: Tierllama tests every local model on your hardware (speed + capability) and fills the decision tree for you. More models = longer scan (~40s per model).</div>
+  <label style="font-size:.85rem"><input type="checkbox" id="consentLocal"> Save results on this machine to improve my routing (nothing leaves this computer)</label>
+  <div id="optBarWrap" style="display:none"><div class="muted" id="optStatus"></div>
+    <progress id="optBar" value="0" max="100" style="width:100%"></progress></div>
+  <button onclick="startOptimize()">Optimize</button>
+  <span id="optDone" class="muted"></span>
+</div>
+
+<div class="card" id="advancedCard" style="display:none">
+  <h3>Decision tree <span class="muted">(advanced)</span></h3>
+  <div class="muted">Each tier maps to a model + thinking level. Changes save &amp; apply on the next route.</div>
   <div id="tiers"></div>
   <button onclick="saveConfig()">Save routing</button>
   <span id="saveStatus" class="muted"></span>
 </div>
+<button class="muted" style="background:transparent;border:1px dashed #3a434e" onclick="toggleAdvanced()">&#9881; Advanced settings</button>
 
 <div class="card">
   <h3>Test a route</h3>
