@@ -60,4 +60,27 @@ async function loadLog() {
     tb.append(tr);
   });
 }
+async function startOptimize() {
+  const consent = document.getElementById("consentLocal").checked;
+  if (!consent) { document.getElementById("optStatus").textContent = "Please tick the consent box first."; return; }
+  const r = await (await fetch("/api/optimize", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({consent_local: consent})})).json();
+  if (!r.started) { document.getElementById("optStatus").textContent = r.reason; return; }
+  document.getElementById("optBarWrap").style.display = "block";
+  pollOptimize();
+}
+async function pollOptimize() {
+  const st = await (await fetch("/api/optimize/status")).json();
+  const pct = st.total ? Math.round(st.done / st.total * 100) : 0;
+  document.getElementById("optBar").value = pct;
+  document.getElementById("optStatus").textContent = st.running
+    ? `Testing ${st.current} (${st.done}/${st.total})...`
+    : "Done - decision tree updated with measured recommendations.";
+  if (st.running) setTimeout(pollOptimize, 3000);
+  else { document.getElementById("optDone").textContent = "done - tree refilled"; loadConfig(); }
+}
+function toggleAdvanced() {
+  const c = document.getElementById("advancedCard");
+  c.style.display = c.style.display === "none" ? "block" : "none";
+}
 loadConfig().then(() => { loadStats(); loadLog(); });

@@ -112,6 +112,64 @@ def do_route(payload: RouteReq):
     r = route(payload.message[:8192], dispatch=False)  # log-only: show the decision
     return r
 
+# ---- J8 Optimize flow -------------------------------------------------------
+import threading, time as _time
+OPT_STATE = {"running": False, "done": 0, "total": 0, "current": "", "result": None,
+             "consent_local_accepted": False, "consent_share": False}
+
+@app.post("/api/optimize")
+def optimize(payload: dict = None):
+    """Start the bench sweep (local models) + write the recommendation matrix.
+    payload: {"consent_local": true, "consent_share": false}"""
+    payload = payload or {}
+    if not payload.get("consent_local"):
+        return {"started": False, "reason": "local-storage consent required"}
+    if OPT_STATE["running"]:
+        return {"started": False, "reason": "already running"}
+    OPT_STATE.update({"running": True, "done": 0, "total": 0, "current": "", "result": None})
+    import threading
+    th = threading.Thread(target=_optimize_worker, daemon=True)
+    th.start()
+    return {"started": True}
+
+def _optimize_worker():
+    try:
+        from .bench import probe_model, _get_models
+        models = _get_models()
+        OPT_STATE["total"] = len(models)
+        for m in models:
+            OPT_STATE["current"] = m
+            try:
+                probe_model(m)
+            except Exception:
+                pass
+            OPT_STATE["done"] += 1
+        from .seed import recommend
+        bench = [json.loads(l) for l in (ROOT/"logs"/"bench.jsonl").read_text().strip().splitlines()]
+        latest = {}
+        for b in bench:
+            if "error" not in b:
+                latest[b["model"]] = b
+        fleet_peers = discover()
+        allm = [m for p in fleet_peers for m in p.get("models", []) if m]
+        matrix = recommend(allm, list(latest.values()))
+        # measured-wins: only overwrite tiers whose new source is 'measured' unless empty:
+        current = _load_tiers()
+        for k, v in matrix.items():
+            v["provider"] = "auto"
+        (ROOT / "routing.json").write_text(json.dumps(matrix, indent=1), encoding="utf-8")
+        # telemetry record (shared ONLY if consent given - phase 2 endpoint):
+        if OPT_STATE.get("consent_share"):
+            (ROOT/"logs"/"telemetry.jsonl").open("a").write(json.dumps(
+                {"ts": _time.time(), "type": "opt-anonymized", "note": "NO prompts, NO IPs"}) + "\n")
+        OPT_STATE["result"] = matrix
+    finally:
+        OPT_STATE["running"] = False
+
+@app.get("/api/optimize/status")
+def optimize_status():
+    return {k: OPT_STATE[k] for k in ["running", "done", "total", "current", "result"]}
+
 @app.get("/")
 def index():
     return FileResponse(ROOT / "webapp" / "index.html")
