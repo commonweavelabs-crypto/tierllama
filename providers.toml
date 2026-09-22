@@ -14,7 +14,9 @@ cost_per_mtok_output = 10.00
 easy = "gpt-4o-mini"
 medium = "gpt-4o"
 hard = "o1"
-expert = "o1"[[provider]]
+expert = "o1"
+
+[[provider]]
 name = "xai"
 base_url = "https://api.x.ai/v1"
 api_key_env = "XAI_API_KEY"

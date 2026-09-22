@@ -46,7 +46,7 @@ def set_enabled(provider_name, enabled):
             for j, ln in enumerate(lines):
                 if ln.strip().startswith("enabled"):
                     lines[j] = f"enabled = {str(bool(enabled)).lower()}"
-            blocks[i] = "\n".join(lines)
+            blocks[i] = "\n".join(lines) + "\n"
     PROVIDERS_TOML.write_text("[[provider]]".join(blocks), encoding="utf-8")
     return {"ok": True}
 
