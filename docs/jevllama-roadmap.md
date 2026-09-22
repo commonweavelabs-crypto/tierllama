@@ -1,0 +1,73 @@
+# Jevllama Roadmap (v1 — 2026-09-21)
+
+> Built from the 2026-09-21 working session. Companion docs: `SPECS/tierllama-decisions.md`,
+> `SPECS/jevllama-bench-01.md`, `SPECS/tierllama-market-research.md`, `JEV-CLASS-ROUTER-BRAINSTORM.md`.
+> Name: **Tierllama** is my pick, **Jevllama** is Gui's locked call (rename valve if TypeSafe
+> objects; "Jev-o-llama" stays the README easter egg either way).
+
+## Manifesto (one paragraph)
+AI access is bloated: every message hits the biggest model by default, users pay for
+compute they don't need, and providers profit from the waste. Jevllama flips it: a
+sub-second Jev-class classifier reads each message, scores it against your available
+models, and routes it to the CHEAPEST model that can do the job — local first, cloud only
+when it earns its cost. Measured on our own hardware: 86.7% routing accuracy at 0.2s,
+free, on a 4B model that fits 4GB VRAM. Tiered routing saves 40–80% (market research:
+64.8% base case). We commoditize intelligence: users keep their money and their hardware
+works for them, instead of renting a data center. Open core, Apache-2.0; enterprise =
+managed cloud routing + dashboards. *Jev's paradox says efficiency increases consumption —
+we make that consumption cheap and local.*
+
+## Where we are (evidence, not plans)
+- Classifier: qwen3:4b + rubric v1 = **86.7% @ 0.196s** on the 120-message golden set
+  (5 roles × difficulty × timing, incl. 20 ambiguity traps). Rubric tuning: v1 > v3 > v2 —
+  over-specification overcorrects; prompt iteration has diminishing returns.
+- 0.6B rejected (50%). 8B adds VRAM, not accuracy. **4B = the floor and the pick.**
+- Residual errors are GENUINELY ambiguous asks — exactly what the confidence-threshold
+  fallback to the main LLM is for. Next lever: SemIf-style logit probabilities.
+- Multi-dim scoring proven in ONE call: {difficulty, timing} pairs, 0.23–0.45s.
+- Market research (box): 40–80% savings, robust to misroutes; >95% accuracy = enterprise bar.
+- Pricing anchors (verified 2026-09-21): local $0 | deepseek-v4.1-flash $0.15/$0.60 |
+  kimi-k3 $3/$15. Perfect routing ≈ $1.00/M tokens vs $6.00 always-best = **83% savings
+  ≈ $5,000/B tokens**. At 88% classifier: 77% savings. Every accuracy point ≈ $30/B tokens.
+
+## MVP definition (the only goal that matters right now)
+**MVP = a working local router that classifies every incoming message into (role, difficulty,
+timing) and dispatches it to the right lane in < 1 second, with a confidence fallback.**
+In scope: CLI + config (machines, models, lanes), 4B classifier w/ structured output,
+4 lanes (local-easy / cloud-medium / cloud-hard / overnight-box), confidence-gated
+escalation ladder, decision log (local JSONL). OUT of scope until after MVP: WebGPU,
+auto-discovery, team dashboards, cloud pass-through billing, landing page, name tests.
+
+## Milestones
+- **J1 — Router core skeleton** (Hermes-side python): message in → classifier call →
+  lane decision + confidence → dispatch + log. Runs on this machine. Done = end-to-end
+  routing of 20 live messages with a decision log on disk.
+- **J2 — Classifier hardening**: logprobs-based confidence (llama.cpp/Ollama logprobs or
+  SemIf-style logit read), threshold tuning on the 120-set, ambiguity → fallback path.
+  Done = confusion rate on clear-cut messages ≈ 0; ambiguous ones escalate by design.
+- **J3 — Lane adapters**: local (Ornith/other Ollama), cloud (OpenAI-compatible API),
+  overnight box queue (existing job system). Done = one message routed to each lane live.
+- **J4 — Escalation ladder**: retry-count + confidence nudge up a lane; decision log with
+  per-decision cost estimate. Done = a failing easy-route auto-escalates and logs why.
+- **J5 — CLI + config polish** (`tierllama route "msg"`, `tierllama bench`, `tierllama doctor`).
+  Done = fresh install works from README on a second machine.
+- **J6 — MVP release**: repo public under commonweave, Apache-2.0, README (Jev-powered +
+  Jev-o-llama easter egg), landing-page A/B for the name (Jevllama vs Tierllama vs Tierup).
+
+## Monetization (after MVP proves the router)
+- Free open core: router + classifier + box scheduler + CLI (Apache-2.0).
+- Enterprise tier (subscription): managed cloud-classifier + cloud routing pass-through
+  (Kimi/GLM/OpenRouter with margin), team dashboards, usage analytics, SSO, mixed-fleet
+  hardware consistency. Users can always opt out and run local only.
+- Competitive wedge vs Ollama/OpenRouter: they serve models; we DECIDE where each call
+  goes, and prove the savings per decision in the log. Routing accuracy is the product.
+
+## Standing decisions (locked)
+Open-core split per spec; classifier runs on the local GPU (sub-second), not the box;
+cloud classifier = enterprise bundle option, opt-out local; Hermes/Telegram first consumer,
+Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = post-MVP.
+
+## Risks
+- Judge-loop over-fitting on our own golden set → keep a held-out slice + real-traffic eval.
+- Ollama logprobs API limits → fallback to llama.cpp server for the classifier only.
+- Name/trademark: Jev (TypeSafe) + Llama (Meta) — rename valve armed; A/B decides.
