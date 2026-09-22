@@ -248,3 +248,14 @@ measurements) must reach installs without intrusive updates.
   (only fills tiers the user hasn't touched - same measured-wins philosophy)
 - Rollback: previous seed file kept, one-click restore
 - Update cadence: weekly compile, event-driven for major new models
+
+
+## J10 revision (Gui, 9/22): user-triggered apply - NEVER auto-apply refreshes
+Two separate events:
+1. DATA refresh (silent, automatic): startup check -> verify sha256 -> STAGE.
+   Never touches the decision tree.
+2. APPLY (explicit, user-initiated): "Re-scan models" button re-runs bench +
+   applies latest suggestions. Before overwriting user-edited tiers: preview
+   diff ("these 3 tiers will update, your customized tier stays").
+Tree tracks which tiers are stock vs user-modified (user_edited flag per tier).
+Silent background data + explicit application = the standing contract.
