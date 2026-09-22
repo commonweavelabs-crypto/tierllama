@@ -190,19 +190,29 @@ def seed_check():
     return check_and_stage()
 
 @app.get("/api/seed/preview")
-def seed_preview():
+def seed_preview(mode: str = "price"):
     from .seed_refresh import preview_diff
     user_edited = set(json.loads((ROOT/"routing.json").read_text(encoding="utf-8")).get("_user_edited", []))
-    return preview_diff_safe(user_edited)
+    return preview_diff(user_edited, mode=mode)
 
 def preview_diff_safe(user_edited):
     from .seed_refresh import preview_diff
     return preview_diff(user_edited)
 
 @app.post("/api/seed/apply")
-def seed_apply():
+def seed_apply(payload: dict = None):
     from .seed_refresh import apply_staged
-    return apply_staged()
+    payload = payload or {}
+    # user-confirmed overrides: apply them too (J10 revision - informed consent)
+    overrides = set(payload.get("overrides", []))
+    result = apply_staged()
+    if result.get("applied") and overrides:
+        # mark those tiers as measured-seed applied, remove from user_edited guard
+        rdata = json.loads((ROOT/"routing.json").read_text(encoding="utf-8"))
+        edited = set(rdata.get("_user_edited", [])) - overrides
+        rdata["_user_edited"] = sorted(edited)
+        (ROOT/"routing.json").write_text(json.dumps(rdata, indent=1), encoding="utf-8")
+    return result
 
 @app.post("/api/seed/rollback")
 def seed_rollback():

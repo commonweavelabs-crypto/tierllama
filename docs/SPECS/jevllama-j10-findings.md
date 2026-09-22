@@ -41,3 +41,20 @@
 Bug found during final verify: git CRLF checkout corrupted the sha (no
 .gitattributes) -> seed-data marked binary, restored exact bytes. Hash now
 verifies on Windows clones.
+
+
+## J10 revision (Gui pushback, 9/22): optimizer modes + informed-consent overrides
+Gui correctly pushed back on the hard "user-edited tiers are sacred" wall: a
+real use case exists where OUR data beats the user's manual pick (e.g. user
+picked Astra for EXPERT; kimi-k3 does the job for a fraction of the price).
+
+### Optimizer modes (built + verified)
+- PRICE (default): cheapest-capable per tier (existing behavior)
+- QUALITY: most-capable per tier regardless of price (kimi-k3 everywhere here)
+- Two buttons: "Re-scan: optimize for PRICE" / "...for QUALITY"
+
+### Informed consent replaces the hard wall
+- User-edited tiers appear in the diff under a separate section:
+  "you customized this - apply anyway?" with a per-tier checkbox (checked)
+- Unchecked = preserved; checked = user explicitly consented
+- Tier provenance recorded: seed | measured | user
