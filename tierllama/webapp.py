@@ -31,6 +31,15 @@ class TierTarget(BaseModel):
 @app.get("/api/fleet")
 def fleet():
     peers = discover()
+    # J7 fix: include THIS machine's Ollama (localhost) in the fleet - the LAN scan
+    # skips 127.0.0.1, so local models never showed in the UI dropdowns:
+    try:
+        tags = json.loads(urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=5).read())
+        local = {"host": "127.0.0.1", "port": 11434, "kind": "ollama (this machine)",
+                 "models": [m["name"] for m in tags.get("models", [])]}
+        peers = [local] + [p for p in peers if p.get("host") != "127.0.0.1"]
+    except Exception:
+        pass
     return {"peers": peers, "generated": datetime.datetime.now().isoformat(timespec="seconds")}
 
 @app.get("/api/config")
