@@ -133,6 +133,9 @@ const LOGOS = {
   xai:      {bg:"#000", fg:"#fff", label:"𝕏"},
   groq:     {bg:"#F55036", fg:"#fff", label:"G"},
   deepseek: {bg:"#4D6BFE", fg:"#fff", label:"🐳"},
+  anthropic:{bg:"#D97757", fg:"#fff", label:"✳"},
+  gemini:   {bg:"#1a73e8", fg:"#fff", label:"✦"},
+  openrouter:{bg:"#8B5CF6", fg:"#fff", label:"⇄"},
   tierllama:{bg:"#2b6cb0", fg:"#fff", label:"🦙"},
 };
 async function loadProviders() {

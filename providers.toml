@@ -38,6 +38,49 @@ cost_per_mtok_input = 0.0
 cost_per_mtok_output = 0.0
 [provider.models]
 
+# Anthropic (Claude): OpenAI-SDK compatible endpoint; Sonnet 5 $2/$10, Haiku 4.5 $1/$5.
+[[provider]]
+name = "anthropic"
+base_url = "https://api.anthropic.com/v1"
+api_key_env = "ANTHROPIC_API_KEY"
+enabled = false
+cost_per_mtok_input = 2.00
+cost_per_mtok_output = 10.00
+[provider.models]
+easy = "claude-haiku-4-5"
+medium = "claude-sonnet-5"
+hard = "claude-sonnet-5"
+expert = "claude-opus-5"
+
+# Google Gemini: official OpenAI-compatible endpoint (ai.google.dev/gemini-api/docs/openai).
+[[provider]]
+name = "gemini"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai"
+api_key_env = "GEMINI_API_KEY"
+enabled = false
+cost_per_mtok_input = 1.25
+cost_per_mtok_output = 10.00
+[provider.models]
+easy = "gemini-2.5-flash"
+medium = "gemini-2.5-flash"
+hard = "gemini-2.5-pro"
+expert = "gemini-2.5-pro"
+
+# OpenRouter: one key -> 500+ models (OpenAI, Anthropic, Google, Meta, Mistral...).
+# Passthrough pricing + ~5% fee; costs below are blended estimates (vary by model).
+[[provider]]
+name = "openrouter"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+enabled = false
+cost_per_mtok_input = 1.00
+cost_per_mtok_output = 3.00
+[provider.models]
+easy = "google/gemini-2.5-flash"
+medium = "deepseek/deepseek-chat"
+hard = "anthropic/claude-sonnet-5"
+expert = "anthropic/claude-opus-5"
+
 # Groq: ultra-fast LPU inference, Llama-family models, generous free tier.
 [[provider]]
 name = "groq"
