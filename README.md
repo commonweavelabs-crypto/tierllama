@@ -16,8 +16,11 @@ is (role/difficulty/timing) with REAL probabilities read from token logits, and 
 it to the right lane: local model, cheap cloud, expensive flagship, or overnight batch
 queue. Failures auto-escalate up the ladder. Every decision logged.
 
-Measured: 94.2% classification accuracy @ ~80ms; 83% token-cost savings at perfect
-routing; fresh install routes in under a minute.
+**Measured savings: 77.8% token-cost reduction** on our 120-message real-world
+workload, landing within 0.1% of the theoretical ideal — with every assumption
+published in [docs/REAL-SAVINGS-PROOF.md](docs/REAL-SAVINGS-PROOF.md). Classifier
+accuracy: 94.2% @ ~80ms (benchmarks with n + scope published — we publish what the
+numbers do NOT claim, too).
 
 ## Fresh install (Windows)
     git clone https://github.com/commonweavelabs-crypto/tierllama.git
@@ -39,6 +42,12 @@ routing; fresh install routes in under a minute.
     cli.py                   route | tail | discover | doctor
     logs/decisions.jsonl     decision log (stays local — see docs/PRIVACY.md)
     docs/                    findings + specs (tech + plain-language per milestone)
+
+## Minimum system requirements
+- ~4GB free VRAM for the classifier (any CUDA/Apple GPU; auto-unloads after 5 min idle)
+- Python 3.11+ and [Ollama](https://ollama.com) (free) with `qwen3:4b` pulled — no accounts, no API keys
+- Optional: more Ollama machines on your LAN (auto-discovered), cloud keys for non-Ollama providers
+- Full details: docs/REAL-SAVINGS-PROOF.md
 
 ## License
 Apache-2.0 (open core). Enterprise tier: managed cloud routing + dashboards (later).
