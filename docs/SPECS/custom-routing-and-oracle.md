@@ -79,3 +79,35 @@ Measured impact needed before shipping (J2-style bench on the extended set).
 - Provider model naming drift (Luna/Terra/Astra today, different tomorrow) → pull
   /models live per provider instead of hard-coding names.
 - EXPERT tier risks threshold confusion with HARD — needs the measured bench first.
+
+
+## Additions (Gui, 2026-09-22): thinking levels, learning router, task-type layer
+
+### Model targets = model + thinking-level (J7)
+Decision-tree targets are (model, thinking_level) pairs, not just models. Same model
+appears at multiple rungs: Astra @ normal-thinking for HARD, Astra @ max-thinking for
+EXPERT. The escalation ladder's climb is not always a different model - it can be the
+same model at a higher thinking level (more expensive/call, still cheaper than a
+stronger model the user doesn't have). Config schema v2:
+```toml
+[[tier]]
+difficulty = "HARD"
+target = { provider = "openai", model = "astra", thinking = "normal" }
+[[tier]]
+difficulty = "EXPERT"
+target = { provider = "openai", model = "astra", thinking = "max" }
+```
+
+### Learning router (cheap version first)
+The decision log already records every escalation. Add a local feedback table:
+message-shape -> (tier, attempts-before-escalation). Next similar message retries
+fewer times before climbing (e.g. HARD 3 attempts -> 2 for shapes that historically
+needed EXPERT). Stored locally, per-user, auditable. Actual classifier fine-tuning
+from failures = phase 3.
+
+### Task-type dimension: NOT a classifier dimension (yet) - Oracle data instead
+Difficulty already captures most of it (coding is rarely EASY -> lands HARD/EXPERT ->
+capable models). Cross-model specialty choice belongs to the Oracle's per-task-type
+capability scores (already in F2 design). Sequence: ship task-type in Oracle data,
+measure whether routing choices actually change, only then consider a 5th classifier
+dimension. Complexity without measured routing delta = rejected for now.
