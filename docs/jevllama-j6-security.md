@@ -19,3 +19,18 @@
 - Adapters return dicts, never raise (J3) — no error-message injection paths.
 - No shell calls anywhere in tierllama (urllib only; box worker uses its own curl).
 - Secrets: repo grep clean; .env/credentials never referenced by tierllama code.
+
+
+## J6 extension (same goal, Gui's additions 2026-09-22): real-savings proof + requirements
+- **Measured savings: 77.8%** vs always-best on the 120-msg workload (live router,
+  live prices; within 0.1% of the theoretical ideal). $1,246.15 → $276.27 per 1M
+  workload tokens. See docs/REAL-SAVINGS-PROOF.md (reproduce-it steps + honesty section
+  on what the numbers do NOT claim).
+- **System requirements** documented (README + REAL-SAVINGS-PROOF.md): ~4GB VRAM,
+  ~4GB RAM headroom, Python 3.11+, Ollama + qwen3:4b; no accounts/keys for MVP lanes.
+- **Marketing pass:** README savings claim linked to the proof doc; repo description
+  updated with the measured number; topics set. Claims carry (n, scope) per our
+  honesty-in-perf policy (Pattern 4 from entry 272).
+- **Final regression (fresh clone, post-fixes):** route exit 0 (dispatched),
+  discover 4 hosts, doctor 7/7 PASS "HEALTHY", GitHub README verified live
+  (mission statement + powered by Jev + savings claim + system requirements all True).
