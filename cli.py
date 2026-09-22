@@ -29,6 +29,9 @@ def main():
         print(f"LAN scan: {T.time()-t0:.1f}s, {len(hosts)} hosts")
         for h in hosts:
             print(f"  {h['host']}:{h['port']} [{h['kind']}] models={h['models'][:6]}")
+    elif cmd == "serve":
+        import uvicorn
+        uvicorn.run("tierllama.webapp:app", host="127.0.0.1", port=8848)
     elif cmd == "doctor":
         import doctor
         doctor.main()

@@ -38,7 +38,8 @@ def dispatch_local(message, model=None, system=None, timeout=120):
 
 def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, timeout=120):
     """CLOUD lanes: Ollama-served cloud models (glm-5.3-flash:cloud verified) or any
-    OpenAI-compatible endpoint via config. No API keys needed for the Ollama path."""
+    OpenAI-compatible endpoint via config. model kwarg overrides the lane default
+    (J7 decision-tree targets)."""
     lane = LANES[tier]
     model = model or (lane["models"][0] if tier != "CLOUD_HARD" else "glm-5.3-flash:cloud")
     body = {"model": model, "stream": False,
@@ -52,11 +53,6 @@ def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, timeou
     except Exception as e:
         return {"status": "error", "lane": tier, "model": model, "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
-
-def _safe_title(title):
-    """Path-injection guard (J6/S3): whitelist alnum+dash, cap length."""
-    safe = re.sub(r"[^A-Za-z0-9-]", "-", str(title))[:48]
-    return safe or "job"
 
 def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", system=None, timeout=30):
     """BOX lane: enqueue an overnight job on the mini box. The box worker consumes

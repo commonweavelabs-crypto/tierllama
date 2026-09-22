@@ -8,6 +8,16 @@ from .ladder import escalate
 
 LOG = Path(__file__).parent.parent / "logs" / "decisions.jsonl"
 
+def _tree_lookup(difficulty, timing):
+    """J7: user-customizable decision tree from routing.json (hot-reloaded per call)."""
+    p = Path(__file__).parent.parent / "routing.json"
+    if not p.exists(): return None
+    try:
+        tiers = json.loads(p.read_text(encoding="utf-8"))
+        return tiers.get(f"{difficulty}/{timing}") or tiers.get(f"{difficulty}/NOW")
+    except Exception:
+        return None
+
 def route(message, dispatch=True, last_exchanges=None):
     c = classify(message, last_exchanges)
     conf = min(c["role_conf"], c["difficulty_conf"], c["timing_conf"])
@@ -23,9 +33,17 @@ def route(message, dispatch=True, last_exchanges=None):
         "dispatched": False,
         "classifier_latency_s": c["latency_s"],
     }
+    # J7: consult the user-editable decision tree (routing.json) - tier key
+    # difficulty/timing maps to (provider, model, thinking). Falls back to LANES.
+    target = _tree_lookup(c["difficulty"], c["timing"])
     if dispatch:
         from .adapters import dispatch as _dispatch
-        res = _dispatch(lane, message)
+        kw = {}
+        if target:
+            kw["model"] = target["model"]
+            if target.get("thinking") and target["thinking"] != "normal":
+                kw["system"] = f"Think as deeply as possible (level: {target['thinking']})."
+        res = _dispatch(lane, message, **kw)
         record["dispatch"] = res
         record["dispatched"] = res.get("status") in ("ok", "queued")
         if not record["dispatched"] and lane != "FALLBACK":
