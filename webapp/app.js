@@ -46,6 +46,15 @@ async function testRoute() {
   const el = document.getElementById("routeOut"); el.style.display = "block";
   el.textContent = `role=${r.role} difficulty=${r.difficulty} timing=${r.timing} lane=${r.lane} confidence=${r.confidence}`;
 }
+async function loadFleet() {
+  const f = await (await fetch("/api/fleet")).json();
+  const KIND = {ollama:"🦙 Ollama", "llama-swap":"🔀 llama-swap", unknown:"❓"};
+  document.getElementById("fleet").innerHTML = (f.peers || []).map(p => `
+    <div style="display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid #2a313a">
+      <span><b>${p.host}</b> <span class="muted">: ${p.port}</span></span>
+      <span class="muted">${KIND[p.kind] || p.kind} · ${ (p.models||[]).length } models</span>
+    </div>`).join("") || '<div class="muted">scanning…</div>';
+}
 async function loadStats() {
   const s = await (await fetch("/api/savings")).json();
   document.getElementById("savings").innerHTML = s.decisions ?
@@ -164,6 +173,7 @@ async function toggleProvider(el) {
   await fetch("/api/providers/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({provider:name, enabled:on})});
   loadProviders();
+loadStats(); loadFleet(); loadLog();
 }
 async function saveKey(name) {
   const key = document.getElementById("key_" + name).value.trim();
@@ -171,5 +181,7 @@ async function saveKey(name) {
   const r = await (await fetch("/api/providers/key", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({provider:name, key})})).json();
   loadProviders();
+loadStats(); loadFleet(); loadLog();
 }
 loadProviders();
+loadStats(); loadFleet(); loadLog();
