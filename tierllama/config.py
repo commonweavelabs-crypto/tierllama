@@ -9,6 +9,7 @@ LANES = {
 CLASSIFIER = {
     "model": "qwen3:4b",
     "endpoint": "http://127.0.0.1:11434/api/chat",
+    "v1_endpoint": "http://127.0.0.1:11434/v1/chat/completions",
     "temperature": 0,
     "confidence_threshold": 0.75,   # below -> FALLBACK lane (main LLM decides)
 }
