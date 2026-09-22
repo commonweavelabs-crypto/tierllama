@@ -43,9 +43,12 @@
 <div class="card" id="seedCard">
   <h3>Model suggestions <span class="muted">(community data)</span></h3>
   <div class="muted">Checks for newer compiled model recommendations on startup. Staged data is applied ONLY when you click Re-scan. Your custom edits are preserved.</div>
-  <button onclick="rescanModels()">Re-scan models</button>
+  <div style="display:flex;gap:.5rem">
+    <button onclick="rescanModels('price')">Re-scan: optimize for PRICE</button>
+    <button onclick="rescanModels('quality')">Re-scan: optimize for QUALITY</button>
+  </div>
   <span id="seedStatus" class="muted"></span>
-  <pre id="seedDiff" style="display:none"></pre>
+  <div id="seedDiff" style="display:none"></div>
 </div>
 
 <div class="card" id="advancedCard" style="display:none">

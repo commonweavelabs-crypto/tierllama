@@ -38,7 +38,8 @@ def seed_score(model):
 def is_cloud(model):
     return any(m in model for m in CLOUD_MARKERS)
 
-def recommend(models, bench_results=None):
+def recommend(models, bench_results=None, mode="price"):
+    """mode: 'price' = cheapest-capable (default), 'quality' = most capable per tier."""
     """Recommendation matrix: for each tier (difficulty/timing) pick best model.
     measured (>=1 bench record) overrides seed; seed fills gaps."""
     bench = {b["model"]: b for b in (bench_results or []) if "error" not in b}
@@ -68,11 +69,15 @@ def recommend(models, bench_results=None):
                     pool = local or cloud
             else:
                 pool = local + cloud
-            # cheapest-capable: keep models that MEET the tier's capability bar, pick cheapest
-            capable = [m for m in pool if capability(m) >= NEED[diff]]
-            if not capable:
-                capable = sorted(pool, key=capability, reverse=True)[:1]
-            pick = sorted(capable, key=cost_rank)[0]
+            if mode == "quality":
+                # most capable model for the tier, period (Gui: quality optimizer)
+                pick = sorted(pool, key=capability, reverse=True)[0]
+            else:
+                # price mode: cheapest-capable
+                capable = [m for m in pool if capability(m) >= NEED[diff]]
+                if not capable:
+                    capable = sorted(pool, key=capability, reverse=True)[:1]
+                pick = sorted(capable, key=cost_rank)[0]
             src = "measured" if pick in bench and bench[pick].get("max_fit") else "seed"
             matrix[key] = {"provider": "auto", "model": pick,
                            "thinking": "max" if diff in ("HARD", "EXPERT") else "normal",

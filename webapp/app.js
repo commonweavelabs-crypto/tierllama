@@ -83,22 +83,32 @@ async function pollOptimize() {
   if (st.running) setTimeout(pollOptimize, 3000);
   else { document.getElementById("optDone").textContent = "done - tree refilled"; loadConfig(); }
 }
-async function rescanModels() {
+async function rescanModels(mode = "price") {
   const st = document.getElementById("seedStatus");
   st.textContent = "Checking for newer recommendations...";
   const chk = await (await fetch("/api/seed/check")).json();
   if (!chk.staged) { st.textContent = chk.reason || chk.error || "already up to date"; return; }
-  const pv = await (await fetch("/api/seed/preview")).json();
-  const el = document.getElementById("seedStatus");
-  if (!pv.changes || !Object.keys(pv.changes).length) {
-    st.textContent = "New data staged (" + chk.version + ") but no tier changes for you."; return;
-  }
-  let lines = ["Will update:"];
-  for (const [tier, c] of Object.entries(pv.changes)) lines.push(`  ${tier}: ${c.from} -> ${c.to}`);
-  lines.push("", "Your edited tiers are preserved. Apply?");
-  if (!confirm(lines.join("\n"))) { st.textContent = "Cancelled - nothing changed."; return; }
-  const ap = await (await fetch("/api/seed/apply", {method:"POST"})).json();
-  st.textContent = ap.applied ? "Applied v" + ap.version + " - tree updated." : ap.reason;
+  const pv = await (await fetch(`/api/seed/preview?mode=${mode}`)).json();
+  const box = document.getElementById("seedDiff");
+  const noChanges = !pv.changes || !Object.keys(pv.changes).length;
+  const noOverrides = !pv.overrides || !Object.keys(pv.overrides).length;
+  if (noChanges && noOverrides) { st.textContent = "New data staged (" + chk.version + ") but no tier changes for you."; return; }
+  let html2 = `<div class="muted">Mode: ${mode.toUpperCase()} | version ${chk.version}</div>`;
+  for (const [tier, c] of Object.entries(pv.changes || {}))
+    html2 += `<div>✓ ${tier}: ${c.from} → <b>${c.to}</b></div>`;
+  for (const [tier, c] of Object.entries(pv.overrides || {}))
+    html2 += `<div>⚠ ${tier} <span class="muted">(you customized this)</span>: ${c.from} → <b>${c.to}</b>
+      <label style="font-size:.8rem;margin-left:.5rem"><input type="checkbox" class="ovrTier" data-tier="${tier}" checked> apply anyway</label></div>`;
+  html2 += `<button onclick="applyRescan()">Apply selected</button>`;
+  box.innerHTML = html2; box.style.display = "block";
+  st.textContent = "Review the changes, then apply.";
+}
+async function applyRescan() {
+  const overrides = [...document.querySelectorAll(".ovrTier:checked")].map(c => c.dataset.tier);
+  const r = await (await fetch("/api/seed/apply", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({overrides})})).json();
+  document.getElementById("seedStatus").textContent = r.applied ? "Applied - tree updated." : (r.reason || "failed");
+  document.getElementById("seedDiff").style.display = "none";
   loadConfig();
 }
 function toggleAdvanced() {

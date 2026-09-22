@@ -41,7 +41,7 @@ def _current_version():
     except Exception:
         return "0"
 
-def preview_diff(user_edited_tiers: set):
+def preview_diff(user_edited_tiers: set, mode: str = "price"):
     """Diff staged seed vs current recommendations, honoring user-edited tiers.
     Returns {tier: {from, to}} for tiers that WOULD change (skips user-edited)."""
     try:
@@ -50,15 +50,18 @@ def preview_diff(user_edited_tiers: set):
         return {"error": "nothing staged"}
     rdata = json.loads((ROOT / "routing.json").read_text(encoding="utf-8"))
     current = rdata.get("tiers", rdata) if isinstance(rdata, dict) else {}
-    changes = {}
+    changes, overrides = {}, {}
     for tier, new in staged.get("tiers", {}).items():
-        if tier in user_edited_tiers:
-            continue  # user-edited tiers are sacred
         cur = current.get(tier, {})
         if cur.get("model") != new.get("model"):
-            changes[tier] = {"from": cur.get("model"), "to": new.get("model"),
-                             "user_edited": False}
-    return {"changes": changes, "version": staged.get("version")}
+            if tier in user_edited_tiers:
+                # user-edited: OFFERED as explicit override, not applied by default
+                overrides[tier] = {"from": cur.get("model"), "to": new.get("model"),
+                                   "user_edited": True}
+            else:
+                changes[tier] = {"from": cur.get("model"), "to": new.get("model")}
+    return {"changes": changes, "overrides": overrides, "version": staged.get("version"),
+            "mode": mode}
 
 def apply_staged():
     """Explicit apply (Re-scan button). Backs up current staged file for rollback."""
