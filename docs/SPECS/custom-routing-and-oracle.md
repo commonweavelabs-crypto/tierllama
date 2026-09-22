@@ -157,3 +157,30 @@ applies to recommendations, not just marketing claims.
 Opt-in anonymized telemetry -> compacted per (model, hardware-class) ->
 improves everyone's seed table over time. Real user data condensing into
 decisions - Gui's words, the long-term moat.
+
+
+## J8 additions (Gui, 2026-09-22): combined bench protocol + seed/measured blend
+
+### Combined probe protocol (latency + competence in ONE pass)
+Per local model:
+1. Cold-load capture (model fully unloaded -> load time measured)
+2. EASY probe (short prompt) -> latency + graded answer
+3. MEDIUM probe -> latency + graded answer
+4. HARD/EXPERT probe (longer, tool-use style) -> latency + graded answer
+Single pass yields: cold-load s, steady-state tok/s, per-difficulty competence.
+Every probe does double duty - no wasted runs.
+
+### Scale disclaimer (UI)
+Progress bar shows per-model estimate: "N models x ~40s each - this can take
+~X minutes with N local models." Scan duration scales with model count (5 local
+models = fine; 20 = long). Disclaimer shown BEFORE starting + live progress.
+
+### Blending seed vs measured (Gui's averaging question)
+- Seed = ordinal prior (which model is generally more capable, from public benches)
+- Measured = the ground truth ON THAT HARDWARE - hardware can flip a model's
+  real ranking (his point exactly)
+- Rule: MEASURED wins when n >= 3 probes; seed only fills gaps (no measurement
+  yet). No blind averaging - averaging an ordinal (online bench rank) with an
+  interval (measured tok/s) mixes units. Instead: seed sets the starting tree,
+  bench results overwrite per (model, machine). Conflict = measured wins, seed
+  shown greyed out with its rank for reference.
