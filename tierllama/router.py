@@ -1,9 +1,10 @@
-"""Tierllama router core: message in -> classify -> lane -> decision log."""
+"""Tierllama router core: message in -> classify -> lane -> dispatch/escalate -> log."""
 import json, time, datetime
 from pathlib import Path
 from .classifier import classify
 from .config import lane_for
 from .adapters import dispatch
+from .ladder import escalate
 
 LOG = Path(__file__).parent.parent / "logs" / "decisions.jsonl"
 
@@ -22,12 +23,17 @@ def route(message, dispatch=True, last_exchanges=None):
         "dispatched": False,
         "classifier_latency_s": c["latency_s"],
     }
-    # dispatch adapters (J3): execute on the lane unless dispatch=False
     if dispatch:
         from .adapters import dispatch as _dispatch
         res = _dispatch(lane, message)
         record["dispatch"] = res
         record["dispatched"] = res.get("status") in ("ok", "queued")
+        if not record["dispatched"] and lane != "FALLBACK":
+            res, final_lane = escalate(record, message, lane)
+            record["lane"] = final_lane
+            record["escalated"] = True
+            record["final_dispatch"] = res
+            record["dispatched"] = res.get("status") in ("ok", "queued")
     LOG.parent.mkdir(exist_ok=True)
     with LOG.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record) + "\n")
