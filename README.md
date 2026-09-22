@@ -1,34 +1,43 @@
-# Tierllama (working name Jevllama)
+# Tierllama (powered by Jev)
 
-Jev-powered local model router: a sub-second classifier reads each incoming message
-and routes it to the CHEAPEST lane that can do the job — local first, cloud only when
-it earns its cost. Every decision logged with real probabilities.
+**A Jev-powered router that always picks the best model for the job — and saves you money doing it.**
 
-**Easter egg: yes, we considered "Jev-o-llama". Gui won.**
+## Our mission
+Make compute available to everyone by using our resources better. Tierllama routes
+every AI call to the cheapest model that can do the job — your local GPU first, cloud
+only when it earns its cost — so people get the most out of their own hardware AND their
+subscriptions. Less waste, cheaper AI, for everyone.
 
-## Status (2026-09-22)
-J1-J4 complete: router core (100% role acc @ 0.46s), logprob classifier (94.2%),
-lane adapters (local/cloud/box live-verified), escalation ladder (2.9s auto-recovery
-from forced failure). J5 (doctor + discovery) active.
+*(Easter egg: yes, we considered "Jev-o-llama". Gui won.)*
+
+## What it does
+A sub-second classifier reads every incoming message, decides what kind of request it
+is (role/difficulty/timing) with REAL probabilities read from token logits, and routes
+it to the right lane: local model, cheap cloud, expensive flagship, or overnight batch
+queue. Failures auto-escalate up the ladder. Every decision logged.
+
+Measured: 94.2% classification accuracy @ ~80ms; 83% token-cost savings at perfect
+routing; fresh install routes in under a minute.
 
 ## Fresh install (Windows)
-    git clone <this repo> tierllama
+    git clone https://github.com/commonweavelabs-crypto/tierllama.git
     cd tierllama
     # requires: Python 3.11+, Ollama running locally with qwen3:4b pulled
     ollama pull qwen3:4b
     python cli.py route "click export and set format to mp4"
-    python cli.py discover    # find every Ollama/llama-swap on your LAN
-    python cli.py doctor      # validate config + box queue canary (up to 5 min)
+    python cli.py discover    # find every Ollama/llama-swap on your LAN (no accounts!)
+    python cli.py doctor      # validate config + box queue canary
+    python cli.py tail        # decision log (masked)
 
 ## Layout
     tierllama/config.py      lanes, models, confidence threshold
-    tierllama/classifier.py  qwen3:4b logprob scorer (SemIf-style prefill)
+    tierllama/classifier.py  qwen3:4b logprob scorer (SemIf-style prefill, injection-hardened)
     tierllama/router.py      message -> classify -> lane -> dispatch/escalate -> log
     tierllama/adapters.py    LOCAL / CLOUD / BOX dispatch adapters
     tierllama/ladder.py      escalation ladder (J4)
     tierllama/discover.py    Tier-0 LAN discovery (J5)
     cli.py                   route | tail | discover | doctor
-    logs/decisions.jsonl     append-only decision log
+    logs/decisions.jsonl     decision log (stays local — see docs/PRIVACY.md)
     docs/                    findings + specs (tech + plain-language per milestone)
 
 ## License
