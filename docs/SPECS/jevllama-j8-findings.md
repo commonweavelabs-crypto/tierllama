@@ -53,3 +53,19 @@ Gui correctly flagged: qwen3:0.6b at HARD, ornith-1.5:9b at HARD/LATER, weak EXP
 ### New tree (verified live)
 EASY/NOW qwen3:0.6b | MEDIUM/NOW deepseek-v4-flash | HARD/NOW deepseek-v4-flash max
 HARD/LATER qwen3-vl:8b max | LATER locals ornith-1.5:9b | EXPERT glm-5.3-flash max
+
+
+## Follow-up (Gui, 9/22): box visibility, blend permanence, ornith reasoning
+- BOX: discovered + visible in fleet (4 models in dropdowns). NOT benched: it runs
+  llama-swap (OpenAI protocol, no cold-load API). By design = async LATER lane
+  (queued batches). No Tierllama install needed on the box. Providers-v2 gives it
+  proper adapter treatment.
+- 60/40 blend: PERMANENT feature. Seed = aggregate of many benchmark runs; a
+  machine measurement = 1 sample of noisy reality. As usage accumulates, n rises
+  and the measured share grows naturally - improves without changing the rule.
+- Ornith LATER verdict was partly a rule bug: my cold<15s test conflated
+  first-message cost with conversation speed. keep_alive keeps models warm, so
+  the rule is now: tok/s >= 40 earns NOW even with slow warmup. Ornith (55.7
+  tok/s) -> MEDIUM/NOW + EASY/NOW local - matches Gui's own description
+  ("conversational, knows tools, not for hard"). Box 27B correctly stays LATER
+  (33.7 tok/s + 111s cold).
