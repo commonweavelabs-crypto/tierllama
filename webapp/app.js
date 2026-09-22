@@ -154,14 +154,14 @@ async function loadProviders() {
       </div>
       <div style="font-size:.8rem;margin:.3rem 0">
         <span class="key-dot ${keyOk ? "key-ok" : "key-missing"}"></span>
-        ${p.api_key_env === "NONE" ? "no key needed (local)" : keyOk ? "key found: " + p.api_key_env : "missing key: " + p.api_key_env}
+        ${p.api_key_env === "NONE" ? "local — no key ever needed" : keyOk ? "key found: " + p.api_key_env : "missing key: " + p.api_key_env}
       </div>
       ${p.api_key_env !== "NONE" && !keyOk ? `
       <div style="display:flex;gap:.3rem">
         <input type="password" id="key_${p.provider}" placeholder="paste ${p.provider} API key" style="font-size:.75rem">
         <button onclick="saveKey('${p.provider}')" style="font-size:.75rem">Save</button>
       </div>` : ""}
-      <div class="muted" style="margin-top:.4rem">models: ${Object.values(p.models || {}).join(", ") || "—"}</div>
+      <div class="muted" style="margin-top:.4rem">models: ${Object.values(p.models || {}).join(", ") || (p.provider === "ollama-local" ? "your machine's local models (auto-discovered)" : "—")}</div>
       <div class="muted">cost: $${p.cost_per_mtok_input}/in · $${p.cost_per_mtok_output}/out per Mtok</div>
     `;
     grid.appendChild(card);

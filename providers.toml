@@ -28,11 +28,23 @@ easy = "grok-3-mini"
 medium = "grok-3"
 hard = "grok-3"
 
+# LOCAL Ollama: your own machine's models - never needs a key.
 [[provider]]
-name = "ollama-cloud"
+name = "ollama-local"
 base_url = "http://127.0.0.1:11434/v1"
 api_key_env = "NONE"
 enabled = true
+cost_per_mtok_input = 0.0
+cost_per_mtok_output = 0.0
+[provider.models]
+
+# Ollama CLOUD (ollama.com direct - no local install needed): requires a free
+# API key from ollama.com. Gui's pushback: fresh users need this option.
+[[provider]]
+name = "ollama-cloud"
+base_url = "https://ollama.com/v1"
+api_key_env = "OLLAMA_API_KEY"
+enabled = false
 cost_per_mtok_input = 0.15
 cost_per_mtok_output = 0.60
 [provider.models]
