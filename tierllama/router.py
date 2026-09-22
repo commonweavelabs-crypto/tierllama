@@ -8,15 +8,22 @@ from .ladder import escalate
 
 LOG = Path(__file__).parent.parent / "logs" / "decisions.jsonl"
 
+
+def _load_tree():
+    """routing.json reader - handles both {tiers:{...}} and legacy flat shape."""
+    p = Path(__file__).parent.parent / "routing.json"
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return data.get("tiers", data) if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
 def _tree_lookup(difficulty, timing):
     """J7: user-customizable decision tree from routing.json (hot-reloaded per call)."""
-    p = Path(__file__).parent.parent / "routing.json"
-    if not p.exists(): return None
-    try:
-        tiers = json.loads(p.read_text(encoding="utf-8"))
-        return tiers.get(f"{difficulty}/{timing}") or tiers.get(f"{difficulty}/NOW")
-    except Exception:
-        return None
+    tiers = _load_tree()
+    return tiers.get(f"{difficulty}/{timing}") or tiers.get(f"{difficulty}/NOW")
 
 def route(message, dispatch=True, last_exchanges=None):
     c = classify(message, last_exchanges)

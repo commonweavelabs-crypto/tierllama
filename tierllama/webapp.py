@@ -170,6 +170,45 @@ def _optimize_worker():
 def optimize_status():
     return {k: OPT_STATE[k] for k in ["running", "done", "total", "current", "result"]}
 
+# ---- J10 seed refresh endpoints ----
+@app.get("/api/providers")
+def providers():
+    from .providers import provider_models
+    return {"providers": provider_models()}
+
+@app.put("/api/config")
+def put_config(payload: dict):
+    """Save the decision tree. Tracks user-edited tiers (J10: sacred tiers)."""
+    tiers = payload.get("tiers", {})
+    edited = set(payload.get("user_edited", []))
+    (ROOT / "routing.json").write_text(json.dumps({"tiers": tiers, "_user_edited": sorted(edited)}, indent=1), encoding="utf-8")
+    return {"saved": True, "tiers": tiers}
+
+@app.get("/api/seed/check")
+def seed_check():
+    from .seed_refresh import check_and_stage
+    return check_and_stage()
+
+@app.get("/api/seed/preview")
+def seed_preview():
+    from .seed_refresh import preview_diff
+    user_edited = set(json.loads((ROOT/"routing.json").read_text(encoding="utf-8")).get("_user_edited", []))
+    return preview_diff_safe(user_edited)
+
+def preview_diff_safe(user_edited):
+    from .seed_refresh import preview_diff
+    return preview_diff(user_edited)
+
+@app.post("/api/seed/apply")
+def seed_apply():
+    from .seed_refresh import apply_staged
+    return apply_staged()
+
+@app.post("/api/seed/rollback")
+def seed_rollback():
+    from .seed_refresh import rollback
+    return rollback()
+
 @app.get("/")
 def index():
     return FileResponse(ROOT / "webapp" / "index.html")

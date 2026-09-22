@@ -1,0 +1,42 @@
+# Tierllama providers v2 (J10): add any OpenAI-compatible provider.
+# Keys live in environment variables - NEVER in this file.
+# tier_map: Jev difficulty -> model on that provider.
+# NOTE: cost keys MUST stay above [provider.models] (TOML table-header rule).
+
+[[provider]]
+name = "openai"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+enabled = false
+cost_per_mtok_input = 2.50
+cost_per_mtok_output = 10.00
+[provider.models]
+easy = "gpt-4o-mini"
+medium = "gpt-4o"
+hard = "o1"
+expert = "o1"
+
+[[provider]]
+name = "xai"
+base_url = "https://api.x.ai/v1"
+api_key_env = "XAI_API_KEY"
+enabled = false
+cost_per_mtok_input = 3.00
+cost_per_mtok_output = 15.00
+[provider.models]
+easy = "grok-3-mini"
+medium = "grok-3"
+hard = "grok-3"
+
+[[provider]]
+name = "ollama-cloud"
+base_url = "http://127.0.0.1:11434/v1"
+api_key_env = "NONE"
+enabled = true
+cost_per_mtok_input = 0.15
+cost_per_mtok_output = 0.60
+[provider.models]
+easy = "glm-5.3-flash:cloud"
+medium = "glm-5.3-flash:cloud"
+hard = "kimi-k3:cloud"
+expert = "kimi-k3:cloud"

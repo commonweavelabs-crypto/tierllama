@@ -50,13 +50,24 @@ def _upstream(lane_model: str, messages, stream, temperature, max_tokens, timeou
             "usage": {"prompt_tokens": r.get("prompt_eval_count", 0),
                       "completion_tokens": r.get("eval_count", 0)}}
 
+def _load_tree():
+    """routing.json reader - handles both {tiers:{...}} and legacy flat shape."""
+    p = Path(__file__).parent.parent / "routing.json"
+    if not p.exists():
+        return {}
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return data.get("tiers", data) if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
 @app.post("/v1/chat/completions")
 def chat(req: ChatReq):
     # Classify the LAST user message (the prompt):
     prompt = next((m.content for m in reversed(req.messages) if m.role == "user"), "")[:4096]
     decision = route(prompt, dispatch=False)
     tier_key = f"{decision['difficulty']}/{decision['timing']}"
-    tree = json.loads((ROOT / "routing.json").read_text(encoding="utf-8"))
+    tree = _load_tree()
     target = tree.get(tier_key) or tree.get(f"{decision['difficulty']}/NOW") or {}
     lane = decision["lane"]
     model = target.get("model") if target else None
