@@ -259,3 +259,18 @@ Two separate events:
    diff ("these 3 tiers will update, your customized tier stays").
 Tree tracks which tiers are stock vs user-modified (user_edited flag per tier).
 Silent background data + explicit application = the standing contract.
+
+
+## J11 design (Gui, 9/22): tabs + Providers UI + visual polish
+- App structure: TABS (Overview / Routing / Providers / Activity) in the single
+  served page - no routing complexity, room to grow
+- Providers tab: card per provider with logo, enabled toggle, key status
+  (green = env var set, warning = missing), key input saved to env locally
+- OAuth = LATER (complex + annoying for this use case); key-field MVP
+- MVP provider list: Ollama, OpenAI, xAI (+ Groq candidate)
+- TAXONOMY (Gui's question): PROVIDER = where requests go; MODEL = what answers.
+  Llama is a MODEL (Meta's), Ollama is a PROVIDER that runs it. Local models
+  are NOT a separate provider - they're Ollama (one card, local + cloud models)
+- Tierllama = the META-PROVIDER: Hermes sees one entry (tierllama-local);
+  behind it the router sweeps all lanes. Already working in dogfood.
+- Visual polish pass: modern, clean, logos per provider card
