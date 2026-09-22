@@ -18,6 +18,9 @@ managed cloud routing + dashboards. *Jev's paradox says efficiency increases con
 we make that consumption cheap and local.*
 
 ## Where we are (evidence, not plans)
+- **Ecosystem proof:** browser-use/jev-ultrafast (17.7K★, MIT, entry 272) = a shipping
+  product on our exact mechanism (TypeSafe Jev typed decisions over an indexed table,
+  one round trip). Validates the architecture AND the category's momentum.
 - Classifier: qwen3:4b + rubric v1 = **86.7% @ 0.196s** on the 120-message golden set
   (5 roles × difficulty × timing, incl. 20 ambiguity traps). Rubric tuning: v1 > v3 > v2 —
   over-specification overcorrects; prompt iteration has diminishing returns.
