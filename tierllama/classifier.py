@@ -48,9 +48,20 @@ def classify_role(message, timeout=30):
     req = urllib.request.Request(CLASSIFIER["v1_endpoint"],
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
     t0 = time.time()
-    r = json.loads(urllib.request.urlopen(req, timeout=timeout).read())
+    try:
+        r = json.loads(urllib.request.urlopen(req, timeout=timeout).read())
+    except Exception:
+        r = None
     dt = time.time() - t0
-    toks = r["choices"][0]["logprobs"]["content"]
+    toks = None
+    if r and r.get("choices") and r["choices"][0].get("logprobs"):
+        toks = r["choices"][0]["logprobs"]["content"]
+    else:
+        # intermittent Ollama behavior: retry once (transient empty-logprobs)
+        time.sleep(0.3)
+        r = json.loads(urllib.request.urlopen(req, timeout=timeout).read())
+        toks = r["choices"][0].get("logprobs", {}) or {}
+        toks = toks.get("content") or []
     role_probs = {role: 0.0 for role in ROLES}
     prefix, prefix_prob = "", 1.0
     for t in toks:
