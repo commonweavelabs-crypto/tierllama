@@ -144,21 +144,35 @@ async function loadJevCard() {
     "Jev is not a chat LLM - it's a System One model that returns typed decisions " +
     "(role, difficulty, timing) with calibrated confidence in ~80ms, not tokens of prose. " +
     "Every message you send is classified by a Jev-style brain before routing. " +
-    "Our local brain runs qwen3:4b on your hardware (free); Jev Cloud is the official " +
-    "model from TypeSafe AI (Diogo Almeida, ChatGPT co-creator) - no hardware needed. " + st.price + ".";
+    "The original Jev is TypeSafe AI's model (Diogo Almeida, ChatGPT co-creator); " +
+    "our open-source local brain is a Jev-style qwen3:4b you run yourself - free. " + st.price + ".";
   document.getElementById("jevBody").innerHTML = `
-    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.3rem 0">
       <span class="key-dot ${st.local_available ? "key-ok" : "key-missing"}"></span>
-      <b style="font-size:.85rem">Local brain (qwen3:4b)</b>
-      <span class="muted">${st.local_available ? "running on your machine - free" : "not detected - install Ollama + ollama pull qwen3:4b"}</span>
+      <b style="font-size:.85rem">Local brain — Jev-style qwen3:4b</b>
+      <span class="muted">${st.local_available ? "running on your machine · free" : "not installed yet"}</span>
+      ${!st.local_available ? `<button onclick="installJevLocal()" style="font-size:.75rem">Download local brain (ollama pull qwen3:4b)</button>` : ""}
     </div>
-    <div style="display:flex;gap:.5rem;align-items:center;margin-top:.4rem;flex-wrap:wrap">
+    <div style="display:flex;gap:.5rem;align-items:center;margin-top:.3rem;flex-wrap:wrap">
       <span class="key-dot ${st.configured ? "key-ok" : "key-missing"}"></span>
-      <b style="font-size:.85rem">Jev Cloud (official, TypeSafe AI)</b>
-      <span class="muted">${st.configured ? "key configured" : "no hardware? paste a TYPESAFE_API_KEY (console.typesafe.ai)"}</span>
-      ${!st.configured ? `<input type="password" id="key_jev" placeholder="paste Jev Cloud API key" style="font-size:.75rem;flex:1;min-width:180px">
+      <b style="font-size:.85rem">Jev Cloud — official (TypeSafe AI)</b>
+      <span class="muted">${st.configured ? "key configured · classifier fallback active" : "no hardware? add a key"}</span>
+      ${!st.configured ? `<input type="password" id="key_jev" placeholder="Jev Cloud API key" style="font-size:.75rem;width:220px">
       <button onclick="saveJevKey()" style="font-size:.75rem">Save</button>` : ""}
     </div>`;
+  const tg = document.getElementById("jevToggle");
+  if (tg) tg.classList.toggle("on", !!st.configured);
+}
+async function installJevLocal() {
+  const r = await (await fetch("/api/jev/install-local", {method:"POST"})).json();
+  alert(r.ok ? "qwen3:4b pulled - local brain ready." : "pull failed: " + (r.error||"?"));
+  loadJevCard();
+}
+async function toggleJev(el) {
+  // toggle Jev Cloud as classifier fallback (preference only; key required)
+  el.classList.toggle("on");
+  await fetch("/api/jev/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({enabled: el.classList.contains("on")})});
 }
 async function saveJevKey() {
   const key = document.getElementById("key_jev").value.trim();

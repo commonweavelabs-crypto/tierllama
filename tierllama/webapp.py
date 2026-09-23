@@ -171,6 +171,29 @@ def optimize_status():
     return {k: OPT_STATE[k] for k in ["running", "done", "total", "current", "result"]}
 
 # ---- J10 seed refresh endpoints ----
+@app.post("/api/jev/install-local")
+def jev_install_local():
+    """Secure pull: pinned model tag from the Ollama registry (content-addressed
+    digests = hash-verified by Ollama itself). We never fetch from random URLs."""
+    import subprocess as _sp
+    try:
+        r = _sp.run(["ollama","pull","qwen3:4b"], capture_output=True, text=True, timeout=1800)
+        return {"ok": r.returncode == 0, "error": r.stderr[-200:] if r.returncode else ""}
+    except Exception as e:
+        return {"ok": False, "error": str(e)[:150]}
+
+@app.post("/api/jev/toggle")
+def jev_toggle(payload: dict = None):
+    from .providers import _load_keys
+    payload = payload or {}
+    keys = _load_keys()
+    has_key = bool(keys.get("TYPESAFE_API_KEY"))
+    # store preference; cloud fallback only active if key exists
+    pref = ROOT / ".jev_cloud_pref"
+    pref.write_text("on" if payload.get("enabled") and has_key else "off", encoding="utf-8")
+    return {"ok": True, "active": payload.get("enabled", False) and has_key,
+            "reason": "" if has_key else "needs TYPESAFE_API_KEY"}
+
 @app.get("/api/jev")
 def jev_status():
     from .jev_cloud import status
