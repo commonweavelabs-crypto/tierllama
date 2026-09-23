@@ -27,12 +27,11 @@ def _tree_lookup(difficulty, timing):
 
 def route(message, dispatch=True, last_exchanges=None):
     c = classify(message, last_exchanges)
-    conf = min(c["role_conf"], c["difficulty_conf"], c["timing_conf"])
+    conf = min(c["difficulty_conf"], c["timing_conf"])
     lane = lane_for(c["difficulty"], c["timing"], conf)
     record = {
         "ts": datetime.datetime.now().isoformat(timespec="seconds"),
         "message": message,
-        "role": c["role"], "role_conf": c["role_conf"],
         "difficulty": c["difficulty"], "difficulty_conf": c["difficulty_conf"],
         "timing": c["timing"], "timing_conf": c["timing_conf"],
         "confidence": round(conf, 2),

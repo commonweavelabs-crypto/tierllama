@@ -1,438 +1,744 @@
 [
  {
+  "i": 0,
   "msg": "set the format to mp4",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 1,
   "msg": "open the timeline and zoom to 200%",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 2,
   "msg": "click export and set format to mp4",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 3,
   "msg": "queue all scenes overnight",
   "truth": {
    "difficulty": "EASY",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 4,
   "msg": "delete the last three clips from the timeline",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
-  }
- },
- {
-  "msg": "toggle the grid overlay on",
-  "truth": {
+  },
+  "got": {
    "difficulty": "EASY",
    "timing": "NOW"
   }
  },
  {
+  "i": 5,
+  "msg": "toggle the grid overlay on",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 6,
   "msg": "attach the voiceover file to scene 4",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
   },
-  "truth_note": "adjudicated 2026-09-23: attach = one UI action (was mis-rated MEDIUM/DIRECTOR)"
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
  },
  {
+  "i": 7,
   "msg": "export the whole project as 4k by friday",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 8,
   "msg": "submit the render job now",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 9,
   "msg": "zoom into the third keyframe",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 10,
   "msg": "hi",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 11,
   "msg": "thanks, that worked!",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
-  }
- },
- {
-  "msg": "how do I set the fps?",
-  "truth": {
+  },
+  "got": {
    "difficulty": "EASY",
    "timing": "NOW"
   }
  },
  {
+  "i": 12,
+  "msg": "how do I set the fps?",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 13,
   "msg": "what's the difference between t2v and i2v?",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
   },
-  "truth_note": "adjudicated 2026-09-23: simple factual difference (was mis-rated MEDIUM)"
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
  },
  {
+  "i": 14,
   "msg": "explain how keyframes interpolate",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 15,
   "msg": "what does the queue system do when I close the app?",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 16,
   "msg": "can you teach me how motion blur works in this pipeline?",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 17,
   "msg": "why is my render darker than the preview?",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 18,
   "msg": "what's the best workflow for consistent lighting across scenes?",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 19,
   "msg": "app crashes when I drag cards",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 20,
   "msg": "audio out of sync after render",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 21,
   "msg": "the export button does nothing when I click it",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 22,
   "msg": "it crashed again but only on scene 7, here's the log",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 23,
   "msg": "this thing is broken, fix it",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 24,
   "msg": "render stuck at 99% for an hour",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 25,
   "msg": "rewrite scene 3, sharper dialogue",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 26,
   "msg": "give James a more menacing intro",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 27,
   "msg": "improve the whole second act",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 28,
   "msg": "convert the voiceover into dialogue",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 29,
   "msg": "write dialogue for the interrogation scene, make it tense, two characters, about 90 seconds",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 30,
   "msg": "polish this line: 'I never wanted this'",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 31,
   "msg": "rewrite the entire screenplay from scratch, it's due next week",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 32,
   "msg": "add a subplot about betrayal across acts 2 and 3",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 33,
   "msg": "plan the render sequence for 10 scenes",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 34,
   "msg": "what should we work on next?",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
   }
  },
  {
+  "i": 35,
   "msg": "we have 3 hours before the deadline, what's the priority?",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 36,
   "msg": "decide: practical effects or CGI for the explosion scene",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
   }
  },
  {
+  "i": 37,
   "msg": "recreate the universe, every particle and every interaction, on a computer simulation now",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
   }
  },
  {
+  "i": 38,
   "msg": "outline the whole film structure, no rush",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 39,
   "msg": "fix this crash now please",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 40,
   "msg": "write me a full movie script asap",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
   }
  },
  {
+  "i": 41,
   "msg": "do the whole intro sequence immediately",
   "truth": {
    "difficulty": "HARD",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 42,
   "msg": "by tomorrow, rewrite everything",
   "truth": {
    "difficulty": "HARD",
    "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
   }
  },
  {
+  "i": 43,
   "msg": "queue it now",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
   }
  },
  {
+  "i": 44,
   "msg": "render all 12 scenes asap",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
   }
  },
  {
+  "i": 45,
   "msg": "do this when you get a chance",
   "truth": {
    "difficulty": "EASY",
    "timing": "LATER"
-  }
- },
- {
-  "msg": "I need the trailer cut today",
-  "truth": {
+  },
+  "got": {
    "difficulty": "HARD",
-   "timing": "NOW"
-  }
- },
- {
-  "msg": "sometime this week, transcribe the interviews",
-  "truth": {
-   "difficulty": "MEDIUM",
    "timing": "LATER"
   }
  },
  {
+  "i": 46,
+  "msg": "I need the trailer cut today",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "i": 47,
+  "msg": "sometime this week, transcribe the interviews",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "i": 48,
   "msg": "what is 2+2?",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
-  }
- },
- {
-  "msg": "debug the race condition in the render scheduler",
-  "truth": {
-   "difficulty": "HARD",
-   "timing": "NOW"
-  }
- },
- {
-  "msg": "optimize the particle system for 60fps on integrated graphics",
-  "truth": {
-   "difficulty": "HARD",
-   "timing": "NOW"
-  }
- },
- {
-  "msg": "change the color to blue",
-  "truth": {
+  },
+  "got": {
    "difficulty": "EASY",
    "timing": "NOW"
   }
  },
  {
+  "i": 49,
+  "msg": "debug the race condition in the render scheduler",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 50,
+  "msg": "optimize the particle system for 60fps on integrated graphics",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 51,
+  "msg": "change the color to blue",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 52,
   "msg": "explain quantum entanglement in simple terms",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
   },
-  "truth_note": "adjudicated 2026-09-23: generic knowledge answer = EASY (was mis-rated MEDIUM)"
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
  },
  {
+  "i": 53,
   "msg": "design a reward function for RLHF on our subtitle model",
   "truth": {
    "difficulty": "EXPERT",
    "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
   }
  },
  {
+  "i": 54,
   "msg": "architect a distributed render farm for 500 nodes",
   "truth": {
    "difficulty": "EXPERT",
    "timing": "NOW"
-  }
- },
- {
-  "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
-  "truth": {
+  },
+  "got": {
    "difficulty": "EXPERT",
    "timing": "NOW"
   }
  },
  {
+  "i": 55,
+  "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
+  "truth": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 56,
   "msg": "make it better",
   "truth": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
-  }
- },
- {
-  "msg": "the thing from yesterday isn't working",
-  "truth": {
+  },
+  "got": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
   }
  },
  {
+  "i": 57,
+  "msg": "the thing from yesterday isn't working",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "i": 58,
   "msg": "just do it",
   "truth": {
    "difficulty": "EASY",
    "timing": "NOW"
   },
-  "truth_note": "adjudicated 2026-09-23: context-dependent one-liner (was mis-rated MEDIUM)"
- },
- {
-  "msg": "you know what I mean, fix the pacing",
-  "truth": {
+  "got": {
    "difficulty": "MEDIUM",
    "timing": "NOW"
   }
  },
  {
+  "i": 59,
+  "msg": "you know what I mean, fix the pacing",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  }
+ },
+ {
+  "i": 60,
   "msg": "I'm having trouble seeing the update, did the server refresh?",
   "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
    "difficulty": "EASY",
    "timing": "NOW"
   }
  },
  {
+  "i": 61,
   "msg": "can you check and see if everything is updated so I can see it",
   "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
    "difficulty": "EASY",
    "timing": "NOW"
   }

@@ -95,3 +95,42 @@ either a bigger model or a two-stage classifier (future work - qwen3:4b may
 be at its ceiling on role nuance). Standing regression file: rerun
 `tests/run_golden_set.py`-style batch against `golden_set_v1.json` after any
 rubric change; scorecard must not regress below FINAL numbers.
+
+
+---
+
+# J12 ADDENDUM: role taxonomy REMOVED (2026-09-23, hygiene)
+
+Gui flagged the 5-role taxonomy (DIRECTOR/SCREENWRITER/TEACHER/BUG_REPORTER/
+NAVIGATOR) as foreign vocabulary. Verified origin: the roles were designed in
+comfyui-video-ui's role-router brainstorm (committed 9/7, two weeks before
+Tierllama J1) and carried into J1's classifier. The video-workspace role model
+does not belong in a generic router.
+
+## Removal (verified safe)
+- router.py: lane selection = difficulty x timing ONLY (never branched on
+  role value); role was decision-log metadata + part of confidence gating
+- Removed: ROLES list, classify_role() (logprob path), role from RUBRIC,
+  role from decision log, role question from jev_cloud.py systemone payload,
+  truth.role from all 62 golden-set entries
+- Nothing else referenced role values (webapp, proxy, seed, bench: 0 hits)
+
+## Post-removal calibration (measured, 3 iterations)
+Removing the role-laden examples cost difficulty accuracy (the examples had
+carried difficulty signal). Rebuilt with role-free anchors + boundary rules:
+- v4 (right after removal): difficulty 59.7 / timing 93.5 / full 58.1
+- v5 (explanation rule tightened): 64.5 / 93.5 / 61.3
+- v6 (boundary rules added): 69.4 / 85.5 / 61.3 (timing regressed)
+- v7 (vague-commands-are-NOW line): 67.7 / 91.9 / 61.3  <- LOCKED baseline
+- run-to-run variance: +-2-3pts (qwen3:4b, temperature)
+
+## New floors (regression runner updated, -3pt tolerance)
+difficulty 67.7 / timing 91.9 / full 61.3. tests/run_golden_set.py verified
+PASS end-to-end (62/62, no errors).
+
+## Trade-off accepted
+vs the role-bearing peak (difficulty 79.0), the roleless rubric sits ~11pts
+lower on difficulty - role words were carrying implicit difficulty signal.
+Accepted per Gui's hygiene call: clean product boundary beats a higher score
+built on foreign vocabulary. If difficulty needs to climb later, the path is
+more role-free anchor examples, not role reintroduction.

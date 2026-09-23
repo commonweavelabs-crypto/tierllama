@@ -37,13 +37,6 @@ def classify_cloud(message: str, rubric_hint: str = ""):
         "model": MODEL,
         "state": message[:4000],
         "questions": {
-            "role": {"type": "choice",
-                     "instructions": "Which role does this message play in an AI video workspace?",
-                     "criteria": {"DIRECTOR": "commands the workspace to make/modify a video",
-                                   "SCREENWRITER": "writes or edits scripts and story text",
-                                   "TEACHER": "explains, teaches, or asks how things work",
-                                   "BUG_REPORTER": "reports an error, crash, or broken behavior",
-                                   "NAVIGATOR": "schedules, organizes, or navigates work"}},
             "difficulty": {"type": "choice",
                             "instructions": "How hard is this for an AI to do well?",
                             "criteria": {"EASY": "trivial lookup or single-step action",
@@ -62,11 +55,9 @@ def classify_cloud(message: str, rubric_hint: str = ""):
             data=json.dumps(body).encode(),
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
         r = json.loads(urllib.request.urlopen(req, timeout=15).read())
-        role = r.get("role", {}).get("choice", "TEACHER")
         diff = r.get("difficulty", {}).get("choice", "MEDIUM")
         timing = r.get("timing", {}).get("choice", "NOW")
-        conf = min(r.get("role", {}).get("confidence", 0.0),
-                   r.get("difficulty", {}).get("confidence", 0.0))
+        conf = r.get("difficulty", {}).get("confidence", 0.0)
         in_tok = r.get("usage", {}).get("input_tokens", 400)
         cost = in_tok * 0.042 / 1e6  # output tokens are free
         COST_LOG.parent.mkdir(exist_ok=True)
@@ -74,7 +65,7 @@ def classify_cloud(message: str, rubric_hint: str = ""):
             "ts": datetime.datetime.now().isoformat(timespec="seconds"),
             "provider": "jev", "model": MODEL, "in_tokens": in_tok,
             "out_tokens": 0, "cost_usd": round(cost, 8)}) + "\n")
-        return {"role": role, "difficulty": diff, "timing": timing,
+        return {"difficulty": diff, "timing": timing,
                 "confidence": conf, "latency_s": round(time.time() - t0, 3),
                 "source": "jev-cloud"}
     except Exception as e:
