@@ -13,10 +13,17 @@ Roles:
 - NAVIGATOR: concrete UI operations: click, open, set, toggle, submit, export, queue, delete, zoom, attach.
 - SCREENWRITER: writing/rewriting/editing creative TEXT: dialogue, scenes, narration, shots.
 - BUG_REPORTER: crashes, errors, unexpected behavior, broken things.
-- DIRECTOR: plans, priorities, render strategy, decisions, 'what next', vague commands.
-Difficulty: EASY = single tiny action (set/open/click one thing), one-line edit, small talk, factual answer. MEDIUM = one scene edit/rewrite, described bug, multi-step how-to. HARD = multi-scene/whole-act work, multi-scene planning, ambiguity, long creative tasks.
+- DIRECTOR: plans, priorities, render strategy, decisions, 'what next', multi-part orchestration across steps.
+Role counter-examples (vague does NOT mean DIRECTOR): "make it better" about an existing text/scene -> SCREENWRITER; "fix it" with an error visible -> BUG_REPORTER; "can you improve this?" about one artifact -> SCREENWRITER if text, NAVIGATOR if a UI setting; DIRECTOR is only for planning/priorities/decisions spanning multiple steps or resources.
+DIRECTOR never writes or edits content: if the output is words (scenes, dialogue, screenplay, narration) it is SCREENWRITER no matter how large - whole-screenplay rewrites are SCREENWRITER/HARD. DIRECTOR output is a plan/decision, not text.
+Difficulty anchors (examples per level):
+- EASY: "set format to mp4"; "hi"; "rename this clip"; "what fps should I use?" (single action, one line, or small talk)
+- MEDIUM: "rewrite scene 3 dialogue"; "app crashes when I drag cards"; "how do I batch-export?" (one scene edit, one described bug, multi-step how-to)
+- HARD: "restructure the whole second act"; "plan renders for 10 scenes"; "audio desync + visual glitches + crashes at once" (multi-scene, multi-bug, or multi-system)
+- EXPERT: novel research-grade or frontier work: "build a new custom video pipeline from scratch", "design a novel prompt architecture nobody has tried", "rewrite the render engine's core algorithm" (unproven territory, architecture-level creation, research-grade problems with no known recipe)
+Difficulty: EASY = single tiny action (set/open/click one thing), one-line edit, small talk, simple factual answer. Non-trivial explanations of system behavior ('why does X happen', 'explain how X works' about this app) = MEDIUM. Export/render/submit of an existing project = the action's size only (one export = EASY/MEDIUM even if the project is large); deadline pressure never raises difficulty. MEDIUM = one scene edit/rewrite, described bug, multi-step how-to. HARD = multi-scene/whole-act work, multi-scene planning, ambiguity, long creative tasks. EXPERT = frontier/research-grade: architecture creation, novel pipelines, algorithm design, problems with no known recipe. Length alone never means EXPERT; unproven-territory work does.
 Timing: NOW is the DEFAULT. Urgency words ("now", "right now", "asap", "urgent", "immediately", "today") ALWAYS mean NOW. Only LATER if the user explicitly defers: "later", "tomorrow", "by friday", "when you get a chance", "no rush", "whenever". Big/complex work alone NEVER implies LATER - "big task now" = NOW. Examples: "do X now" -> NOW even if HARD. "do the whole act, no rush" -> LATER. "queue/overnight" (batch words) -> LATER unless combined with an urgency word ("queue it now" -> NOW).
-
+Timing anchors: "fix this bug now" (HARD) -> HARD/NOW. "plan act 2 tonight, urgent" -> HARD/NOW. "rebuild the pipeline this week" -> EXPERT/NOW. "improve everything whenever you have time" -> HARD/LATER.
 Examples:
 "set the format to mp4" -> NAVIGATOR/EASY/NOW
 "open the timeline" -> NAVIGATOR/EASY/NOW
@@ -99,7 +106,7 @@ def _classify_dims(message, timeout=60):
         "messages": [{"role": "user", "content":
             RUBRIC + f'\n\nMessage: "{message}"\nScore this message. Return confidence 0.0-1.0 per dimension.'}],
         "format": {"type": "object", "properties": {
-            "difficulty": {"type": "string", "enum": ["EASY", "MEDIUM", "HARD"]},
+            "difficulty": {"type": "string", "enum": ["EASY", "MEDIUM", "HARD", "EXPERT"]},
             "difficulty_conf": {"type": "number"},
             "timing": {"type": "string", "enum": ["NOW", "LATER"]},
             "timing_conf": {"type": "number"}},

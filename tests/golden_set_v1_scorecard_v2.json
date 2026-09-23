@@ -1,0 +1,13 @@
+{
+ "n": 62,
+ "role": 42,
+ "difficulty": 38,
+ "timing": 59,
+ "full": 27,
+ "pct": {
+  "role": 67.7,
+  "difficulty": 61.3,
+  "timing": 95.2
+ },
+ "full_pct": 43.5
+}
