@@ -44,6 +44,10 @@
   .thinkSel.max { color:#f6c177; font-weight:600; border-color:#f6c177; }
   .thinkSel.off { color:#8b95a1; font-style:italic; }
   progress { width:100%; }
+  /* key rows: input + Save identical height, aligned baseline */
+  .keyrow { display:flex; gap:.4rem; align-items:stretch; }
+  .keyrow input[type=password] { height:36px; margin:0; flex:1; min-width:0; }
+  .keyrow button { height:36px; margin:0; padding:0 .9rem; flex:0 0 auto; line-height:36px; }
 </style>
 </head>
 <body>

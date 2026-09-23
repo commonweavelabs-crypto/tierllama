@@ -157,8 +157,8 @@ async function loadJevCard() {
       <span class="key-dot ${st.configured ? "key-ok" : "key-missing"}"></span>
       <b style="font-size:.85rem">Jev Cloud — official (TypeSafe AI)</b>
       <span class="muted">${st.configured ? "key configured · classifier fallback active" : "no hardware? add a key"}</span>
-      ${!st.configured ? `<input type="password" id="key_jev" placeholder="Jev Cloud API key" style="font-size:.75rem;width:220px">
-      <button onclick="saveJevKey()" style="font-size:.75rem">Save</button>` : ""}
+      ${!st.configured ? `<div class="keyrow"><input type="password" id="key_jev" placeholder="Jev Cloud API key">
+      <button onclick="saveJevKey()">Save</button></div>` : ""}
     </div>`;
   const tg = document.getElementById("jevToggle");
   if (tg) tg.classList.toggle("on", !!st.configured);
@@ -204,9 +204,9 @@ async function loadProviders() {
         ${p.api_key_env === "NONE" ? "local — no key ever needed" : keyOk ? "key found: " + p.api_key_env : "missing key: " + p.api_key_env}
       </div>
       ${p.api_key_env !== "NONE" && !keyOk ? `
-      <div style="display:flex;gap:.3rem">
-        <input type="password" id="key_${p.provider}" placeholder="paste ${p.provider} API key" style="font-size:.75rem">
-        <button onclick="saveKey('${p.provider}')" style="font-size:.75rem">Save</button>
+      <div class="keyrow">
+        <input type="password" id="key_${p.provider}" placeholder="paste ${p.provider} API key">
+        <button onclick="saveKey('${p.provider}')">Save</button>
       </div>` : ""}
       <div class="muted" style="margin-top:.4rem">models: ${Object.values(p.models || {}).join(", ") || (p.provider === "ollama-local" ? "your machine's local models (auto-discovered)" : "—")}</div>
       <div class="muted">cost: $${p.cost_per_mtok_input}/in · $${p.cost_per_mtok_output}/out per Mtok</div>
