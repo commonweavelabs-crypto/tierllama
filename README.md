@@ -55,3 +55,18 @@ Apache-2.0 (open core). Enterprise tier: managed cloud routing + dashboards (lat
 ## Web dashboard
 
 python cli.py serve -> http://127.0.0.1:8848
+
+## Tierllama vs. cloud-only routers (OpenRouter & friends)
+
+Cloud routers like [OpenRouter](https://openrouter.ai) are great at what they do — and Tierllama deliberately rides them as one lane among nine. But their Auto Router is **cloud-only by definition**:
+
+| | Tierllama | Cloud-only routers |
+|---|---|---|
+| **Local models** | ✅ Routes to your GPU first — cheapest lane is often **$0** | ❌ Cloud-only; every call costs money |
+| **Your hardware fleet** | ✅ Your machines, your box, overnight queues | ❌ No concept of "your GPU" |
+| **Routing data** | Measured **on your machine** (cold loads, real latency) + benchmarks | Market spend-share (what others pay for) |
+| **Privacy** | Routing local, log local — no third party sees prompts | Every prompt transits their API |
+| **Transparency** | Visible, editable decision tree + provenance per tier | Black-box router |
+
+**The short version:** cloud routers optimize *other people's* cloud models. Tierllama optimizes **everything you have** — starting with the hardware you already own.
+
