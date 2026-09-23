@@ -171,6 +171,21 @@ def optimize_status():
     return {k: OPT_STATE[k] for k in ["running", "done", "total", "current", "result"]}
 
 # ---- J10 seed refresh endpoints ----
+@app.get("/api/jev")
+def jev_status():
+    from .jev_cloud import status
+    st = status()
+    # local classifier status too
+    local_ok = False
+    try:
+        import urllib.request as _u
+        _u.urlopen("http://127.0.0.1:11434/api/tags", timeout=3)
+        local_ok = True
+    except Exception:
+        pass
+    st["local_available"] = local_ok
+    return st
+
 @app.get("/api/providers/all")
 def providers_all():
     from .providers import load_providers, _load_keys

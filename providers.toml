@@ -1,4 +1,19 @@
 # Tierllama providers v2 (J10): add any OpenAI-compatible provider.
+# NOTE: the "jev" entry below is SPECIAL - see tierllama/jev_cloud.py.
+# Jev (TypeSafe AI) uses its own /v1/systemone protocol, not chat completions.
+# It is the model family this router is NAMED after and inspired by:
+#   Diogo Almeida (ex-OpenAI, co-creator of RLHF/ChatGPT) built Jev -
+#   a System One model that returns typed decisions, not text. Our local
+#   classifier is our qwen3:4b implementation of the same idea.
+# [[provider]]
+# name = "jev"
+# base_url = "https://api.typesafe.ai"
+# api_key_env = "TYPESAFE_API_KEY"
+# enabled = false
+# cost_per_mtok_input = 0.042
+# cost_per_mtok_output = 0.0
+# [provider.models]
+# (managed by jev_cloud.py - classifier fallback for users without hardware)
 # Keys live in environment variables - NEVER in this file.
 # tier_map: Jev difficulty -> model on that provider.
 # NOTE: cost keys MUST stay above [provider.models] (TOML table-header rule).

@@ -138,6 +138,35 @@ const LOGOS = {
   openrouter:{bg:"#8B5CF6", fg:"#fff", label:"⇄"},
   tierllama:{bg:"#2b6cb0", fg:"#fff", label:"🦙"},
 };
+async function loadJevCard() {
+  const st = await (await fetch("/api/jev")).json();
+  document.getElementById("jevDesc").textContent =
+    "Jev is not a chat LLM - it's a System One model that returns typed decisions " +
+    "(role, difficulty, timing) with calibrated confidence in ~80ms, not tokens of prose. " +
+    "Every message you send is classified by a Jev-style brain before routing. " +
+    "Our local brain runs qwen3:4b on your hardware (free); Jev Cloud is the official " +
+    "model from TypeSafe AI (Diogo Almeida, ChatGPT co-creator) - no hardware needed. " + st.price + ".";
+  document.getElementById("jevBody").innerHTML = `
+    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+      <span class="key-dot ${st.local_available ? "key-ok" : "key-missing"}"></span>
+      <b style="font-size:.85rem">Local brain (qwen3:4b)</b>
+      <span class="muted">${st.local_available ? "running on your machine - free" : "not detected - install Ollama + ollama pull qwen3:4b"}</span>
+    </div>
+    <div style="display:flex;gap:.5rem;align-items:center;margin-top:.4rem;flex-wrap:wrap">
+      <span class="key-dot ${st.configured ? "key-ok" : "key-missing"}"></span>
+      <b style="font-size:.85rem">Jev Cloud (official, TypeSafe AI)</b>
+      <span class="muted">${st.configured ? "key configured" : "no hardware? paste a TYPESAFE_API_KEY (console.typesafe.ai)"}</span>
+      ${!st.configured ? `<input type="password" id="key_jev" placeholder="paste Jev Cloud API key" style="font-size:.75rem;flex:1;min-width:180px">
+      <button onclick="saveJevKey()" style="font-size:.75rem">Save</button>` : ""}
+    </div>`;
+}
+async function saveJevKey() {
+  const key = document.getElementById("key_jev").value.trim();
+  if (!key) return;
+  await fetch("/api/providers/key", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({provider:"jev", key})});
+  loadJevCard();
+}
 async function loadProviders() {
   const grid = document.getElementById("provGrid");
   const pv = await (await fetch("/api/providers/all")).json();
@@ -176,7 +205,8 @@ async function toggleProvider(el) {
   const on = !el.classList.contains("on");
   await fetch("/api/providers/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({provider:name, enabled:on})});
-  loadProviders();
+  loadJevCard();
+loadProviders();
 loadStats(); loadFleet(); loadLog();
 }
 async function saveKey(name) {
@@ -184,8 +214,10 @@ async function saveKey(name) {
   if (!key) return;
   const r = await (await fetch("/api/providers/key", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({provider:name, key})})).json();
-  loadProviders();
+  loadJevCard();
+loadProviders();
 loadStats(); loadFleet(); loadLog();
 }
+loadJevCard();
 loadProviders();
 loadStats(); loadFleet(); loadLog();

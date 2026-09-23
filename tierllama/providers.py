@@ -23,6 +23,12 @@ def _load_keys():
 
 def save_key(provider_name, key):
     """Store a provider key locally (gitignored file). Returns env var name."""
+    if provider_name == "jev":  # special: TypeSafe Jev Cloud (not a chat provider)
+        env = "TYPESAFE_API_KEY"
+        keys = _load_keys(); keys[env] = key
+        KEYS_FILE.write_text("\n".join(f"{k}={v}" for k, v in keys.items()) + "\n", encoding="utf-8")
+        os.environ[env] = key
+        return {"ok": True, "env": env}
     for p in load_providers():
         if p["name"] == provider_name:
             env = p.get("api_key_env", "NONE")
