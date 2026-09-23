@@ -15,7 +15,7 @@ Roles:
 - BUG_REPORTER: crashes, errors, unexpected behavior, broken things.
 - DIRECTOR: plans, priorities, render strategy, decisions, 'what next', vague commands.
 Difficulty: EASY = single tiny action (set/open/click one thing), one-line edit, small talk, factual answer. MEDIUM = one scene edit/rewrite, described bug, multi-step how-to. HARD = multi-scene/whole-act work, multi-scene planning, ambiguity, long creative tasks.
-Timing: NOW = interactive, UI actions, questions, bug reports, quick edits. LATER = batch/queue/overnight/'by friday'/big creative work not awaited.
+Timing: NOW is the DEFAULT. Urgency words ("now", "right now", "asap", "urgent", "immediately", "today") ALWAYS mean NOW. Only LATER if the user explicitly defers: "later", "tomorrow", "by friday", "when you get a chance", "no rush", "whenever". Big/complex work alone NEVER implies LATER - "big task now" = NOW. Examples: "do X now" -> NOW even if HARD. "do the whole act, no rush" -> LATER. "queue/overnight" (batch words) -> LATER unless combined with an urgency word ("queue it now" -> NOW).
 
 Examples:
 "set the format to mp4" -> NAVIGATOR/EASY/NOW
