@@ -136,3 +136,34 @@ schedule themselves onto the cheapest capable lane at the right time.
 - Telemetry flywheel (opt-in) -> community seeds
 - Enterprise oracle API
 - Adaptive retry (Jev learns from misroutes)
+
+
+### J14 (BRAINSTORM, Gui 9/22 night): capability feedback loop — failure-driven bumping
+Gui's idea: when a model keeps FAILING on a class of prompts the classifier
+labels EASY/MEDIUM, flag it and bump that prompt-class to a stronger tier
+(gradually: EASY -> MEDIUM -> HARD -> EXPERT). And the reverse probe: every
+once in a while, send HARD-labeled work down a tier as a canary — if the
+output is actually usable, promote ("this model can do that").
+
+What ALREADY exists (verified in repo):
+- J4 escalation ladder (HARD fail -> EXPERT retry at higher thinking)
+- dispatch retry logic in adapters.py
+- per-call logs (proxy.jsonl / decision log) — but NO outcome field
+
+Missing pieces (the actual work):
+1. OUTCOME SIGNAL: dispatch must record task success/failure. Proxy-only
+   truth: HTTP errors + empty content are automatic; semantic success needs
+   the user's app to report (thumbs up/down, retry-by-user, or output
+   validation). MVP: explicit retry-within-session = failure signal.
+2. CAPABILITY LEDGER: per (model, difficulty, prompt-class) rolling stats —
+   failure rate, avg latency. Lives in logs/, feeds bench.py.
+3. GRADUAL BUMP RULE: N consecutive failures on class X -> tier += 1 for
+   that class only (data-driven, per prompt-class via classifier embedding
+   or role+keyword cluster). Never global jumps.
+4. CANARY PROBES (Gui's downgrade idea): sample p% of HARD traffic to the
+   tier below; usable output (validated) N times -> promote class. Consent-
+   gated like Optimize; never silently.
+5. UI: capability report in dashboard (which classes bumped/promoted, why).
+
+This closes the loop with J13 (scheduler) + telemetry flywheel: real user
+failures become the measured data that outranks the seed table.
