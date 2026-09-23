@@ -295,3 +295,22 @@ Strategic stance: OpenRouter is a LANE (one of our 9 providers), not a rival.
 Where we must catch up: their market-spend signal (telemetry flywheel phase)
 and battle-tested fallback chain.
 TODO: add this comparison to README (users will ask the same question).
+
+
+## Jev-driven differentiator (Gui, 9/22): classifier efficiency vs LLM routers
+OpenRouter's Auto Router classifies with a full LLM call: real tokens, real
+latency, real cost on EVERY routing decision. Tierllama's Jev classifier is a
+4B logprob read: ~80ms warm, ~free. Routing layer = orders of magnitude
+cheaper/faster. Native Jev-driven (baked into architecture, not bolted on).
+
+## Featured "Jev routing brain" card (Providers tab, planned)
+- FULL-WIDTH top card (spans all 3 columns, above OpenAI/xAI/Ollama row)
+- Explanation: Jev is not a regular LLM - a tiny logprob-driven classifier
+  reading role/difficulty/timing off every message in ~80ms
+- LOCAL default (ollama pull qwen3:4b) vs CLOUD fallback (ollama-cloud +
+  OLLAMA_API_KEY key field) for users without hardware
+- Download button (local) with secure verification: Ollama registry manifests
+  are content-addressed - pin + verify digest like the signed seed file
+- Clarification: "Jev" = our name for the routing brain running qwen3:4b;
+  no separate Jev vendor exists. Model credit: Qwen team (Alibaba) - README
+  model-card credit as the retribution token.
