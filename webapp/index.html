@@ -30,8 +30,12 @@
   .muted { color:#8b95a1; font-size:.8rem; }
   .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
   pre { background:#11161d; border-radius:8px; padding:.5rem; font-size:.75rem; white-space:pre-wrap; }
-  .prov-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
-  .prov-card { background:#1c232b; border:1px solid #2a313a; border-radius:12px; padding:1rem; }
+  .prov-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; align-items:stretch; }
+  .prov-card { background:#1c232b; border:1px solid #2a313a; border-radius:12px; padding:1rem;
+    display:flex; flex-direction:column; min-height:230px; }
+  .prov-card .prov-head { align-items:flex-start; }
+  .prov-logo { width:36px; height:36px; flex:0 0 36px; }
+  .keyrow button { display:flex; align-items:center; justify-content:center; line-height:1; }
   .prov-head { display:flex; align-items:center; gap:.6rem; margin-bottom:.5rem; }
   .prov-logo { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.9rem; }
   .key-dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:.35rem; }
@@ -47,7 +51,8 @@
   /* key rows: input + Save identical height, aligned baseline */
   .keyrow { display:flex; gap:.4rem; align-items:stretch; }
   .keyrow input[type=password] { height:36px; margin:0; flex:1; min-width:0; }
-  .keyrow button { height:36px; margin:0; padding:0 .9rem; flex:0 0 auto; line-height:36px; }
+  .keyrow button { height:36px; margin:0; padding:0 .9rem; flex:0 0 auto; line-height:1;
+    display:flex; align-items:center; justify-content:center; text-align:center; }
 </style>
 </head>
 <body>
