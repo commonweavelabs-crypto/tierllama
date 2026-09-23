@@ -41,3 +41,31 @@ alternative when they don't.
 - NVIDIA NIM: OpenAI-compatible, free trial tier - candidate 10th provider
 - Amazon Bedrock / Azure OpenAI: NOT natively OpenAI-compatible (AWS SigV4 /
   Azure auth) - would need dedicated adapters; deferred until demand
+
+
+## CORRECTION (Gui caught it, 9/22): the REAL Jev
+Gui remembered videos about Jev's creator. Verified:
+- **Jev = TypeSafe AI's System One model** (released 9/15/2026, $40M seed led
+  by DCVC), founded by **Diogo Almeida - ex-OpenAI, co-creator of RLHF
+  (the method behind ChatGPT)**
+- Jev cannot generate text: it returns TYPED DECISIONS (choice/score/
+  probability) with calibrated confidence in 70-500ms. Zero hallucination
+  by construction.
+- Pricing: $0.042/Mtok input, OUTPUT FREE (~$0.00002/decision)
+- API: POST https://api.typesafe.ai/v1/systemone, Bearer TYPESAFE_API_KEY,
+  model jev-latest (early access, rolling waves)
+
+### Why this matters to our story
+We INDEPENDENTLY built a Jev-style router (typed decisions from a tiny
+classifier) and named it after the idea. The name was prescient.
+Quantified differentiator vs OpenRouter: their Auto Router spends LLM tokens
+per routing decision; a Jev-style classifier costs ~$0.00002/decision.
+
+### Built (J11): the featured Jev card
+- Full-width top card in Providers tab: what Jev is, LOCAL brain (qwen3:4b,
+  free, status dot) vs JEV CLOUD (official TypeSafe, secure key input)
+- tierllama/jev_cloud.py: native /v1/systemone adapter (3rd protocol) as
+  classifier fallback for users without hardware; logs to costs.jsonl
+- Local brain source: ollama registry qwen3:4b (content-addressed digests =
+  hash-verifiable pulls)
+- Note: TypeSafe API is early-access (keys in waves)
