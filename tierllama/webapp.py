@@ -318,3 +318,13 @@ def icon_svg(name: str):
     if not p.exists():
         return JSONResponse({"error": "not found"}, status_code=404)
     return FileResponse(p, media_type="image/svg+xml")
+
+@app.get("/icons/{name}.svg")
+def brand_svg(name: str):
+    """Brand/own marks (Tierllama logo etc). Single safe segment, no traversal."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", name):
+        return JSONResponse({"error": "bad icon name"}, status_code=400)
+    p = ROOT / "webapp" / "icons" / f"{name}.svg"
+    if not p.exists():
+        return JSONResponse({"error": "not found"}, status_code=404)
+    return FileResponse(p, media_type="image/svg+xml")
