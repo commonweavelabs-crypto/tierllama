@@ -2,6 +2,8 @@
 
 **A Jev-powered router that always picks the best model for the job — and saves you money doing it.**
 
+> **Status: v0.9-beta** — core routing, tuning, 9 providers, and installers are real and measured. We're hardening the classifier rubric against real traffic before calling it 1.0. See [STAGE-ASSESSMENT.md](docs/STAGE-ASSESSMENT.md).
+
 ## Our mission
 Make compute available to everyone by using our resources better. Tierllama routes
 every AI call to the cheapest model that can do the job — your local GPU first, cloud

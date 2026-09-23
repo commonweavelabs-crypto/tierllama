@@ -103,3 +103,36 @@ Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = po
 - Judge-loop over-fitting on our own golden set → keep a held-out slice + real-traffic eval.
 - Ollama logprobs API limits → fallback to llama.cpp server for the classifier only.
 - Name/trademark: Jev (TypeSafe) + Llama (Meta) — rename valve armed; A/B decides.
+
+
+## Added 9/22 (wrap-up day): the road to v1.0
+
+### J12 — rubric hardening + beta polish (NEXT)
+- Standing regression suite (start: 9 timing cases from today's bug; grow to
+  100+ golden cases, run before every rubric change)
+- Dogfood hardening: real-traffic misroute tracking in proxy.jsonl
+- Provider smoke tests with real keys (Groq + DeepSeek first - cheapest)
+- Mac dogfood week: real N>1 usage data
+- Target: v1.0-beta
+
+### J13 (BRAINSTORM, Gui): Jev as a SCHEDULER
+Question: can Jev route a SCHEDULE? "do this by Friday" -> task placed ON
+Friday, not just LATER?
+Architecture sketch (Jev's calibrated-confidence makes this uniquely cheap):
+1. Classifier gains a 4th dimension: WHEN (date/deadline extraction with
+   confidence) - still one ~80ms logprob read, still ~free
+2. Low confidence -> clarify-or-ask rule (never silently guess a date)
+3. Router gains a TIME dimension: jobs with deadlines enter a timed queue
+   (box lane already has the queue bones; add due_at + retry policy)
+4. The scheduler is NOT an LLM - it's a plain cron/heap of (task, due_at,
+   lane) that Jev populates. Jev classifies; dumb code schedules. That's the
+   System One philosophy: cheap decisions, boring reliable execution.
+Feasibility: HIGH. Risk: date ambiguity ("Friday" = this Friday?) - solved by
+the same confidence threshold + explicit confirmation in the UI.
+Value: Tierllama becomes not just a router but an agent brain - jobs that
+schedule themselves onto the cheapest capable lane at the right time.
+
+### Later (unchanged)
+- Telemetry flywheel (opt-in) -> community seeds
+- Enterprise oracle API
+- Adaptive retry (Jev learns from misroutes)
