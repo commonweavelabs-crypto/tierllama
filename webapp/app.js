@@ -139,7 +139,7 @@ const LOGOS = {
   anthropic:{bg:"#D97757", fg:"#fff", label:`<img src="icons/svg/brand-anthropic.svg" alt="" style="width:22px;height:22px">`},
   gemini:   {bg:"#1a73e8", fg:"#fff", label:`<img src="icons/svg/brand-googlegemini.svg" alt="" style="width:22px;height:22px">`},
   openrouter:{bg:"#8B5CF6", fg:"#fff", label:`<img src="icons/svg/brand-openrouter.svg" alt="" style="width:22px;height:22px">`},
-  tierllama:{bg:"#E4573D", fg:"#fff", label:`<img src="icons/tierllama-logo.svg" alt="" style="width:22px;height:22px;border-radius:5px">`},
+  tierllama:{bg:"#E4573D", fg:"#fff", label:`<img src="icons/tierllama-logo.png" alt="" style="width:22px;height:22px;border-radius:5px">`},
 };
 async function loadJevCard() {
   const st = await (await fetch("/api/jev")).json();
