@@ -167,3 +167,42 @@ Missing pieces (the actual work):
 
 This closes the loop with J13 (scheduler) + telemetry flywheel: real user
 failures become the measured data that outranks the seed table.
+
+
+### J15 (BRAINSTORM, Gui 9/22 late): MODEL-level promotion/demotion + brain evolution
+Gui's additions + the conflict question he raised:
+
+1. MODEL-level bumps (beyond prompt-classes): a model suggested as EXPERT
+   that keeps failing on expert work across MANY users gets DEMOTED
+   (expert->hard-capable). The model itself has a reputation, not just tiers.
+   Inverse of the canary: strong performers get promoted.
+
+2. Gui's collision question (real design risk - think before building):
+   - Loop A (prompt bump up) + Loop B (model demote down) can feed each
+     other: failures bump the class up, the class keeps hitting the same
+     failing model, model demotes, next model fails too, class bumps again
+     -> runaway. Mitigations to design:
+     a. SEPARATE the two clocks: class bumps use consecutive-failure streaks;
+        model reputation uses long-window aggregate rates (not streaks)
+     b. Hysteresis + cooldowns: no tier moves within N hours; require
+        minimum sample size before any demotion (n>=20 for model-level)
+     c. Bounded oscillation: class can move at most 1 tier per day; model
+        reputation changes max 1 level per week
+     d. EL NINO/feedback-loop detector: if class-bump rate and model-demote
+        rate correlate, freeze both and flag for human review
+   - Answer to "will the model keep dropping": not with (a)-(d) in place -
+     the guardrails make loops self-limiting instead of runaway
+
+3. The BRAIN (rubric) itself must be versioned data: same discipline as the
+   signed seed file - rubric updates ship as versioned, signed files, staged,
+   preview-diff, user-approved Re-scan ( NEVER silent), rollback. Real user
+   failures -> rubric amendments proposals -> maintainer curates -> ships.
+
+4. CLOUD JEV rules: the /v1/systemone protocol takes questions + criteria
+   per call - so the rubric ships AS THE REQUEST PAYLOAD (criteria are the
+   rules). Same versioned rubric file drives local (prompt text) and cloud
+   (criteria JSON) - ONE source of truth. Confidence calibration may differ
+   (their model is better calibrated) - threshold can differ per brain.
+
+Open questions to answer in J12-J15 sequence: who curates the community
+rubric? How do per-user edits merge? Telemetry consent scope for rubric data?
