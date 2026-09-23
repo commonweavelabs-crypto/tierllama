@@ -48,7 +48,7 @@ async function testRoute() {
 }
 async function loadFleet() {
   const f = await (await fetch("/api/fleet")).json();
-  const KIND = {ollama:"🦙 Ollama", "llama-swap":"🔀 llama-swap", unknown:"❓"};
+  const KIND = {ollama:`<img src="icons/svg/brand-ollama.svg" style="width:14px;height:14px;vertical-align:-2px"> Ollama`, "llama-swap":`<img src="icons/svg/ui-arrow-left-right.svg" style="width:14px;height:14px;vertical-align:-2px"> llama-swap`, unknown:`<img src="icons/svg/ui-circle-help.svg" style="width:14px;height:14px;vertical-align:-2px">`};
   document.getElementById("fleet").innerHTML = (f.peers || []).map(p => `
     <div style="display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid #2a313a">
       <span><b>${p.host}</b> <span class="muted">: ${p.port}</span></span>
@@ -127,16 +127,19 @@ function toggleAdvanced() {
 loadConfig().then(() => { loadStats(); loadLog(); });
 
 // ---------- J11: Providers tab ----------
+// Brand logos: Simple Icons (CC0) - vendored SVGs in icons/svg/ (no CDN calls).
+// openai/xai/groq have no official Simple Icons slug (trademark policy) - keep
+// text marks for those. UI icons: Lucide (MIT) - vendored in icons/svg/.
 const LOGOS = {
-  ollama:   {bg:"#DDD", fg:"#111", label:"ollama"},
+  ollama:   {bg:"#DDD", fg:"#111", label:`<img src="icons/svg/brand-ollama.svg" alt="" style="width:22px;height:22px">`},
   openai:   {bg:"#10A37F", fg:"#fff", label:"AI"},
   xai:      {bg:"#000", fg:"#fff", label:"𝕏"},
   groq:     {bg:"#F55036", fg:"#fff", label:"G"},
-  deepseek: {bg:"#4D6BFE", fg:"#fff", label:"🐳"},
-  anthropic:{bg:"#D97757", fg:"#fff", label:"✳"},
-  gemini:   {bg:"#1a73e8", fg:"#fff", label:"✦"},
-  openrouter:{bg:"#8B5CF6", fg:"#fff", label:"⇄"},
-  tierllama:{bg:"#2b6cb0", fg:"#fff", label:"🦙"},
+  deepseek: {bg:"#4D6BFE", fg:"#fff", label:`<img src="icons/svg/brand-deepseek.svg" alt="" style="width:22px;height:22px">`},
+  anthropic:{bg:"#D97757", fg:"#fff", label:`<img src="icons/svg/brand-anthropic.svg" alt="" style="width:22px;height:22px">`},
+  gemini:   {bg:"#1a73e8", fg:"#fff", label:`<img src="icons/svg/brand-googlegemini.svg" alt="" style="width:22px;height:22px">`},
+  openrouter:{bg:"#8B5CF6", fg:"#fff", label:`<img src="icons/svg/brand-openrouter.svg" alt="" style="width:22px;height:22px">`},
+  tierllama:{bg:"#2b6cb0", fg:"#fff", label:`<img src="icons/svg/brand-ollama.svg" alt="" style="width:22px;height:22px">`},
 };
 async function loadJevCard() {
   const st = await (await fetch("/api/jev")).json();

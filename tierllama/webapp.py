@@ -9,7 +9,7 @@ Endpoints:
   GET  /api/savings     savings summary vs always-best baseline
   POST /api/route       route a test message live
 """
-import json, os, time, datetime
+import json, os, re, time, datetime
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -307,3 +307,14 @@ def icon192():
 @app.get("/icon-512.png")
 def icon512():
     return FileResponse(ROOT / "webapp" / "icon-512.png", media_type="image/png")
+
+@app.get("/icons/svg/{name}.svg")
+def icon_svg(name: str):
+    """Vendored SVG icons (Simple Icons CC0 / Lucide MIT). Path-segment only:
+    name is restricted to safe chars, no traversal possible."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", name):
+        return JSONResponse({"error": "bad icon name"}, status_code=400)
+    p = ROOT / "webapp" / "icons" / "svg" / f"{name}.svg"
+    if not p.exists():
+        return JSONResponse({"error": "not found"}, status_code=404)
+    return FileResponse(p, media_type="image/svg+xml")
