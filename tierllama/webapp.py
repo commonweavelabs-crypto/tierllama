@@ -329,3 +329,7 @@ def brand_mark(name: str, ext: str):
         return JSONResponse({"error": "not found"}, status_code=404)
     mt = "image/svg+xml" if ext == "svg" else "image/png"
     return FileResponse(p, media_type=mt)
+
+@app.get("/favicon.ico")
+def favicon():
+    return FileResponse(ROOT / "webapp" / "icons" / "tierllama.ico", media_type="image/x-icon")
