@@ -208,7 +208,7 @@ async function loadProviders() {
         <input type="password" id="key_${p.provider}" placeholder="paste ${p.provider} API key">
         <button onclick="saveKey('${p.provider}')">Save</button>
       </div>` : ""}
-      <div class="muted" style="margin-top:.4rem">models: ${Object.values(p.models || {}).join(", ") || (p.provider === "ollama-local" ? "your machine's local models (auto-discovered)" : "—")}</div>
+      <div class="muted" style="margin-top:.4rem">models: ${(Object.values(p.models || []).join(", ") || (p.provider === "ollama-local" ? "your machine's local models (auto-discovered)" : "—")).slice(0, 60)}${Object.values(p.models || []).join(", ").length > 60 ? "…" : ""}</div>
       <div class="muted">cost: $${p.cost_per_mtok_input}/in · $${p.cost_per_mtok_output}/out per Mtok</div>
     `;
     grid.appendChild(card);
