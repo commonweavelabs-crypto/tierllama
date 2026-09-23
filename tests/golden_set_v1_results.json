@@ -1,0 +1,994 @@
+[
+ {
+  "msg": "set the format to mp4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 3.536
+  }
+ },
+ {
+  "msg": "open the timeline and zoom to 200%",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.511
+  }
+ },
+ {
+  "msg": "click export and set format to mp4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.543
+  }
+ },
+ {
+  "msg": "queue all scenes overnight",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.583
+  }
+ },
+ {
+  "msg": "delete the last three clips from the timeline",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.542
+  }
+ },
+ {
+  "msg": "toggle the grid overlay on",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.554
+  }
+ },
+ {
+  "msg": "attach the voiceover file to scene 4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.512
+  }
+ },
+ {
+  "msg": "export the whole project as 4k by friday",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.529
+  }
+ },
+ {
+  "msg": "submit the render job now",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.478
+  }
+ },
+ {
+  "msg": "zoom into the third keyframe",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.484
+  }
+ },
+ {
+  "msg": "hi",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.681
+  }
+ },
+ {
+  "msg": "thanks, that worked!",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.499
+  }
+ },
+ {
+  "msg": "how do I set the fps?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.497
+  }
+ },
+ {
+  "msg": "what's the difference between t2v and i2v?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.503
+  }
+ },
+ {
+  "msg": "explain how keyframes interpolate",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.472
+  }
+ },
+ {
+  "msg": "what does the queue system do when I close the app?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.507
+  }
+ },
+ {
+  "msg": "can you teach me how motion blur works in this pipeline?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.511
+  }
+ },
+ {
+  "msg": "why is my render darker than the preview?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.495
+  }
+ },
+ {
+  "msg": "what's the best workflow for consistent lighting across scenes?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.553
+  }
+ },
+ {
+  "msg": "app crashes when I drag cards",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.783
+  }
+ },
+ {
+  "msg": "audio out of sync after render",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.548
+  }
+ },
+ {
+  "msg": "the export button does nothing when I click it",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.542
+  }
+ },
+ {
+  "msg": "it crashed again but only on scene 7, here's the log",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.523
+  }
+ },
+ {
+  "msg": "this thing is broken, fix it",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.484
+  }
+ },
+ {
+  "msg": "render stuck at 99% for an hour",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.548
+  }
+ },
+ {
+  "msg": "rewrite scene 3, sharper dialogue",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.495
+  }
+ },
+ {
+  "msg": "give James a more menacing intro",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.545
+  }
+ },
+ {
+  "msg": "improve the whole second act",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.526
+  }
+ },
+ {
+  "msg": "convert the voiceover into dialogue",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.501
+  }
+ },
+ {
+  "msg": "write dialogue for the interrogation scene, make it tense, two characters, about 90 seconds",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.492
+  }
+ },
+ {
+  "msg": "polish this line: 'I never wanted this'",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.476
+  }
+ },
+ {
+  "msg": "rewrite the entire screenplay from scratch, it's due next week",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.524
+  }
+ },
+ {
+  "msg": "add a subplot about betrayal across acts 2 and 3",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.541
+  }
+ },
+ {
+  "msg": "plan the render sequence for 10 scenes",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.505
+  }
+ },
+ {
+  "msg": "what should we work on next?",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.488
+  }
+ },
+ {
+  "msg": "we have 3 hours before the deadline, what's the priority?",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.539
+  }
+ },
+ {
+  "msg": "decide: practical effects or CGI for the explosion scene",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.513
+  }
+ },
+ {
+  "msg": "recreate the universe, every particle and every interaction, on a computer simulation now",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.531
+  }
+ },
+ {
+  "msg": "outline the whole film structure, no rush",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.485
+  }
+ },
+ {
+  "msg": "fix this crash now please",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.501
+  }
+ },
+ {
+  "msg": "write me a full movie script asap",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.563
+  }
+ },
+ {
+  "msg": "do the whole intro sequence immediately",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.565
+  }
+ },
+ {
+  "msg": "by tomorrow, rewrite everything",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.511
+  }
+ },
+ {
+  "msg": "queue it now",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.511
+  }
+ },
+ {
+  "msg": "render all 12 scenes asap",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.483
+  }
+ },
+ {
+  "msg": "do this when you get a chance",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 0.0,
+   "latency_s": 0.555
+  }
+ },
+ {
+  "msg": "I need the trailer cut today",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.577
+  }
+ },
+ {
+  "msg": "sometime this week, transcribe the interviews",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.574
+  }
+ },
+ {
+  "msg": "what is 2+2?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.473
+  }
+ },
+ {
+  "msg": "debug the race condition in the render scheduler",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.463
+  }
+ },
+ {
+  "msg": "optimize the particle system for 60fps on integrated graphics",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.477
+  }
+ },
+ {
+  "msg": "change the color to blue",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.44
+  }
+ },
+ {
+  "msg": "explain quantum entanglement in simple terms",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.473
+  }
+ },
+ {
+  "msg": "design a reward function for RLHF on our subtitle model",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.469
+  }
+ },
+ {
+  "msg": "architect a distributed render farm for 500 nodes",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.519
+  }
+ },
+ {
+  "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.49
+  }
+ },
+ {
+  "msg": "make it better",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.548
+  }
+ },
+ {
+  "msg": "the thing from yesterday isn't working",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.5
+  }
+ },
+ {
+  "msg": "just do it",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.523
+  }
+ },
+ {
+  "msg": "you know what I mean, fix the pacing",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.595
+  }
+ },
+ {
+  "msg": "I'm having trouble seeing the update, did the server refresh?",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.554
+  }
+ },
+ {
+  "msg": "can you check and see if everything is updated so I can see it",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "confidence": null,
+   "role_conf": 1.0,
+   "latency_s": 0.546
+  }
+ }
+]

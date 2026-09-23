@@ -1,0 +1,498 @@
+[
+ {
+  "msg": "set the format to mp4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "open the timeline and zoom to 200%",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "click export and set format to mp4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "queue all scenes overnight",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "delete the last three clips from the timeline",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "toggle the grid overlay on",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "attach the voiceover file to scene 4",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "export the whole project as 4k by friday",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "submit the render job now",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "zoom into the third keyframe",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "hi",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "thanks, that worked!",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "how do I set the fps?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "what's the difference between t2v and i2v?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "explain how keyframes interpolate",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "what does the queue system do when I close the app?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "can you teach me how motion blur works in this pipeline?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "why is my render darker than the preview?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "what's the best workflow for consistent lighting across scenes?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "app crashes when I drag cards",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "audio out of sync after render",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "the export button does nothing when I click it",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "it crashed again but only on scene 7, here's the log",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "this thing is broken, fix it",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "render stuck at 99% for an hour",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "rewrite scene 3, sharper dialogue",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "give James a more menacing intro",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "improve the whole second act",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "convert the voiceover into dialogue",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "write dialogue for the interrogation scene, make it tense, two characters, about 90 seconds",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "polish this line: 'I never wanted this'",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "rewrite the entire screenplay from scratch, it's due next week",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "add a subplot about betrayal across acts 2 and 3",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "plan the render sequence for 10 scenes",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "what should we work on next?",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "we have 3 hours before the deadline, what's the priority?",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "decide: practical effects or CGI for the explosion scene",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "recreate the universe, every particle and every interaction, on a computer simulation now",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "outline the whole film structure, no rush",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "fix this crash now please",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "write me a full movie script asap",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "do the whole intro sequence immediately",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "by tomorrow, rewrite everything",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "HARD",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "queue it now",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "render all 12 scenes asap",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "do this when you get a chance",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "I need the trailer cut today",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "sometime this week, transcribe the interviews",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  }
+ },
+ {
+  "msg": "what is 2+2?",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "debug the race condition in the render scheduler",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "optimize the particle system for 60fps on integrated graphics",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "HARD",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "change the color to blue",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "explain quantum entanglement in simple terms",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "design a reward function for RLHF on our subtitle model",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "architect a distributed render farm for 500 nodes",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
+  "truth": {
+   "role": "TEACHER",
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "make it better",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "the thing from yesterday isn't working",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "just do it",
+  "truth": {
+   "role": "DIRECTOR",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "you know what I mean, fix the pacing",
+  "truth": {
+   "role": "SCREENWRITER",
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "I'm having trouble seeing the update, did the server refresh?",
+  "truth": {
+   "role": "BUG_REPORTER",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ },
+ {
+  "msg": "can you check and see if everything is updated so I can see it",
+  "truth": {
+   "role": "NAVIGATOR",
+   "difficulty": "EASY",
+   "timing": "NOW"
+  }
+ }
+]
