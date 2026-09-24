@@ -4,7 +4,7 @@ token-level logprobs are the honest signal. Measured 2026-09-21: 94.2% @ ~80ms w
 import json, urllib.request, time, math
 from .config import CLASSIFIER
 
-RUBRIC = """You route user messages for an AI video-generation workspace. Decide role, difficulty, timing from the user's INTENT.
+RUBRIC = """You classify user messages for a routing system (Tierllama): each message gets a difficulty and a timing. Decide role, difficulty, timing from the user's INTENT.
 Difficulty anchors (examples per level):
 - EASY: "set format to mp4"; "hi"; "rename this clip"; "what fps should I use?" (single action, one line, or small talk)
 - MEDIUM: "rewrite scene 3 dialogue"; "app crashes when I drag cards"; "how do I batch-export?" (one scene edit, one described bug, multi-step how-to)

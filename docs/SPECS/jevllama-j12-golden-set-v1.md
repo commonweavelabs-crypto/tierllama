@@ -26,6 +26,8 @@ H2 (difficulty drift to MEDIUM, 30x): no difficulty anchor examples in the
 enum prompt; model regresses to the middle. Fix: add per-level anchor
 examples + sharpen definitions (EASY = one click/one line; HARD = multi-scene
 or multi-system; EXPERT = frontier/research-grade).
+> **NOTE (2026-09-23 hygiene):** the H3 role hypothesis and role counter-examples below are HISTORICAL - the role taxonomy was removed from Tierllama after these experiments (see the ADDENDUM at the bottom + role-taxonomy-lineage.md). Only the difficulty/timing anchors remain current.
+
 H3 (role TEACHER/NAVIGATOR/SCREENWRITER -> DIRECTOR, 23x): "vague commands"
 pulling everything to DIRECTOR. Fix: add counter-examples ("make it better"
 on a known artifact = SCREENWRITER if text, NAVIGATOR if UI).

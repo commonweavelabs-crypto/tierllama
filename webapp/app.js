@@ -44,7 +44,7 @@ async function testRoute() {
   const r = await (await fetch("/api/route", {method:"POST", headers:{"Content-Type":"application/json"},
     body: JSON.stringify({message: msg})})).json();
   const el = document.getElementById("routeOut"); el.style.display = "block";
-  el.textContent = `role=${r.role} difficulty=${r.difficulty} timing=${r.timing} lane=${r.lane} confidence=${r.confidence}`;
+  el.textContent = `difficulty=${r.difficulty} timing=${r.timing} lane=${r.lane} confidence=${r.confidence}`;
 }
 async function loadFleet() {
   const f = await (await fetch("/api/fleet")).json();
@@ -68,7 +68,7 @@ async function loadLog() {
   (d.decisions || []).forEach(x => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${x.ts||""}</td><td>${(x.message||"").slice(0,40)}</td>
-      <td>${x.role||""}</td><td>${x.difficulty||""}</td><td>${x.timing||""}</td>
+      <td>${x.difficulty||""}</td><td>${x.timing||""}</td>
       <td>${x.lane||""}</td><td>${x.confidence??""}</td>`;
     tb.append(tr);
   });
@@ -145,7 +145,7 @@ async function loadJevCard() {
   const st = await (await fetch("/api/jev")).json();
   document.getElementById("jevDesc").textContent =
     "Jev is not a chat LLM - it's a System One model that returns typed decisions " +
-    "(role, difficulty, timing) with calibrated confidence in ~80ms, not tokens of prose. " +
+    "(difficulty, timing) with calibrated confidence in ~80ms, not tokens of prose. " +
     "Every message you send is classified by a Jev-style brain before routing. " +
     "The original Jev is TypeSafe AI's model (Diogo Almeida, ChatGPT co-creator); " +
     "our open-source local brain is a Jev-style qwen3:4b you run yourself - free. " + st.price + ".";
