@@ -4,7 +4,8 @@ token-level logprobs are the honest signal. Measured 2026-09-21: 94.2% @ ~80ms w
 import json, urllib.request, time, math
 from .config import CLASSIFIER
 
-RUBRIC = """You classify user messages for a routing system (Tierllama): each message gets a difficulty and a timing. Decide role, difficulty, timing from the user's INTENT.
+RUBRIC = """You classify user messages for a routing system (Tierllama): each message gets a difficulty and a timing. Decide difficulty, timing, and when from the user's INTENT.
+
 Difficulty anchors (examples per level):
 - EASY: "set format to mp4"; "hi"; "rename this clip"; "what fps should I use?" (single action, one line, or small talk)
 - MEDIUM: "rewrite scene 3 dialogue"; "app crashes when I drag cards"; "how do I batch-export?" (one scene edit, one described bug, multi-step how-to)
@@ -28,7 +29,8 @@ Examples (difficulty/timing):
 "rebuild the render engine core algorithm" -> EXPERT/NOW
 "fix this bug now" -> HARD/NOW
 "do the whole act now" -> HARD/NOW
-"improve everything whenever you have time" -> HARD/LATER"""
+"improve everything whenever you have time" -> HARD/LATER
+When anchors (verbatim): "do this by Friday" -> when=DEADLINE, when_raw="by Friday". "queue all scenes overnight" -> when=DEFERRED, when_raw="overnight". "no rush, whenever" -> when=DEFERRED. "get it done soon" -> when=DATE_UNCLEAR, when_raw="soon". "fix this bug now" -> when=NOW, when_raw="". "before Monday 9am" -> when=DEADLINE, when_raw="before Monday 9am"."""
 
 
 def classify(message, last_exchanges=None, timeout=60):
@@ -51,8 +53,11 @@ def _classify_dims(message, timeout=60):
             "difficulty": {"type": "string", "enum": ["EASY", "MEDIUM", "HARD", "EXPERT"]},
             "difficulty_conf": {"type": "number"},
             "timing": {"type": "string", "enum": ["NOW", "LATER"]},
-            "timing_conf": {"type": "number"}},
-            "required": ["difficulty", "difficulty_conf", "timing", "timing_conf"]}}
+            "timing_conf": {"type": "number"},
+            "when": {"type": "string", "enum": ["NOW", "DEADLINE", "DEFERRED", "DATE_UNCLEAR"]},
+            "when_conf": {"type": "number"},
+            "when_raw": {"type": "string"}},
+            "required": ["difficulty", "difficulty_conf", "timing", "timing_conf", "when", "when_conf", "when_raw"]}}
     req = urllib.request.Request(C["endpoint"],
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
     t0 = time.time()

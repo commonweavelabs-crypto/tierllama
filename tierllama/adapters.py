@@ -7,7 +7,7 @@ BOX          -> overnight job queue on the mini box (UNC share \\192.168.12.150\
 
 Every dispatch is recorded in the decision log with result + latency. Adapters never
 raise: failures return {"status": "error", ...} so the router can escalate (J4)."""
-import json, re, uuid, datetime, urllib.request, urllib.error, time
+import json, re, re, re, uuid, datetime, urllib.request, urllib.error, time
 from pathlib import Path
 from .config import LANES, CLASSIFIER
 
@@ -67,6 +67,9 @@ def dispatch_cloud(message, tier="CLOUD_MEDIUM", model=None, system=None, thinki
     except Exception as e:
         return {"status": "error", "lane": tier, "model": model, "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
+
+def _safe_title(title):
+    return "".join(c for c in re.sub(r"\W+", "-", (title or "job").lower())[:24] if c.isalnum() or c == "-").strip("-") or "job"
 
 def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", system=None, thinking=None, timeout=30):
     """BOX lane: enqueue an overnight job on the mini box. The box worker consumes
