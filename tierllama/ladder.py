@@ -50,11 +50,11 @@ def escalate(record, message, lane_start, dispatch_kw=None):
             # appended as context (retry-with-rephrase for the ROUTER, not the model).
             _log_step(record, step)
             if attempt < MAX_ATTEMPTS_PER_LANE:
-                rephrase = record.get("rephrased_message") or message
-                from .classifier import classify_role
-                role2, probs2, _dt = classify_role(rephrase or message)
+                from .classifier import classify
+                re2 = classify(record.get("rephrased_message") or message)
                 step2 = {"trigger": "rephrase_reclassify", "lane": lane,
-                         "new_role": role2, "p_top": round(max(probs2.values()), 3)}
+                         "new_class": {k: re2.get(k) for k in ("difficulty", "timing") if k in re2},
+                         "p_top": round(max(re2.get("difficulty_conf", 0), re2.get("timing_conf", 0)), 3)}
                 _log_step(record, step2)
         # Phase 3: escalate to the next stronger lane.
         idx += 1
