@@ -142,6 +142,12 @@ the same confidence threshold + explicit confirmation in the UI.
 Value: Tierllama becomes not just a router but an agent brain - jobs that
 schedule themselves onto the cheapest capable lane at the right time.
 
+### J16 (SPEC'D 9/24): hardware census & worker-class fit — feeds J13 v2
+Full spec: docs/SPECS/jevllama-j16-hardware-census.md. Discovery exists (J5),
+per-model bench exists (J8) — gaps: machine dimension in bench data, worker
+CLASS per machine (user-confirmed), model@machine pairing labels, and the
+hardware-recommendation engine (post-community-data).
+
 ### Later (unchanged)
 - Telemetry flywheel (opt-in) -> community seeds
 - Enterprise oracle API
