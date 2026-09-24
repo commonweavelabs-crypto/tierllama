@@ -1,0 +1,1180 @@
+[
+ {
+  "i": 0,
+  "msg": "set the format to mp4",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1702,
+    "MEDIUM": 0.343,
+    "HARD": 0.3122,
+    "EXPERT": 0.1745
+   },
+   "answer_confidence": 0.343
+  }
+ },
+ {
+  "i": 1,
+  "msg": "open the timeline and zoom to 200%",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1208,
+    "MEDIUM": 0.2685,
+    "HARD": 0.3625,
+    "EXPERT": 0.2481
+   },
+   "answer_confidence": 0.3625
+  }
+ },
+ {
+  "i": 2,
+  "msg": "click export and set format to mp4",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2342,
+    "MEDIUM": 0.3306,
+    "HARD": 0.2567,
+    "EXPERT": 0.1786
+   },
+   "answer_confidence": 0.3306
+  }
+ },
+ {
+  "i": 3,
+  "msg": "queue all scenes overnight",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.0872,
+    "MEDIUM": 0.2268,
+    "HARD": 0.4811,
+    "EXPERT": 0.2049
+   },
+   "answer_confidence": 0.4811
+  }
+ },
+ {
+  "i": 4,
+  "msg": "delete the last three clips from the timeline",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.279,
+    "MEDIUM": 0.3355,
+    "HARD": 0.244,
+    "EXPERT": 0.1415
+   },
+   "answer_confidence": 0.3355
+  }
+ },
+ {
+  "i": 5,
+  "msg": "toggle the grid overlay on",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1312,
+    "MEDIUM": 0.3044,
+    "HARD": 0.3397,
+    "EXPERT": 0.2247
+   },
+   "answer_confidence": 0.3397
+  }
+ },
+ {
+  "i": 6,
+  "msg": "attach the voiceover file to scene 4",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2027,
+    "MEDIUM": 0.3217,
+    "HARD": 0.3089,
+    "EXPERT": 0.1667
+   },
+   "answer_confidence": 0.3217
+  }
+ },
+ {
+  "i": 7,
+  "msg": "export the whole project as 4k by friday",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1088,
+    "MEDIUM": 0.2406,
+    "HARD": 0.4592,
+    "EXPERT": 0.1914
+   },
+   "answer_confidence": 0.4592
+  }
+ },
+ {
+  "i": 8,
+  "msg": "submit the render job now",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.218,
+    "MEDIUM": 0.2932,
+    "HARD": 0.2943,
+    "EXPERT": 0.1946
+   },
+   "answer_confidence": 0.2943
+  }
+ },
+ {
+  "i": 9,
+  "msg": "zoom into the third keyframe",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1292,
+    "MEDIUM": 0.2932,
+    "HARD": 0.3705,
+    "EXPERT": 0.2071
+   },
+   "answer_confidence": 0.3705
+  }
+ },
+ {
+  "i": 10,
+  "msg": "hi",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1185,
+    "MEDIUM": 0.2969,
+    "HARD": 0.3561,
+    "EXPERT": 0.2285
+   },
+   "answer_confidence": 0.3561
+  }
+ },
+ {
+  "i": 11,
+  "msg": "thanks, that worked!",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.3613,
+    "MEDIUM": 0.3264,
+    "HARD": 0.1293,
+    "EXPERT": 0.183
+   },
+   "answer_confidence": 0.3613
+  }
+ },
+ {
+  "i": 12,
+  "msg": "how do I set the fps?",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1323,
+    "MEDIUM": 0.2785,
+    "HARD": 0.3527,
+    "EXPERT": 0.2365
+   },
+   "answer_confidence": 0.3527
+  }
+ },
+ {
+  "i": 13,
+  "msg": "what's the difference between t2v and i2v?",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1917,
+    "MEDIUM": 0.3571,
+    "HARD": 0.2602,
+    "EXPERT": 0.191
+   },
+   "answer_confidence": 0.3571
+  }
+ },
+ {
+  "i": 14,
+  "msg": "explain how keyframes interpolate",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1708,
+    "MEDIUM": 0.3361,
+    "HARD": 0.3168,
+    "EXPERT": 0.1764
+   },
+   "answer_confidence": 0.3361
+  }
+ },
+ {
+  "i": 15,
+  "msg": "what does the queue system do when I close the app?",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1862,
+    "MEDIUM": 0.3328,
+    "HARD": 0.3116,
+    "EXPERT": 0.1695
+   },
+   "answer_confidence": 0.3328
+  }
+ },
+ {
+  "i": 16,
+  "msg": "can you teach me how motion blur works in this pipeline?",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1817,
+    "MEDIUM": 0.3166,
+    "HARD": 0.3376,
+    "EXPERT": 0.164
+   },
+   "answer_confidence": 0.3376
+  }
+ },
+ {
+  "i": 17,
+  "msg": "why is my render darker than the preview?",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2093,
+    "MEDIUM": 0.3376,
+    "HARD": 0.267,
+    "EXPERT": 0.1862
+   },
+   "answer_confidence": 0.3376
+  }
+ },
+ {
+  "i": 18,
+  "msg": "what's the best workflow for consistent lighting across scenes?",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.117,
+    "MEDIUM": 0.2828,
+    "HARD": 0.4032,
+    "EXPERT": 0.197
+   },
+   "answer_confidence": 0.4032
+  }
+ },
+ {
+  "i": 19,
+  "msg": "app crashes when I drag cards",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1199,
+    "MEDIUM": 0.2934,
+    "HARD": 0.376,
+    "EXPERT": 0.2108
+   },
+   "answer_confidence": 0.376
+  }
+ },
+ {
+  "i": 20,
+  "msg": "audio out of sync after render",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1109,
+    "MEDIUM": 0.3018,
+    "HARD": 0.3781,
+    "EXPERT": 0.2092
+   },
+   "answer_confidence": 0.3781
+  }
+ },
+ {
+  "i": 21,
+  "msg": "the export button does nothing when I click it",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.19,
+    "MEDIUM": 0.3104,
+    "HARD": 0.265,
+    "EXPERT": 0.2347
+   },
+   "answer_confidence": 0.3104
+  }
+ },
+ {
+  "i": 22,
+  "msg": "it crashed again but only on scene 7, here's the log",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1235,
+    "MEDIUM": 0.3506,
+    "HARD": 0.3613,
+    "EXPERT": 0.1646
+   },
+   "answer_confidence": 0.3613
+  }
+ },
+ {
+  "i": 23,
+  "msg": "this thing is broken, fix it",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1687,
+    "MEDIUM": 0.3228,
+    "HARD": 0.3205,
+    "EXPERT": 0.1879
+   },
+   "answer_confidence": 0.3228
+  }
+ },
+ {
+  "i": 24,
+  "msg": "render stuck at 99% for an hour",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1241,
+    "MEDIUM": 0.3038,
+    "HARD": 0.3677,
+    "EXPERT": 0.2043
+   },
+   "answer_confidence": 0.3677
+  }
+ },
+ {
+  "i": 25,
+  "msg": "rewrite scene 3, sharper dialogue",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1194,
+    "MEDIUM": 0.3125,
+    "HARD": 0.36,
+    "EXPERT": 0.2081
+   },
+   "answer_confidence": 0.36
+  }
+ },
+ {
+  "i": 26,
+  "msg": "give James a more menacing intro",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2047,
+    "MEDIUM": 0.3364,
+    "HARD": 0.2699,
+    "EXPERT": 0.189
+   },
+   "answer_confidence": 0.3364
+  }
+ },
+ {
+  "i": 27,
+  "msg": "improve the whole second act",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1169,
+    "MEDIUM": 0.3038,
+    "HARD": 0.366,
+    "EXPERT": 0.2133
+   },
+   "answer_confidence": 0.366
+  }
+ },
+ {
+  "i": 28,
+  "msg": "convert the voiceover into dialogue",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1787,
+    "MEDIUM": 0.3422,
+    "HARD": 0.3129,
+    "EXPERT": 0.1662
+   },
+   "answer_confidence": 0.3422
+  }
+ },
+ {
+  "i": 29,
+  "msg": "write dialogue for the interrogation scene, make it tense, two characters, about 90 seconds",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1853,
+    "MEDIUM": 0.351,
+    "HARD": 0.2736,
+    "EXPERT": 0.1901
+   },
+   "answer_confidence": 0.351
+  }
+ },
+ {
+  "i": 30,
+  "msg": "polish this line: 'I never wanted this'",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.4385,
+    "MEDIUM": 0.2907,
+    "HARD": 0.1321,
+    "EXPERT": 0.1387
+   },
+   "answer_confidence": 0.4385
+  }
+ },
+ {
+  "i": 31,
+  "msg": "rewrite the entire screenplay from scratch, it's due next week",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.0814,
+    "MEDIUM": 0.2493,
+    "HARD": 0.4296,
+    "EXPERT": 0.2397
+   },
+   "answer_confidence": 0.4296
+  }
+ },
+ {
+  "i": 32,
+  "msg": "add a subplot about betrayal across acts 2 and 3",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1074,
+    "MEDIUM": 0.2764,
+    "HARD": 0.4123,
+    "EXPERT": 0.2039
+   },
+   "answer_confidence": 0.4123
+  }
+ },
+ {
+  "i": 33,
+  "msg": "plan the render sequence for 10 scenes",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.0739,
+    "MEDIUM": 0.1562,
+    "HARD": 0.5741,
+    "EXPERT": 0.1958
+   },
+   "answer_confidence": 0.5741
+  }
+ },
+ {
+  "i": 34,
+  "msg": "what should we work on next?",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1334,
+    "MEDIUM": 0.3051,
+    "HARD": 0.3567,
+    "EXPERT": 0.2048
+   },
+   "answer_confidence": 0.3567
+  }
+ },
+ {
+  "i": 35,
+  "msg": "we have 3 hours before the deadline, what's the priority?",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1572,
+    "MEDIUM": 0.3038,
+    "HARD": 0.3235,
+    "EXPERT": 0.2155
+   },
+   "answer_confidence": 0.3235
+  }
+ },
+ {
+  "i": 36,
+  "msg": "decide: practical effects or CGI for the explosion scene",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1046,
+    "MEDIUM": 0.3239,
+    "HARD": 0.3598,
+    "EXPERT": 0.2117
+   },
+   "answer_confidence": 0.3598
+  }
+ },
+ {
+  "i": 37,
+  "msg": "recreate the universe, every particle and every interaction, on a computer simulation now",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.0807,
+    "MEDIUM": 0.2168,
+    "HARD": 0.41,
+    "EXPERT": 0.2925
+   },
+   "answer_confidence": 0.41
+  }
+ },
+ {
+  "i": 38,
+  "msg": "outline the whole film structure, no rush",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1191,
+    "MEDIUM": 0.2904,
+    "HARD": 0.3871,
+    "EXPERT": 0.2033
+   },
+   "answer_confidence": 0.3871
+  }
+ },
+ {
+  "i": 39,
+  "msg": "fix this crash now please",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1397,
+    "MEDIUM": 0.3102,
+    "HARD": 0.355,
+    "EXPERT": 0.1951
+   },
+   "answer_confidence": 0.355
+  }
+ },
+ {
+  "i": 40,
+  "msg": "write me a full movie script asap",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1111,
+    "MEDIUM": 0.2514,
+    "HARD": 0.4489,
+    "EXPERT": 0.1886
+   },
+   "answer_confidence": 0.4489
+  }
+ },
+ {
+  "i": 41,
+  "msg": "do the whole intro sequence immediately",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1579,
+    "MEDIUM": 0.2844,
+    "HARD": 0.3474,
+    "EXPERT": 0.2103
+   },
+   "answer_confidence": 0.3474
+  }
+ },
+ {
+  "i": 42,
+  "msg": "by tomorrow, rewrite everything",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1162,
+    "MEDIUM": 0.2638,
+    "HARD": 0.4161,
+    "EXPERT": 0.2039
+   },
+   "answer_confidence": 0.4161
+  }
+ },
+ {
+  "i": 43,
+  "msg": "queue it now",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1375,
+    "MEDIUM": 0.2993,
+    "HARD": 0.3319,
+    "EXPERT": 0.2313
+   },
+   "answer_confidence": 0.3319
+  }
+ },
+ {
+  "i": 44,
+  "msg": "render all 12 scenes asap",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.0577,
+    "MEDIUM": 0.1385,
+    "HARD": 0.6048,
+    "EXPERT": 0.199
+   },
+   "answer_confidence": 0.6048
+  }
+ },
+ {
+  "i": 45,
+  "msg": "do this when you get a chance",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2185,
+    "MEDIUM": 0.3232,
+    "HARD": 0.2643,
+    "EXPERT": 0.1939
+   },
+   "answer_confidence": 0.3232
+  }
+ },
+ {
+  "i": 46,
+  "msg": "I need the trailer cut today",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.2926,
+    "MEDIUM": 0.3431,
+    "HARD": 0.2215,
+    "EXPERT": 0.1428
+   },
+   "answer_confidence": 0.3431
+  }
+ },
+ {
+  "i": 47,
+  "msg": "sometime this week, transcribe the interviews",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.289,
+    "MEDIUM": 0.3242,
+    "HARD": 0.2283,
+    "EXPERT": 0.1585
+   },
+   "answer_confidence": 0.3242
+  }
+ },
+ {
+  "i": 48,
+  "msg": "what is 2+2?",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.3025,
+    "MEDIUM": 0.3213,
+    "HARD": 0.2036,
+    "EXPERT": 0.1726
+   },
+   "answer_confidence": 0.3213
+  }
+ },
+ {
+  "i": 49,
+  "msg": "debug the race condition in the render scheduler",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1012,
+    "MEDIUM": 0.2347,
+    "HARD": 0.4176,
+    "EXPERT": 0.2465
+   },
+   "answer_confidence": 0.4176
+  }
+ },
+ {
+  "i": 50,
+  "msg": "optimize the particle system for 60fps on integrated graphics",
+  "truth": {
+   "difficulty": "HARD",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.1009,
+    "MEDIUM": 0.2369,
+    "HARD": 0.4363,
+    "EXPERT": 0.226
+   },
+   "answer_confidence": 0.4363
+  }
+ },
+ {
+  "i": 51,
+  "msg": "change the color to blue",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.2225,
+    "MEDIUM": 0.3508,
+    "HARD": 0.2628,
+    "EXPERT": 0.1639
+   },
+   "answer_confidence": 0.3508
+  }
+ },
+ {
+  "i": 52,
+  "msg": "explain quantum entanglement in simple terms",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "EASY",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.3837,
+    "MEDIUM": 0.2816,
+    "HARD": 0.1894,
+    "EXPERT": 0.1453
+   },
+   "answer_confidence": 0.3837
+  }
+ },
+ {
+  "i": 53,
+  "msg": "design a reward function for RLHF on our subtitle model",
+  "truth": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1202,
+    "MEDIUM": 0.2837,
+    "HARD": 0.3644,
+    "EXPERT": 0.2316
+   },
+   "answer_confidence": 0.3644
+  }
+ },
+ {
+  "i": 54,
+  "msg": "architect a distributed render farm for 500 nodes",
+  "truth": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.0628,
+    "MEDIUM": 0.1283,
+    "HARD": 0.5011,
+    "EXPERT": 0.3077
+   },
+   "answer_confidence": 0.5011
+  }
+ },
+ {
+  "i": 55,
+  "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
+  "truth": {
+   "difficulty": "EXPERT",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.146,
+    "MEDIUM": 0.3514,
+    "HARD": 0.3239,
+    "EXPERT": 0.1787
+   },
+   "answer_confidence": 0.3514
+  }
+ },
+ {
+  "i": 56,
+  "msg": "make it better",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1299,
+    "MEDIUM": 0.3186,
+    "HARD": 0.3304,
+    "EXPERT": 0.2211
+   },
+   "answer_confidence": 0.3304
+  }
+ },
+ {
+  "i": 57,
+  "msg": "the thing from yesterday isn't working",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "HARD",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1585,
+    "MEDIUM": 0.3043,
+    "HARD": 0.3354,
+    "EXPERT": 0.2017
+   },
+   "answer_confidence": 0.3354
+  }
+ },
+ {
+  "i": 58,
+  "msg": "just do it",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.261,
+    "MEDIUM": 0.2921,
+    "HARD": 0.2753,
+    "EXPERT": 0.1716
+   },
+   "answer_confidence": 0.2921
+  }
+ },
+ {
+  "i": 59,
+  "msg": "you know what I mean, fix the pacing",
+  "truth": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.1459,
+    "MEDIUM": 0.3356,
+    "HARD": 0.3334,
+    "EXPERT": 0.185
+   },
+   "answer_confidence": 0.3356
+  }
+ },
+ {
+  "i": 60,
+  "msg": "I'm having trouble seeing the update, did the server refresh?",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "LATER",
+   "difficulty_probs": {
+    "EASY": 0.2102,
+    "MEDIUM": 0.3768,
+    "HARD": 0.2474,
+    "EXPERT": 0.1655
+   },
+   "answer_confidence": 0.3768
+  }
+ },
+ {
+  "i": 61,
+  "msg": "can you check and see if everything is updated so I can see it",
+  "truth": {
+   "difficulty": "EASY",
+   "timing": "NOW"
+  },
+  "got": {
+   "difficulty": "MEDIUM",
+   "timing": "NOW",
+   "difficulty_probs": {
+    "EASY": 0.2082,
+    "MEDIUM": 0.3154,
+    "HARD": 0.3111,
+    "EXPERT": 0.1653
+   },
+   "answer_confidence": 0.3154
+  }
+ }
+]

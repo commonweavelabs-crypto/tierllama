@@ -99,3 +99,59 @@ because the classifier is behind one interface (classify() -> dims).
 5. Repeat for openJev if its checkpoint loads clean
 6. Verdict table vs J12 floors; decision memo to Gui. NO default-flip without
    Gui's explicit approval.
+
+---
+
+# J12-B RESULTS (2026-09-23, measured on this machine)
+
+## Bench setup (fair-shake attempts documented)
+- Laya via `pip install laya` (0.3.12) in dedicated venv `.venv-laya`; both
+  checkpoints tested: `convaiinnovations/laya` (english) and
+  `laya-typed-decisions`; ran on CPU (ComfyUI co-resident 9.1/16.3GB)
+- openJev-verdict-2.0 via their own engine (`core/engine_encoder.py`) +
+  `heman10x/rlcd-modernbert-151m` (the public checkpoint; the README's
+  `heman10x/openJev-verdict-2.0` repo is gated/401); CPU torch 2.14
+- Same 62 golden prompts, same scoring as `tests/run_golden_set.py`
+
+## Scorecard (same questions, same scoring)
+
+| model | difficulty | timing | full | latency p50 (CPU) | size |
+|---|---|---|---|---|---|
+| **qwen3:4b (incumbent, GPU)** | **67.7%** | **91.9%** | **61.3%** | **303ms** (GPU) | 4B (~2.6GB) |
+| laya english (CPU) | 43.5% | 71.0% | 30.6% | 815ms | 421M (~0.9GB) |
+| laya-typed-decisions (CPU) | 43.5% | 50.0% | 22.6% | 620ms | 421M |
+| openJev-verdict-2.0 (CPU) | 11.3% | 8.1% | 1.6% | 191ms | 151M |
+
+## Analysis (honest)
+1. **No challenger beats the incumbent on OUR golden set.** Laya's best
+   (43.5/71.0) is 24pts below our difficulty floor. The 0.766-vs-0.727
+   head-to-head in Laya's README was on THEIR benchmark questions, not ours.
+2. **Laya's probabilities are near-uniform on our taxonomy** (top-prob p50
+   0.426; 20/62 cases < 0.4): the model never learned our difficulty
+   semantics. Its published strength is on JevBench-style tasks
+   (support triage, XNLI), not video-workspace routing.
+3. **openJev abstains on 79% of our prompts** (`__insufficient_evidence__`):
+   trained on banking/triage workflows; does NOT transfer to routing. The
+   77.1% claim could not be reproduced on our domain - out-of-domain result,
+   recorded as-is.
+4. **Latency myth busted (on this box):** Laya CPU p50 (815ms) is SLOWER than
+   our GPU incumbent (303ms). Laya on GPU would likely win latency, but
+   accuracy is device-independent and accuracy is the deciding metric.
+5. **Confidence quality:** our enum-JSON head reports honest high-confidence
+   on clear cases; Laya's answer_confidence p50 = 0.426 (weak separation).
+
+## Verdict: STAY (incumbent wins across the board)
+- qwen3:4b beats all three challengers on accuracy by a wide margin
+- No hybrid split worth having: Laya is worse on BOTH dimensions
+- The user-facing "pick your brain" dropdown: RECOMMEND AGAINST for now -
+  the challengers don't offer a differentiating strength on our workload;
+  it would be complexity without benefit. Revisit if a future checkpoint
+  (e.g. a Laya fine-tune on our golden set) changes the picture.
+- FastJev: skipped by priority (18★ maturity risk); Laya itself is the
+  stronger version of the same idea and already benched.
+
+## Re-bench triggers (when to revisit)
+- A Laya-family checkpoint trained/fine-tuned on routing-style data
+- If we ever need multilingual routing (Laya-multilingual 45/51 languages)
+- If latency becomes critical AND GPU head is unavailable (Laya CPU/GGUF
+  as a fallback lane rather than replacement)
