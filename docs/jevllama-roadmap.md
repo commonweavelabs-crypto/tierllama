@@ -1,4 +1,14 @@
-# Jevllama Roadmap (v1 — 2026-09-21)
+# Jevllama Roadmap
+
+## PROJECT BOUNDARIES (Gui, 2026-09-23 — hard rule)
+Tierllama ≠ comfyui-video-ui. This roadmap contains ONLY router-product work:
+classification, lanes, providers, oracle, telemetry. No video-workspace
+features, no role personas (the 5-role taxonomy was removed 9/23 — see
+docs/SPECS/role-taxonomy-lineage.md). comfyui-video-ui keeps its own canonical
+roadmap (docs/ROADMAP.md there) including ITS OWN Jev-class usage (M-F role
+router). Shared between projects: only the Jev-class TECHNIQUE (logit-read
+classifier), never features or vocabulary. When brainstorming crosses projects
+and ownership is unclear: STOP and ask Gui which lane it belongs to. (v1 — 2026-09-21)
 
 > Built from the 2026-09-21 working session. Companion docs: `SPECS/tierllama-decisions.md`,
 > `SPECS/jevllama-bench-01.md`, `SPECS/tierllama-market-research.md`, `JEV-CLASS-ROUTER-BRAINSTORM.md`.
