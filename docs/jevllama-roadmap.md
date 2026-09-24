@@ -125,7 +125,7 @@ Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = po
 - Mac dogfood week: real N>1 usage data
 - Target: v1.0-beta
 
-### J13 (BRAINSTORM, Gui): Jev as a SCHEDULER
+### J13 (SPEC'D 9/24 — beta feature, OFF by default per Gui): Jev as a SCHEDULER — full spec: docs/SPECS/jevllama-j13-scheduler.md (4th WHEN dimension, clarify-or-ask, dumb file-backed scheduler, night windows, shove cap, worker classes + saturation offload = v2; pushback + OSS inspiration documented; golden set v2 gate)
 Question: can Jev route a SCHEDULE? "do this by Friday" -> task placed ON
 Friday, not just LATER?
 Architecture sketch (Jev's calibrated-confidence makes this uniquely cheap):

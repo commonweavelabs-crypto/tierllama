@@ -134,7 +134,11 @@ fit earlier nights.
 - Floors for J13 set AFTER baseline measurement (no floors guessed upfront;
   J12 lesson: measure first, then lock)
 
-## Non-goals (explicit)
+## Non-goals for v1 (explicit)
+- Recurring jobs ("every Monday") — v2+ with cron-shaped concepts
+- Duration ESTIMATION by the system — v1 asks the user; J14 outcome signals
+  teach real runtimes over time
+- Multi-user fairness — v1 is single-user; shoving fairness = v2+
 - NOT a general cron (no recurring jobs in v1 — "every Monday" is DATE_UNCLEAR
   until demand exists)
 - NOT an LLM loop — the scheduler never calls a model to decide scheduling
@@ -158,6 +162,42 @@ fit earlier nights.
 
 
 ---
+
+## Worker classes + saturation offload (Gui, 2026-09-24 — added to spec)
+
+Gui's box insight generalized: workers are not one class. The box is a
+**full-time worker** (sits idle, rarely used interactively) that can take
+HARD-but-not-EXPERT work day AND night. That's different from a workhorse
+machine (busy by day, only free overnight). Worker classes per machine:
+
+| class | meaning | example (Gui's fleet) | takes |
+|---|---|---|---|
+| `workhorse` | the machine the user actively uses | Windows PC (Hermes host) | NOW-window work only; night-shift opt-in |
+| `always_on` | idle-capable, runs jobs any time | the mini box | EASY→HARD (NOT expert; capable but slow) |
+| `night_only` | window-restricted worker | box (alt mode), main PC opted in | any lane inside its window |
+| `cloud_scheduled` | offload target when locals saturate | user's configured cloud models (e.g. Kimi K3 for later-expert) | HARD→EXPERT |
+
+**Saturation → offload toggle (per user, OFF by default, part of beta):**
+when a worker class keeps shoving (hits the weekly shove cap), the scheduler
+offers/enacts offload: move queued jobs to `cloud_scheduled` overnight so the
+local hardware can catch up. The UI names the target model + its $/M-token
+cost BEFORE moving anything ( Gui: "we'll schedule it for KimiK3 — $X per M
+tokens"). Nothing moves without the cost shown.
+
+**LONG-HORIZON gate (refined by Gui):** any job estimated >1h (or user-defined
+threshold) + HARD → ask: "This will probably take over an hour. Schedule
+overnight on the box?" / EXPERT → "schedule to <model> at $Y/M tokens?" —
+never auto-commit. Difficulty (HARD vs EXPERT) picks the class asked about;
+the user confirms the resource.
+
+## Where this lands in the plan
+- v1 (J13 beta core): deadline scheduling + clarify gate + night windows +
+  manual priority shoving (shove cap 3/week + warning)
+- **v2 (J13 part 2): worker classes + saturation offload toggle + cloud cost
+  display.** Reason for the split: v2 depends on per-worker capacity tracking
+  (real usage data) which doesn't exist until v1 runs. Gui's own framing:
+  "eventually more user data from different hardware lets us extrapolate."
+  v2 is where multi-user extrapolation starts.
 
 # Pushback (anti-echo-chamber, Gui requested — 2026-09-24)
 
