@@ -67,6 +67,65 @@ exactly (regression runner must stay green).
   a guessed due_at), DELETE /api/schedule/{id}
 - No cron syntax exposure — human language in, date chips out
 
+## Beta feature policy (Gui, 2026-09-24 — REQUIRED framing)
+- J13 ships as a **BETA feature, OFF by default**. No silent enablement: the
+  user must knowingly toggle it on, and the UI states plainly what beta means
+  here (untested across use cases; date parsing will miss; schedules may need
+  manual fixes). Config: `SCHEDULER = {"enabled": false, "beta": true, ...}`;
+  the dashboard tab shows a BETA badge + the honest warning while enabled=false
+  shows "beta feature - turn on in settings" instead of the UI.
+- Rationale: date ambiguity in the wild is unbounded; we've tested 15 synthetic
+  WHEN cases, not the 90%-NOW reality of real users; rescheduling heuristics
+  (priority shoving) WILL need tuning on real usage.
+
+# Gui's brainstorm 2026-09-24 (documented verbatim-intent, verbatim lessons)
+
+## Insight 1: "later" is not only user-stated — it's PHYSICS-driven
+The "recreate the whole universe" case: the router sent it to LATER and was
+RIGHT, but for a different reason than the user's wording. Jobs exist that are
+"later by nature": the hardware can't do them in the NOW window (minutes/hours),
+regardless of what the user asked for. So WHEN has two sources:
+- USER-timed: "by Friday" (intent)
+- PHYSICS-timed: estimated duration > NOW window (reality)
+v1 J13 covers user-timed. PHYSICS-driven timing = the LONG-HORIZON class below.
+
+## Insight 2: LONG-HORIZON jobs need an ask-before-commit gate
+Big-scope jobs occupy the machine for hours (they'd occupy Hermes/main agent
+24h+; or route to EXPERT frontier models at cost). Before committing, ask the
+user: "This looks like a long job (est. ~Xh). Start now and tie up this
+machine, route to your overnight box so your day machine stays free, or pick
+another resource?" Options surfaced: all user hardware + cloud + agents.
+- MVP shape: the LONG_JOB class = scope signal (EXPERT difficulty OR estimated
+  duration > 30min) triggers needs_clarification with resource options,
+  instead of silently hogging the machine.
+
+## Insight 3: user-defined NIGHT WINDOWS per machine
+"By Friday" should be scheduled into the previous nights, inside the user's
+night window. Hardware profile in config: a workhorse machine (busy by day) +
+night workers (box now; main Windows PC could be opted in later). Settings UI:
+which machines work overnight, window start/end (e.g. 00:00-08:00). "By Friday"
+= fill night windows between now and the deadline; jobs with 4-5 days of slack
+fit earlier nights.
+
+## Insight 4: capacity + priority rescheduling (PROFESSIONAL-grade needed)
+- Each job needs a duration ESTIMATE (the hard part; v1 = coarse class:
+  minutes/hours/overnight, refined later)
+- Schedule capacity per night window; when full: "your schedule is full this
+  week - make this a priority?" Priority insert SHOVES other jobs later by the
+  new job's duration and tells the user which jobs moved (transparency, no
+  silent eviction)
+
+## Open source inspiration (vet before use, ideas-first per license rule)
+- APScheduler (Python, BSD) — mature: job stores, executors, misfire/coalesce
+  policies = the vocabulary for our due-loop and shove logic
+- Prefect / Dagster — workflow engines, too heavy to adopt but their
+  retries/backfill/deadline concepts are the right vocabulary
+- Celery beat — scheduled tasks pattern (heavier than we need)
+- Windows Task Scheduler XML / cron — for the v2 recurring-jobs shape
+- We keep zero-dependency posture: v1 borrows APScheduler's CONCEPTS
+  (misfire handling, coalescing, priority) in ~200 lines of stdlib, not the lib
+
+
 ## Golden set extension (J13 gate, measured as always)
 - Extend tests/golden_set_v1.json with ~15 WHEN-labeled cases (5 DEADLINE,
   5 DEFERRED, 5 DATE_UNCLEAR/ambiguity traps) -> v2 set (62+15=77)
@@ -96,3 +155,32 @@ exactly (regression runner must stay green).
   mitigated by clarify-or-ask; we NEVER guess silently
 - LLM latency: 4th dim adds tokens to the constrained JSON (~same single call)
 - Scope creep: v1 = one-shot jobs only. Recurring schedules = future J-item.
+
+
+---
+
+# Pushback (anti-echo-chamber, Gui requested — 2026-09-24)
+
+Where I'd temper or reshape the brainstorm, honestly:
+
+1. **Duration estimation is the hardest unsolved part.** Estimating "this job
+   takes hours" for an LLM task is a research problem, not an engineering one
+   (we can't know a frontier model will loop for 24h on 'recreate the
+   universe'). v1 should NOT estimate durations; it should ask the user
+   (who often knows better) and learn from observed runtimes later (J14
+   outcome signals feeding estimates = the real flywheel).
+2. **Priority shoving needs transparency + a cap.** Shoving other users' jobs
+   is a fairness problem when this becomes a product (multi-user later). v1:
+   single-user, shove allowed, but ALWAYS list what moved and cap shoves per
+   week (e.g. 3) before demanding a bigger schedule or a later due date.
+3. **"Previous night" default is right for Gui, wrong as a rule.** Some users
+   want the work the MORNING OF the deadline (latest useful night), others
+   ASAP. v1: default = latest night window before due (max freshness of
+   inputs), setting to flip to earliest. Gui's preference wins locally via
+   his own setting.
+4. **Scope guard for v1:** deadline scheduling + clarify gate + night windows
+   + manual priority shoving IS the beta. Long-horizon resource-asking is a
+   second feature (shares the clarify UI) — ship it behind the same beta
+   toggle but as its own sub-toggle. Don't couple their risks.
+5. **Don't build a calendar.** The schedule list is a queue with due_at, not a
+   visual calendar. A calendar view is post-beta polish if users ask.
