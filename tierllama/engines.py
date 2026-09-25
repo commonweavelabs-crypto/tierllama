@@ -25,7 +25,8 @@ def load_manifest(path: Path) -> dict:
     for key in ("name", "kind", "endpoints"):
         if key not in m:
             raise ValueError(f"manifest {path.name}: missing required key '{key}'")
-    if not (m["name"][0].isalpha() and m["name"].replace("-", "").isalnum()):
+    if not (len(m["name"]) > 0 and m["name"] == m["name"].lower()
+            and m["name"][0].isalpha() and m["name"].replace("-", "").isalnum()):
         raise ValueError(f"manifest {path.name}: 'name' must be kebab-case")
     if m["kind"] not in ("ollama", "openai-compat", "llama-swap"):
         raise ValueError(f"manifest {path.name}: kind '{m['kind']}' not in enum")
