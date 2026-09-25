@@ -275,10 +275,11 @@ async function loadScheduler() {
     : '<tr><td colspan="5" class="muted">No upcoming jobs.</td></tr>';
 }
 async function schedToggle() {
-  const enabled = document.getElementById("schedState").textContent.includes("ON");
+  // read the authoritative state from the API (string-matching status text breaks silently if copy changes)
+  const cur = await (await fetch("/api/schedule")).json();
   const r = await (await fetch("/api/schedule/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({enabled: !enabled})})).json();
-  document.getElementById("schedMsg").textContent = r.ok ? (enabled ? "disabled" : "enabled — beta active") : (r.reason || "failed");
+    body: JSON.stringify({enabled: !cur.enabled})})).json();
+  document.getElementById("schedMsg").textContent = r.ok ? (!cur.enabled ? "enabled — beta active" : "disabled") : (r.reason || r.error || "failed");
   loadScheduler();
 }
 async function schedResolve(id, action) {
