@@ -234,6 +234,32 @@ commit-at-first-body-byte + dispatch budget/deadline; (4) activity-vouching live
 code: pricing/tier/cost policy, per-machine bench, user-visible decision log, cloud tier —
 all four remain ours.
 
+### LANDED (2026-09-25 goal run, all PAIR-inspired + Apache-2.0 attribution in-module)
+- **T1 health signal** — `12acf89`: `tierllama/health.py` (NodePressure EWMA α=0.35,
+  bands 0-3, asymmetric downward 35/65/80, stale >10s → neutral 1, never-sampled →
+  neutral 1; FleetPressure ranking pressure→stable-id + snapshot w/ staleness).
+  11 tests. Also fixed scheduler.py NameError (SCHEDULER→_SCHEDULER()) from
+  uncommitted J13 wiring.
+- **T3 fleet discovery** — `9f1934c`: `tierllama/fleet.py` (file-backed registry,
+  provenance local-fleet, zeroconf `_ollama._tcp` browse optional-dep with J5 TCP
+  sweep fallback, PAIR anti-flap liveness: evict after 12 missed scans, inference-
+  bytes vouching 60s, enrichment vouch 10s, all-lost-is-our-fault suppression 6
+  scans). 8 tests incl. vouch/suppression expiry.
+- **T4 request-level dispatch** — `e734ddb`: `tierllama/dispatch.py`
+  (Reservations one-lock: reserve-at-dispatch, release-at-end, atomic move-on-
+  failover — fixed a deadlock in first draft; budget 3 rounds + 90s deadline;
+  retryable-status rules; least-pressured-first ordering via health module;
+  ReservationContext releases all at end). 8 tests.
+- **T4b manifest engines** — `d90e808`: `engines/` schema + llamacpp example
+  manifest + `tierllama/engines.py` loader stub (validation only; auto-detect/
+  start-stop out of scope this milestone). 5 tests.
+
+**Total: 4 modules, 32 tests, 4 commits.** Remaining from the port-pick list:
+EWMA pressure wired into the proxy's live GPU sampling (nvidia-smi poll — module
+ready, poller not written), zeroconf live-LAN smoke test (mocked tests pass;
+untested against a real second machine), dispatch not yet wired into proxy.py's
+`/v1/chat/completions` (module ready, integration pending).
+
 - **Fleet discovery + Ollama-compatible proxy expansion (T3):** LAN discovery of
   Ollama/llama.cpp nodes, registered into the provider grid with `local-fleet`
   provenance. PAIR's node discovery is the reference pattern; implement in our stack.
