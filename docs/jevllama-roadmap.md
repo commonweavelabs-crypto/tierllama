@@ -126,8 +126,16 @@ Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = po
 - Target: v1.0-beta
 
 ### J13 (SPEC'D 9/24 — beta feature, OFF by default per Gui): Jev as a SCHEDULER — full spec: docs/SPECS/jevllama-j13-scheduler.md (4th WHEN dimension, clarify-or-ask, dumb file-backed scheduler, night windows, shove cap, worker classes + saturation offload = v2; pushback + OSS inspiration documented; golden set v2 gate)
+**V1 LANDED 9/25** (beta, gate OFF by default — verified). Commits:
+- `f3ae7bb` — UI wiring (Scheduler tab, /api/schedule + resolve/toggle endpoints), config gate + WHEN enum + scheduler.py + lane_for (J13 v1 1/3 was `815155d`: classifier 4th dim, file-backed queue, due loop, 3-try retry, night-window check)
+- `b3a87ee` — beta-gate toggle bugfix (OFF was a silent no-op when file said True — regex only matched False; how the gate got stuck ON) + gate-path tests (10)
+- `f599eff` — golden set v2: WHEN 88.9% (18 cases), phrase 94.4%, 5 DEADLINE phrases parse via dumb regex; J12 regression root-caused (rubric-edit shift, 5 cases) and anchors fixed on data: difficulty 71.0 / timing 95.2 / full 67.7 — all above J12 floors and above pre-J13
+- `b6bb404` — persistence E2E: real cross-process (subprocess enqueue → fresh import → tick → dispatched), corrupt-file reset, midnight wrap, start==end window
+- `8edf48c` — dashboard polish: toggle reads authoritative gate state (no string-matching); clarify cards + upcoming table + honest OFF-state text verified
+Golden set v2 gate: PASSED (floors met, improvements recorded). 55/55 tests OK.
+**V2 (next)**: worker classes + saturation offload; shove cap (absent in v1, documented); relative-phrase rubric refinement ('later today'/'this week' with '?' → DATE_UNCLEAR vs DEADLINE); rescheduling heuristics.
 Question: can Jev route a SCHEDULE? "do this by Friday" -> task placed ON
-Friday, not just LATER?
+Friday, not just LATER? **Answer (v1, live-verified): yes — DEADLINE conf .95 → queued due Oct-02 17:00; vague "soon" → clarification, guess surfaced but never executed.**
 Architecture sketch (Jev's calibrated-confidence makes this uniquely cheap):
 1. Classifier gains a 4th dimension: WHEN (date/deadline extraction with
    confidence) - still one ~80ms logprob read, still ~free
