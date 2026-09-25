@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tierllama engine manifest",
+  "description": "Schema for declaring a local inference engine as data (J12+ T4). Inspired by NVIDIA Personal-AI-Router engine-manager manifests (Apache-2.0). Adding an engine to Tierllama is a manifest file in engines/, not code.",
+  "type": "object",
+  "required": ["name", "kind", "endpoints"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Unique engine id (kebab-case). One manifest per engine."
+    },
+    "display_name": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "kind": {
+      "type": "string",
+      "enum": ["ollama", "openai-compat", "llama-swap"],
+      "description": "Dialect family the engine speaks; maps to the adapters' dispatch path."
+    },
+    "detect": {
+      "type": "object",
+      "description": "How to recognize an already-running instance (optional; auto-detection itself is NOT implemented yet - schema-only per J12+ scope).",
+      "properties": {
+        "ports": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 65535}},
+        "health_path": {"type": "string"},
+        "health_expect": {"type": "string"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "description": "How Tierllama would start/stop the engine (loader stub only in this milestone).",
+      "properties": {
+        "bind": {"type": "string"},
+        "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "start_command": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Argv template; {port} and {bind} placeholders are substituted."
+        },
+        "stop_signal": {"type": "string", "enum": ["terminate", "kill"]},
+        "readiness_timeout_s": {"type": "number", "minimum": 1}
+      }
+    },
+    "endpoints": {
+      "type": "object",
+      "required": ["chat", "models", "dialect"],
+      "properties": {
+        "chat": {"type": "string"},
+        "models": {"type": "string"},
+        "dialect": {"type": "string", "enum": ["openai", "ollama"]}
+      }
+    },
+    "actions": {
+      "type": "object",
+      "description": "Optional engine actions; null means 'engine does not support this'.",
+      "properties": {
+        "pull_model": {"type": ["object", "null"]},
+        "delete_model": {"type": ["object", "null"]},
+        "list_models": {"type": ["object", "null"]},
+        "loaded_models": {"type": ["object", "null"]}
+      }
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "max_parallel": {"type": "integer", "minimum": 1},
+        "gpu_layers_default": {"type": ["integer", "null"]}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Free-form: attribution, notes. Keep inspired_by filled when a pattern was ported."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "./tierllama-engine-manifest.schema.json",
+  "name": "llamacpp-example",
+  "display_name": "llama.cpp server (example manifest)",
+  "version": 1,
+  "kind": "openai-compat",
+  "detect": {
+    "ports": [8081, 8081],
+    "health_path": "/health",
+    "health_expect": "ok"
+  },
+  "runtime": {
+    "bind": "127.0.0.1",
+    "port": 8081,
+    "start_command": ["llama-server", "--port", "{port}", "--host", "{bind}"],
+    "stop_signal": "terminate",
+    "readiness_timeout_s": 30
+  },
+  "endpoints": {
+    "chat": "/v1/chat/completions",
+    "models": "/v1/models",
+    "dialect": "openai"
+  },
+  "actions": {
+    "pull_model": null,
+    "delete_model": null,
+    "loaded_models": {"path": "/v1/models", "result_spec": {"models": "data[*].id"}},
+    "list_models": {"path": "/v1/models", "result_spec": {"models": "data[*].id"}}
+  },
+  "limits": {
+    "max_parallel": 1,
+    "gpu_layers_default": null
+  },
+  "metadata": {
+    "inspired_by": "NVIDIA Personal-AI-Router engine-manager manifests (Apache-2.0)",
+    "note": "Tierllama keeps engine definitions as data - adding an engine is a manifest, not code."
+  }
+}
