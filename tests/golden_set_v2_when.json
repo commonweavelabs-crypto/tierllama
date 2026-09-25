@@ -1,0 +1,20 @@
+[
+  {"msg": "finish the color grade by friday 5pm", "truth": {"when": "DEADLINE", "when_raw": "friday 5pm"}},
+  {"msg": "get me the render stats before monday 9am", "truth": {"when": "DEADLINE", "when_raw": "monday 9am"}},
+  {"msg": "by wednesday, archive all the old projects", "truth": {"when": "DEADLINE", "when_raw": "wednesday"}},
+  {"msg": "submit the form by 3pm today", "truth": {"when": "DEADLINE", "when_raw": "3pm"}},
+  {"msg": "run the export overnight", "truth": {"when": "DEFERRED", "when_raw": "overnight"}},
+  {"msg": "no rush, do it whenever", "truth": {"when": "DEFERRED", "when_raw": null}},
+  {"msg": "process these renders tonight if you can", "truth": {"when": "DEFERRED", "when_raw": "tonight"}},
+  {"msg": "summarize this doc soon please", "truth": {"when": "DATE_UNCLEAR", "when_raw": "soon"}},
+  {"msg": "can you clean the cache later today?", "truth": {"when": "DATE_UNCLEAR", "when_raw": "later today"}},
+  {"msg": "fix the timeline bug this week?", "truth": {"when": "DATE_UNCLEAR", "when_raw": "this week"}},
+  {"msg": "zoom into the timeline now", "truth": {"when": "NOW", "when_raw": null}},
+  {"msg": "export the project as mp4", "truth": {"when": "NOW", "when_raw": null}},
+  {"msg": "transcribe the interview by friday", "truth": {"when": "DEADLINE", "when_raw": "friday"}},
+  {"msg": "queue the batch render overnight", "truth": {"when": "DEFERRED", "when_raw": "overnight"}},
+  {"msg": "do the subtitles eventually, no rush", "truth": {"when": "DEFERRED", "when_raw": null}},
+  {"msg": "before saturday, review the cut", "truth": {"when": "DEADLINE", "when_raw": "saturday"}},
+  {"msg": "check the export folder sometime", "truth": {"when": "DEFERRED", "when_raw": null}},
+  {"msg": "reindex the assets tomorrow morning", "truth": {"when": "DEADLINE", "when_raw": "tomorrow morning"}}
+]

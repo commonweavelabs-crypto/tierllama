@@ -1,0 +1,261 @@
+{
+ "scorecard": {
+  "when": "16/18",
+  "raw": "17/18",
+  "resolver": 5
+ },
+ "results": [
+  {
+   "i": 0,
+   "msg": "finish the color grade by friday 5pm",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "friday 5pm"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "by friday 5pm"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 1,
+   "msg": "get me the render stats before monday 9am",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "monday 9am"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "before Monday 9am"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 2,
+   "msg": "by wednesday, archive all the old projects",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "wednesday"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "by wednesday"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 3,
+   "msg": "submit the form by 3pm today",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "3pm"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "by 3pm today"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 4,
+   "msg": "run the export overnight",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": "overnight"
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "overnight"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 5,
+   "msg": "no rush, do it whenever",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": null
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "whenever"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 6,
+   "msg": "process these renders tonight if you can",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": "tonight"
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "overnight"
+   },
+   "when_ok": true,
+   "raw_ok": false
+  },
+  {
+   "i": 7,
+   "msg": "summarize this doc soon please",
+   "truth": {
+    "when": "DATE_UNCLEAR",
+    "when_raw": "soon"
+   },
+   "got": {
+    "when": "DATE_UNCLEAR",
+    "when_raw": "soon"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 8,
+   "msg": "can you clean the cache later today?",
+   "truth": {
+    "when": "DATE_UNCLEAR",
+    "when_raw": "later today"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "later today"
+   },
+   "when_ok": false,
+   "raw_ok": true
+  },
+  {
+   "i": 9,
+   "msg": "fix the timeline bug this week?",
+   "truth": {
+    "when": "DATE_UNCLEAR",
+    "when_raw": "this week"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "this week"
+   },
+   "when_ok": false,
+   "raw_ok": true
+  },
+  {
+   "i": 10,
+   "msg": "zoom into the timeline now",
+   "truth": {
+    "when": "NOW",
+    "when_raw": null
+   },
+   "got": {
+    "when": "NOW",
+    "when_raw": null
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 11,
+   "msg": "export the project as mp4",
+   "truth": {
+    "when": "NOW",
+    "when_raw": null
+   },
+   "got": {
+    "when": "NOW",
+    "when_raw": null
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 12,
+   "msg": "transcribe the interview by friday",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "friday"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "by friday"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 13,
+   "msg": "queue the batch render overnight",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": "overnight"
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "overnight"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 14,
+   "msg": "do the subtitles eventually, no rush",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": null
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "no rush"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 15,
+   "msg": "before saturday, review the cut",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "saturday"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "before saturday"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 16,
+   "msg": "check the export folder sometime",
+   "truth": {
+    "when": "DEFERRED",
+    "when_raw": null
+   },
+   "got": {
+    "when": "DEFERRED",
+    "when_raw": "sometime"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  },
+  {
+   "i": 17,
+   "msg": "reindex the assets tomorrow morning",
+   "truth": {
+    "when": "DEADLINE",
+    "when_raw": "tomorrow morning"
+   },
+   "got": {
+    "when": "DEADLINE",
+    "when_raw": "tomorrow morning"
+   },
+   "when_ok": true,
+   "raw_ok": true
+  }
+ ]
+}
