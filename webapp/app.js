@@ -238,3 +238,56 @@ loadStats(); loadFleet(); loadLog();
 loadJevCard();
 loadProviders();
 loadStats(); loadFleet(); loadLog();
+
+
+// ---------- J13 scheduler (BETA) ----------
+async function loadScheduler() {
+  const r = await (await fetch("/api/schedule")).json();
+  const gate = document.getElementById("schedGate");
+  const body = document.getElementById("schedBody");
+  const btn = document.getElementById("schedToggleBtn");
+  const state = document.getElementById("schedState");
+  if (!r.enabled) {
+    body.style.display = "none";
+    btn.textContent = "Enable scheduler (beta)";
+    state.innerHTML = '<span class="muted">Currently OFF. Jobs with deadlines route normally; nothing is scheduled.</span>';
+    return;
+  }
+  body.style.display = "block";
+  btn.textContent = "Disable scheduler";
+  state.innerHTML = '<span class="muted" style="color:#68d391">Scheduler is ON (beta) — deadline jobs now enter the queue.</span>';
+  const cl = document.getElementById("clarify");
+  cl.innerHTML = (r.clarify && r.clarify.length) ? r.clarify.map(j => `
+    <div class="tier-row" style="grid-template-columns:1fr auto">
+      <div><b>${(j.message||"").slice(0,60)}</b><br>
+        <span class="muted">date phrase: "${j.when_raw || j.meta?.raw || ""}" — needs confirmation</span></div>
+      <div style="display:flex;gap:.4rem">
+        <button onclick="schedResolve('${j.id}','schedule')">Schedule</button>
+        <button onclick="schedResolve('${j.id}','now')">Run now</button>
+        <button onclick="schedResolve('${j.id}','cancel')">Cancel</button>
+      </div>
+    </div>`).join("") : '<div class="muted">Nothing waiting.</div>';
+  const up = document.getElementById("upcoming");
+  up.innerHTML = (r.upcoming && r.upcoming.length) ? r.upcoming.map(j => `
+    <tr><td>${(j.due_at||"").replace("T"," ").slice(0,16)}</td>
+    <td>${(j.message||"").slice(0,50)}</td><td>${j.lane}</td><td>${j.status}</td>
+    <td><button onclick="schedResolve('${j.id}','cancel')">✕</button></td></tr>`).join("")
+    : '<tr><td colspan="5" class="muted">No upcoming jobs.</td></tr>';
+}
+async function schedToggle() {
+  const enabled = document.getElementById("schedState").textContent.includes("ON");
+  const r = await (await fetch("/api/schedule/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({enabled: !enabled})})).json();
+  document.getElementById("schedMsg").textContent = r.ok ? (enabled ? "disabled" : "enabled — beta active") : (r.reason || "failed");
+  loadScheduler();
+}
+async function schedResolve(id, action) {
+  await fetch("/api/schedule/resolve", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({id, action})});
+  loadScheduler();
+}
+// refresh when the tab becomes active:
+document.querySelectorAll('nav.tabs button').forEach(b => {
+  b.addEventListener("click", () => { if (b.dataset.tab === "scheduler") loadScheduler(); });
+});
+loadScheduler();

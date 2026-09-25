@@ -9,7 +9,7 @@ Endpoints:
   GET  /api/savings     savings summary vs always-best baseline
   POST /api/route       route a test message live
 """
-import json, os, re, time, datetime
+import json, re, os, re, time, datetime
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -283,6 +283,49 @@ def seed_apply(payload: dict = None):
 def seed_rollback():
     from .seed_refresh import rollback
     return rollback()
+
+
+# ---------- J13 scheduler (BETA) ----------
+@app.get("/api/schedule")
+def api_schedule():
+    from .config import SCHEDULER as _S
+    out = {"enabled": _S.get("enabled"), "beta": _S.get("beta")}
+    if not _S.get("enabled"):
+        return out
+    from . import scheduler as _sched
+    jobs = _sched.list_jobs()
+    out["clarify"] = [j for j in jobs if j["status"] == "clarify"] + [j for j in jobs if j.get("needs_clarification")]
+    out["upcoming"] = [j for j in jobs if j["status"] in ("pending", "due")]
+    out["recent"] = [j for j in jobs if j["status"] in ("dispatched", "done", "failed", "cancelled")][:10]
+    return out
+
+@app.post("/api/schedule/resolve")
+def api_schedule_resolve(payload: dict = None):
+    payload = payload or {}
+    from .config import SCHEDULER as _S
+    if not _S.get("enabled"):
+        return {"ok": False, "reason": "scheduler beta disabled"}
+    from . import scheduler as _sched
+    try:
+        j = _sched.resolve(payload.get("id"), due_at=payload.get("due_at"),
+                           lane=payload.get("lane"), action=payload.get("action", "schedule"))
+        return {"ok": True, "job": j}
+    except Exception as e:
+        return {"ok": False, "error": str(e)[:200]}
+
+@app.post("/api/schedule/toggle")
+def api_schedule_toggle(payload: dict = None):
+    """User knowingly opts in/out of the BETA scheduler (writes config flag)."""
+    payload = payload or {}
+    want = bool(payload.get("enabled"))
+    cfg_path = Path(__file__).parent.parent / "tierllama" / "config.py"
+    src = cfg_path.read_text(encoding="utf-8")
+    new = re.sub(r'("enabled": )False(,\s*# BETA feature gate)', r'\g<1>True\g<2>' if want else r'\g<1>False\g<2>', src, count=1)
+    cfg_path.write_text(new, encoding="utf-8")
+    # flip the live module state too (server needs no restart)
+    from . import config as _cfg
+    _cfg.SCHEDULER["enabled"] = want
+    return {"ok": True, "enabled": want}
 
 @app.get("/")
 def index():

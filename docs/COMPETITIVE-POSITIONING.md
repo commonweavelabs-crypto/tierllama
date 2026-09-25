@@ -37,6 +37,19 @@ local models they cannot see; hard work escalates to their 500+ model catalog.
 We are the layer ABOVE them when the user owns hardware, and the privacy-first
 alternative when they don't.
 
+## Adjacent products (2026-09-25): NVIDIA PAIR validates the fleet lane
+**NVIDIA Personal-AI-Router (PAIR)** — Apache-2.0, Go, official. Routes independent
+inference requests across a home LAN fleet of RTX machines; exposes Ollama-compatible
+AND OpenAI-compatible proxy endpoints (existing agents work unchanged); keeps prompts
+on the home network. Details + feature plan: docs/PAIR-CASE-STUDY.md.
+- Validation: NVIDIA productizing home-fleet routing confirms our "Hardware fleet"
+  differentiator is a real, recognized market lane — we are not alone in this bet.
+- Where PAIR stops, we start: PAIR is a LAN scheduler (request → best device).
+  Tierllama is a policy layer (request → right TIER by price/quality, measured on
+  the user's actual silicon, decision log visible, cloud escalation with one key).
+- Stance: PAIR = the hardware-fleet lane proven; OpenRouter = the cloud lane proven.
+  Tierllama uniquely prices and routes across BOTH — "the layer above both."
+
 ## Other providers researched 2026-09-22
 - NVIDIA NIM: OpenAI-compatible, free trial tier - candidate 10th provider
 - Amazon Bedrock / Azure OpenAI: NOT natively OpenAI-compatible (AWS SigV4 /

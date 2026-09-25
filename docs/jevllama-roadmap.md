@@ -222,3 +222,25 @@ Gui's additions + the conflict question he raised:
 
 Open questions to answer in J12-J15 sequence: who curates the community
 rubric? How do per-user edits merge? Telemetry consent scope for rubric data?
+
+## J12+ feature candidates from NVIDIA PAIR (added 2026-09-25, see docs/PAIR-CASE-STUDY.md)
+
+**Code study done 2026-09-25 (repo cloned, read, pattern-ranked): docs/PAIR-CODE-STUDY.md.**
+Top port-picks: (1) EWMA α=0.35 GPU-pressure with asymmetric hysteresis bands + stale→neutral
+(job-scheduler) — the missing continuous health signal for our measured tier; (2) reservation
+lifecycle (reserve-at-dispatch, release-on-end, move-on-failover, one lock) for T4; (3)
+commit-at-first-body-byte + dispatch budget/deadline; (4) activity-vouching liveness for T3
+(busy nodes stay listed); (5) manifest-driven engine addition. Confirmed absent in PAIR's
+code: pricing/tier/cost policy, per-machine bench, user-visible decision log, cloud tier —
+all four remain ours.
+
+- **Fleet discovery + Ollama-compatible proxy expansion (T3):** LAN discovery of
+  Ollama/llama.cpp nodes, registered into the provider grid with `local-fleet`
+  provenance. PAIR's node discovery is the reference pattern; implement in our stack.
+- **Request-level scheduling in the proxy (T4):** per-request tier choice → node →
+  decision-log entry. Composes with T3; keeps the transparency differentiator.
+- **Dogfood experiment (T5):** install PAIR, point Hermes's local endpoint at its
+  Ollama-compatible endpoint, pool desktop (5070 Ti) + MacBook Air, measure
+  request-level routing vs our single-box defaults; results → REAL-SAVINGS-PROOF.md.
+- **Positioning citation (T1, done 2026-09-25):** COMPETITIVE-POSITIONING.md
+  "Adjacent products" section. Case study: docs/PAIR-CASE-STUDY.md (T2).
