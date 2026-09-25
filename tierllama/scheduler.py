@@ -12,7 +12,7 @@ from . import config
 _SCHEDULER = lambda: config.SCHEDULER
 
 ROOT = Path(__file__).parent.parent
-QUEUE_PATH = Path(SCHEDULER.get("queue_path") or (ROOT / "logs" / "schedule.json"))
+QUEUE_PATH = Path(_SCHEDULER().get("queue_path") or (ROOT / "logs" / "schedule.json"))
 
 _lock = threading.Lock()
 
