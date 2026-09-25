@@ -320,7 +320,12 @@ def api_schedule_toggle(payload: dict = None):
     want = bool(payload.get("enabled"))
     cfg_path = Path(__file__).parent.parent / "tierllama" / "config.py"
     src = cfg_path.read_text(encoding="utf-8")
-    new = re.sub(r'("enabled": )False(,\s*# BETA feature gate)', r'\g<1>True\g<2>' if want else r'\g<1>False\g<2>', src, count=1)
+    # match either True or False on the gate line (regex bug 2026-09-25: OFF toggle
+    # was a silent no-op whenever the file already said True)
+    new = re.sub(r'("enabled": )(True|False)(,\s*# BETA feature gate)',
+                 lambda m: f"{m.group(1)}{want}{m.group(3)}", src, count=1)
+    if new == src:
+        return {"ok": False, "error": "gate line not found in config.py - not written"}
     cfg_path.write_text(new, encoding="utf-8")
     # flip the live module state too (server needs no restart)
     from . import config as _cfg
