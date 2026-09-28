@@ -165,11 +165,15 @@ the same confidence threshold + explicit confirmation in the UI.
 Value: Tierllama becomes not just a router but an agent brain - jobs that
 schedule themselves onto the cheapest capable lane at the right time.
 
-### J16 (SPEC'D 9/24): hardware census & worker-class fit — feeds J13 v2
-Full spec: docs/SPECS/jevllama-j16-hardware-census.md. Discovery exists (J5),
-per-model bench exists (J8) — gaps: machine dimension in bench data, worker
-CLASS per machine (user-confirmed), model@machine pairing labels, and the
-hardware-recommendation engine (post-community-data).
+### J16 (SPEC'D 9/24 → LANDED 9/29): hardware census & worker-class fit — feeds J13 v2
+Full spec: docs/SPECS/jevllama-j16-hardware-census.md. All 4 gaps closed 9/29:
+- `48f5783` — **Gap A**: NEW `bench_keys.py` — bench_key=model@host, 24 pre-J16 records migrated (host=localhost, documented assumption, idempotent), load_bench_by_key. THE bug fixed: same model on 2 machines was indistinguishable.
+- `787c426` — **Gap B**: NEW `machines.py` — machine_profile {host, name(user-given), class(user-confirmed), windows, pairs} one JSON per machine in logs/fleet/; CONSENT BOUNDARY (class requires explicit user answer, class_confirmed_by=user, no inference anywhere — spec hard rule).
+- `bf04351` — **Gap C**: NEW `pair_labels.py` — pair labels {timing_fit, max_fit, tok_s, cold_load_s} host-scoped from bench; pair_worker_class spec mapping (NOW+HARD on workhorse -> workhorse; LATER+HARD -> user-picked class; cloud -> cloud_scheduled); best_pair_for_lane. Rank-direction bug caught by tests pre-commit.
+- `53913dc` — **Dashboard Machines tab**: /api/machines + /api/machines/class (the only path that sets a class), class picker with honest not-set state + user-confirmed badge, discovery-merged unprofiled hosts.
+- `db05f54` — **J13 hookup**: scheduler BOX jobs consult the box host machine_profile; user-confirmed class wins over PROVISIONAL mapping; corrupt/missing -> documented fallback. Tests only, no behavior change without a profile.
+**Suite: 119/119 OK.**
+- **Gap D (future)**: hardware×model RECOMMENDATION pre-purchase = J17 candidate, needs community seed data (opt-in telemetry flywheel, already roadmapped).
 
 ### Later (unchanged)
 - Telemetry flywheel (opt-in) -> community seeds
