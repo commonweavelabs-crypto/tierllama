@@ -133,7 +133,7 @@ Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = po
 - `b6bb404` — persistence E2E: real cross-process (subprocess enqueue → fresh import → tick → dispatched), corrupt-file reset, midnight wrap, start==end window
 - `8edf48c` — dashboard polish: toggle reads authoritative gate state (no string-matching); clarify cards + upcoming table + honest OFF-state text verified
 Golden set v2 gate: PASSED (floors met, improvements recorded). 55/55 tests OK.
-**V2 (next)**: worker classes + saturation offload; shove cap (absent in v1, documented); relative-phrase rubric refinement ('later today'/'this week' with '?' → DATE_UNCLEAR vs DEADLINE); rescheduling heuristics.
+**V2 (next)**: worker classes + saturation offload; shove cap (absent in v1, documented); relative-phrase rubric refinement ('later today'/'this week' with '?' → DATE_UNCLEAR vs DEADLINE); rescheduling heuristics; **per-action confidence thresholds** (Gui-approved 9/29, from Simon Scrapes' Jev walkthrough yt-2dai1jvyd5m: one threshold per action set by the cost of being wrong — e.g. 0.6 for read-only queries, 0.85–0.95 for destructive/scheduling actions — replacing the single global `when_conf_threshold` 0.85; clarify-or-ask rule unchanged).
 Question: can Jev route a SCHEDULE? "do this by Friday" -> task placed ON
 Friday, not just LATER? **Answer (v1, live-verified): yes — DEADLINE conf .95 → queued due Oct-02 17:00; vague "soon" → clarification, guess surfaced but never executed.**
 Architecture sketch (Jev's calibrated-confidence makes this uniquely cheap):
