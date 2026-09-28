@@ -68,6 +68,9 @@ class TestRouterScheduling(unittest.TestCase):
         # would have burned queue time on test prompts). Tests must never touch
         # real adapters: sandbox BOX_JOBS + the decision log to a temp dir.
         self._tmp = tempfile.mkdtemp()
+        from tierllama import config as C
+        self._orig_queue = C.SCHEDULER["queue_path"]
+        C.SCHEDULER["queue_path"] = str(Path(self._tmp) / "sched.json")  # never touch real queue
         import tierllama.adapters as A
         self._orig_boxjobs = A.BOX_JOBS
         A.BOX_JOBS = Path(self._tmp)
@@ -100,6 +103,7 @@ class TestRouterScheduling(unittest.TestCase):
     def tearDown(self):
         from tierllama import config as C
         C.SCHEDULER["enabled"] = False
+        C.SCHEDULER["queue_path"] = self._orig_queue
         import tierllama.adapters as A
         A.BOX_JOBS = self._orig_boxjobs
         A.dispatch = self._orig_dispatch
