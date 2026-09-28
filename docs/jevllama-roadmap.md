@@ -134,6 +134,16 @@ Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = po
 - `8edf48c` — dashboard polish: toggle reads authoritative gate state (no string-matching); clarify cards + upcoming table + honest OFF-state text verified
 Golden set v2 gate: PASSED (floors met, improvements recorded). 55/55 tests OK.
 **V2 (next)**: worker classes + saturation offload; shove cap (absent in v1, documented); relative-phrase rubric refinement ('later today'/'this week' with '?' → DATE_UNCLEAR vs DEADLINE); rescheduling heuristics; **per-action confidence thresholds** (Gui-approved 9/29, from Simon Scrapes' Jev walkthrough yt-2dai1jvyd5m: one threshold per action set by the cost of being wrong — e.g. 0.6 for read-only queries, 0.85–0.95 for destructive/scheduling actions — replacing the single global `when_conf_threshold` 0.85; clarify-or-ask rule unchanged).
+
+### Shared module: jev-triage (filed 2026-09-29, Gui's call — own repo, cross-project)
+**Repo:** github.com/commonweavelabs-crypto/jev-triage (MIT, skeleton committed 75d789e). Jev-powered
+submission triage (bug/feature/complaint/question + severity + subsystem split + intent routing,
+per-action thresholds, clarify-or-ask, audit trail) as a HOST-AGNOSTIC module: built once, consumed
+by comfyui-video-ui first (support tab, MVP-adjacent), then exported to tierllama (proxy error reports
++ support intake) without a rewrite. Milestones JT-1 (core engine) → JT-2 (video-UI consumer) → JT-3
+(pip packaging + tierllama export) live in that repo's docs/PLAN.md. Tierllama's role: second consumer
++ the Jev layer it calls may BE our local proxy/classifier (dogfood synergy). Also links to J14:
+triage verdicts = free labeled outcome data for the capability ledger.
 Question: can Jev route a SCHEDULE? "do this by Friday" -> task placed ON
 Friday, not just LATER? **Answer (v1, live-verified): yes — DEADLINE conf .95 → queued due Oct-02 17:00; vague "soon" → clarification, guess surfaced but never executed.**
 Architecture sketch (Jev's calibrated-confidence makes this uniquely cheap):
