@@ -52,8 +52,16 @@ class TestPersistence(unittest.TestCase):
         self.assertEqual(len(jobs), 1, "queue must survive the process boundary")
         self.assertEqual(jobs[0]["id"], jid)
         self.assertEqual(jobs[0]["status"], "pending")
-        # tick dispatches it (LOCAL lane dispatch returns ok)
-        summary = S.tick()
+        # tick dispatches it — but through a FAKE adapters.dispatch (2026-09-29:
+        # a real Ollama call in a persistence test makes the test flaky + loads GPU)
+        import tierllama.adapters as A
+        real_dispatch = A.dispatch
+        A.dispatch = lambda lane, message, **kw: {"status": "ok", "lane": lane,
+            "model": "test-stub", "result": "test", "latency_s": 0.0}
+        try:
+            summary = S.tick()
+        finally:
+            A.dispatch = real_dispatch
         self.assertEqual(summary["dispatched"], 1)
         self.assertEqual(summary["jobs"][0]["status"], "dispatched")
         # and the file agrees:

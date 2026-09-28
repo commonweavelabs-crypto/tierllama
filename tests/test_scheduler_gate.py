@@ -63,10 +63,50 @@ class TestRouterScheduling(unittest.TestCase):
         from tierllama import config as C
         self.cfg = C
         C.SCHEDULER["enabled"] = True
+        # 2026-09-29 incident: route(dispatch=True) on a BOX-lane message wrote 6
+        # real job files to \\\\192.168.12.150\\C$\\jobs\\pending (the box worker
+        # would have burned queue time on test prompts). Tests must never touch
+        # real adapters: sandbox BOX_JOBS + the decision log to a temp dir.
+        self._tmp = tempfile.mkdtemp()
+        import tierllama.adapters as A
+        self._orig_boxjobs = A.BOX_JOBS
+        A.BOX_JOBS = Path(self._tmp)
+        # sandbox real dispatch entirely: no local GPU load, no cloud spend, no box I/O
+        self._orig_dispatch = A.dispatch
+        def _fake_dispatch(lane, message, **kw):
+            return {"status": "ok", "lane": lane, "model": "test-stub",
+                    "result": "test", "latency_s": 0.0}
+        A.dispatch = _fake_dispatch
+        import tierllama.router as R
+        self._orig_router_dispatch = R.dispatch
+        R.dispatch = _fake_dispatch   # router.py binds dispatch at module level (line 6)
+        # also sandbox the classifier (live network, ~2-20s per call + HTTP 500 flakiness)
+        def _fake_classify(message, last_exchanges=None, timeout=60):
+            low = message.lower()
+            if "by " in low or "before " in low:
+                when, raw, wc = "DEADLINE", low.split("by ", 1)[-1].split("before ", 1)[-1], 0.95
+            elif any(w in low for w in ("soon", "later today", "this week")):
+                when, raw, wc = "DATE_UNCLEAR", "soon" if "soon" in low else low, 0.9
+            elif any(w in low for w in ("overnight", "tonight", "no rush", "whenever", "tomorrow")):
+                when, raw, wc = "DEFERRED", "overnight", 0.9
+            else:
+                when, raw, wc = "NOW", "", 0.95
+            return {"difficulty": "MEDIUM", "difficulty_conf": 0.9, "timing": "NOW",
+                    "timing_conf": 0.9, "when": when, "when_conf": wc, "when_raw": raw,
+                    "confidence": 0.9, "lane": "LOCAL", "latency_s": 0.0}
+        self._orig_classify = R.classify
+        R.classify = _fake_classify
 
     def tearDown(self):
         from tierllama import config as C
         C.SCHEDULER["enabled"] = False
+        import tierllama.adapters as A
+        A.BOX_JOBS = self._orig_boxjobs
+        A.dispatch = self._orig_dispatch
+        import tierllama.router as R
+        R.dispatch = self._orig_router_dispatch
+        R.classify = self._orig_classify
+        shutil.rmtree(self._tmp, ignore_errors=True)
 
     def test_deadline_gets_scheduled(self):
         from tierllama.router import route
