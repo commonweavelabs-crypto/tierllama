@@ -37,12 +37,16 @@ def lane_for(difficulty, timing, confidence, threshold=None, when=None, when_con
     """Route a classified message to a lane. Ambiguous/low-confidence -> FALLBACK.
     J13: when=None reproduces the pre-J13 behavior exactly (golden set safe).
     when=DEADLINE -> same lane as timing picks, but caller enters the job in the
-    scheduler with a due_at instead of dispatching immediately (router handles)."""
+    scheduler with a due_at instead of dispatching immediately (router handles).
+    J13 v2: the DEADLINE gate uses the per-action schedule threshold (0.85,
+    actions.py) instead of the old global SCHEDULER.when_conf_threshold."""
     threshold = threshold if threshold is not None else CLASSIFIER["confidence_threshold"]
     if confidence < threshold:
         return "FALLBACK"
-    if when == "DEADLINE" and when_conf is not None and when_conf < SCHEDULER["when_conf_threshold"]:
-        return "FALLBACK"
+    if when == "DEADLINE" and when_conf is not None:
+        from .actions import action_conf_threshold
+        if when_conf < action_conf_threshold("schedule"):
+            return "FALLBACK"
     if timing == "LATER" and difficulty != "HARD":
         return "BOX"
     return DIFFICULTY_TO_LANE.get(difficulty, "CLOUD_MEDIUM")

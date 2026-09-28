@@ -71,7 +71,23 @@ def route(message, dispatch=True, last_exchanges=None):
         "classifier_latency_s": c["latency_s"],
     }
     # J13: scheduler handles DEADLINE/DEFERRED-with-date jobs when beta enabled.
-    if lane != "FALLBACK" and dispatch and when in ("DEADLINE",) and when_conf >= 0.85:
+    # J13 v2: per-action confidence gate (actions.py) — schedule=0.85, query=0.60;
+    # below threshold is ALWAYS clarify, never guess-execute. Checked BEFORE the
+    # lane branch so a below-threshold DEADLINE clarifies even though lane_for
+    # already routed it to FALLBACK.
+    if dispatch and when in ("DEADLINE",):
+        from .actions import gate as _gate, resolve_action as _resolve_action
+        act = _resolve_action(when, lane)
+        if _gate(act, when_conf) != "proceed":
+            record["needs_clarification"] = {"field": "when", "raw": when_raw,
+                                             "reason": f"below per-action threshold ({act})",
+                                             "confidence": when_conf,
+                                             "guess": _resolve_due(when_raw)}
+            LOG.parent.mkdir(exist_ok=True)
+            with LOG.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+            return record
+    if lane != "FALLBACK" and dispatch and when in ("DEADLINE",):
         from . import scheduler as _sched
         from .config import SCHEDULER as _S
         if _S.get("enabled"):
