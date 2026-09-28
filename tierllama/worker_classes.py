@@ -33,15 +33,26 @@ PROVISIONAL_LANE_CLASS = {
     "FALLBACK": "always_on",
 }
 
-def class_for_lane(lane: str) -> str:
+def class_for_lane(lane: str, host: str | None = None) -> str:
     """Worker class for a lane. Unknown lane -> always_on (safest for deadlines:
-    never blocks a job the user explicitly scheduled)."""
+    never blocks a job the user explicitly scheduled).
+    J16: when a machine_profile exists for `host`, its user-confirmed class
+    wins over the PROVISIONAL lane mapping (consented data > heuristic)."""
+    if host:
+        try:
+            from .machines import load_profile
+            prof = load_profile(host)
+            if prof and prof.get("class"):
+                return prof["class"]
+        except Exception:
+            pass  # machines offline/unreadable -> provisional mapping (documented fallback)
     return PROVISIONAL_LANE_CLASS.get(lane, "always_on")
 
-def can_dispatch_now(lane: str, now=None) -> tuple[bool, str]:
-    """(dispatchable, reason). night_only lanes dispatch only in-window."""
+def can_dispatch_now(lane: str, now=None, host: str | None = None) -> tuple[bool, str]:
+    """(dispatchable, reason). night_only lanes dispatch only in-window.
+    J16: host's machine_profile class (if any) overrides the lane mapping."""
     from .scheduler import _is_night
-    cls = class_for_lane(lane)
+    cls = class_for_lane(lane, host)
     if cls == "always_on":
         return True, "always_on"
     if cls == "night_only":

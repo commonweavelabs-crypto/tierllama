@@ -1,11 +1,12 @@
 """Tests for tierllama/worker_classes.py + scheduler tick integration (J13 v2 task 2).
 Run: python -m unittest tests.test_worker_classes -v"""
-import sys, unittest, tempfile, json
+import sys, unittest, tempfile, json, shutil
 from pathlib import Path
 from datetime import datetime, timedelta
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from tierllama import worker_classes as W
+from tierllama import machines as M
 from tierllama.worker_classes import class_for_lane, can_dispatch_now, maybe_shift_due
 
 
@@ -132,3 +133,46 @@ class TestTickIntegration(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class TestJ16ProfileHookup(unittest.TestCase):
+    """machine_profile class (user-confirmed) overrides PROVISIONAL mapping."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.old_dir = M.FLEET_DIR
+        M.FLEET_DIR = Path(self.tmp) / "fleet"
+
+    def tearDown(self):
+        M.FLEET_DIR = self.old_dir
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _fresh(self):
+        # earlier tests purge tierllama.* from sys.modules (persistence tests);
+        # re-bind the CURRENT modules so FLEET_DIR patching lands on the live module
+        import importlib
+        import tierllama.machines as M2, tierllama.worker_classes as W2
+        M2.FLEET_DIR = Path(self.tmp) / "fleet"
+        return M2, W2
+
+    def test_box_profile_workhorse_overrides_night_only(self):
+        M2, W2 = self._fresh()
+        M2.upsert_profile("192.168.12.150", machine_class="workhorse")
+        ok, why = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="192.168.12.150")
+        self.assertTrue(ok)   # would be False under provisional night_only
+
+    def test_box_profile_night_only_keeps_window(self):
+        M2, W2 = self._fresh()
+        M2.upsert_profile("192.168.12.150", machine_class="night_only")
+        ok, _ = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="192.168.12.150")
+        self.assertFalse(ok)
+
+    def test_unprofiled_host_uses_provisional(self):
+        M2, W2 = self._fresh()
+        ok, _ = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="unknown-host")
+        self.assertFalse(ok)
+
+    def test_corrupt_profile_falls_back(self):
+        M2, W2 = self._fresh()
+        M2.FLEET_DIR.mkdir(parents=True, exist_ok=True)
+        (M2.FLEET_DIR / "192.168.12.150.json").write_text("{corrupt", encoding="utf-8")
+        self.assertEqual(W2.class_for_lane("BOX", host="192.168.12.150"), "night_only")

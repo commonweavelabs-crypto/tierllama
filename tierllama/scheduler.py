@@ -106,7 +106,10 @@ def tick(now=None):
     out = []
     shifted_jobs = []
     for j in due:
-        ok, reason = can_dispatch_now(j["lane"], now)
+        # J16: BOX jobs consult the box host's machine_profile (if profiled);
+        # everything else uses the lane mapping (all cloud/local = always_on anyway)
+        host = "192.168.12.150" if j["lane"] == "BOX" else None
+        ok, reason = can_dispatch_now(j["lane"], now, host=host)
         if not ok:
             # visible shift, not silent deferral: due_at moves to next window open
             shifted = maybe_shift_due(j, now)
