@@ -96,23 +96,40 @@ def _dispatch(j):
         j["status"] = "failed"
     return j
 
-def tick():
-    """One due-loop pass: dispatch everything due. Returns summary."""
-    due = due_jobs()
+def tick(now=None):
+    """One due-loop pass: dispatch everything due. Returns summary.
+    J13 v2: worker classes — night_only lanes dispatch only inside the night
+    window; jobs due outside their window get a VISIBLE shift (due_at moved to
+    next window open + rescheduled_reason), never silent deferral."""
+    from .worker_classes import can_dispatch_now, maybe_shift_due
+    due = due_jobs(now)
     out = []
+    shifted_jobs = []
     for j in due:
+        ok, reason = can_dispatch_now(j["lane"], now)
+        if not ok:
+            # visible shift, not silent deferral: due_at moves to next window open
+            shifted = maybe_shift_due(j, now)
+            with _lock:
+                q = _load()
+                for i, qj in enumerate(q["jobs"]):
+                    if qj["id"] == j["id"] and shifted:
+                        q["jobs"][i] = shifted
+                _save(q)
+            if shifted:
+                shifted_jobs.append({"id": j["id"], "due_at": shifted["due_at"],
+                                     "rescheduled_reason": shifted["rescheduled_reason"]})
+            continue
         _dispatch(j)
         with _lock:
             q = _load()
-            for i, qj in enumerate(q["jobs"]):
-                if qj_id := (qj["id"] if False else None):
-                    pass
             for i, qj in enumerate(q["jobs"]):
                 if qj["id"] == j["id"]:
                     q["jobs"][i] = j
             _save(q)
         out.append(j)
-    return {"dispatched": len(out), "jobs": [{"id": j["id"], "status": j["status"]} for j in out]}
+    return {"dispatched": len(out), "jobs": [{"id": j["id"], "status": j["status"]} for j in out],
+            "shifted": shifted_jobs}
 
 def start_background(interval_s=None):
     """Daemon thread running tick() every due_loop_s. For webapp integration."""
