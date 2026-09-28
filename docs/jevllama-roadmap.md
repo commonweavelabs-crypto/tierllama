@@ -181,7 +181,16 @@ Full spec: docs/SPECS/jevllama-j16-hardware-census.md. All 4 gaps closed 9/29:
 - Adaptive retry (Jev learns from misroutes)
 
 
-### J14 (BRAINSTORM, Gui 9/22 night): capability feedback loop — failure-driven bumping
+### J14 (SPEC'D 9/29 → v1 LANDED 9/29): capability feedback loop — failure-driven bumping
+Spec: docs/SPECS/jevllama-j14-capability-loop.md (write-up from this goal's spec-first pass). Landed:
+- `28683b2` — spec + CAPABILITY config block (BETA gate OFF; bump_after_failures=3, cooldown_h=12, max_moves_per_day=1, min_samples=10, canary_pct=0)
+- `8c71b5e` — **task 1 outcome signal**: NEW `outcomes.py` — MVP truth taxonomy (error/empty=failure, ok+content=success, queued=unknown, user retry-in-session=failure signal); outcomes.jsonl with msg_key HASHED (J6 privacy rule, test-enforced)
+- `f981f66` — **task 2+3 ledger + bump rule**: NEW `capability.py` — rolling ledger keyed model@host|difficulty|timing|when (classifier dims only, no embeddings per spec); consecutive-failure streaks (success breaks, unknown neutral); evaluate_bump = +1 tier FOR THAT CLASS ONLY with J15 guards (cooldown, rate 1/day, min-samples); DRY-RUN SAFE (decisions computed regardless of gate; caller applies only when CAPABILITY.enabled)
+- `6219858` — **task 4 canary probes**: NEW `canary.py` — sample canary_pct of HARD traffic down a tier; bench-style deterministic usability grading; promotion after N usable outputs; consent-gated (gate OFF = never fires); rng=0.0-is-valid-roll bug caught by tests
+- `696e4bf` — **task 5 dashboard**: /api/capability + toggle (consent pattern, block-scoped so SCHEDULER gate untouched — e2e verified); overview card with honest OFF copy + outcome counts + bump list; load_recent_bumps transparency
+**Suite: 153/153 OK. Both beta gates verified OFF.**
+**J15 next**: its guardrails are already designed (roadmap conflict section + J14 cooldown/rate/min-samples are the class-side); J15 = MODEL-level reputation on top of J14's ledger, waiting on J14's live data.
+**J14 v2 would add**: semantic outcome via user thumbs up/down; embedding-based prompt clustering (replacing dimension-tuple keys); cross-user aggregation (J15 territory, needs telemetry consent).
 Gui's idea: when a model keeps FAILING on a class of prompts the classifier
 labels EASY/MEDIUM, flag it and bump that prompt-class to a stronger tier
 (gradually: EASY -> MEDIUM -> HARD -> EXPERT). And the reverse probe: every
