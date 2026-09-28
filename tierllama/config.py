@@ -21,6 +21,19 @@ DIFFICULTY_TO_LANE = {
 # --- J13 scheduler (BETA: off by default; user must knowingly opt in) ---
 WHEN_VALUES = ["NOW", "DEADLINE", "DEFERRED", "DATE_UNCLEAR"]
 
+# --- J14 capability loop (BETA: off by default; user must knowingly opt in) ---
+CAPABILITY = {
+    "enabled": False,      # BETA feature gate - never enable silently (Gui policy)
+    "beta": True,
+    "bump_after_failures": 3,   # consecutive failures on a class -> tier += 1 (that class only)
+    "cooldown_h": 12,           # no second class move within this window (J15 collision guard)
+    "max_moves_per_day": 1,     # per class (J15 guard)
+    "min_samples": 10,          # ledger needs this many samples before any move
+    "window_n": 100,            # rolling events per ledger key
+    "canary_pct": 0,            # % of HARD traffic sampled down a tier (0 = off; consent-gated)
+    "canary_successes": 3,      # usable canary outputs needed to promote a class down
+}
+
 SCHEDULER = {
     "enabled": False,      # BETA feature gate - never enable silently (Gui policy)
     "beta": True,
