@@ -285,6 +285,51 @@ def seed_rollback():
     return rollback()
 
 
+# ---------- J14 capability loop (BETA) ----------
+@app.get("/api/capability")
+def api_capability():
+    from .capability import Ledger, load_recent_bumps
+    from .outcomes import summary as outcome_summary
+    led = Ledger()
+    led.load()
+    keys = sorted(led.events.keys())
+    rows = [{"key": k, **led.stats(k)} for k in keys]
+    rows.sort(key=lambda r: -(r["samples"]))
+    from .config import CAPABILITY
+    # bump events recorded in state (they exist even when gate OFF - dry-run transparency)
+    bumps = load_recent_bumps()
+    return {"enabled": CAPABILITY["enabled"], "beta": CAPABILITY["beta"],
+            "params": {k: CAPABILITY[k] for k in
+                       ("bump_after_failures", "cooldown_h", "max_moves_per_day",
+                        "min_samples", "canary_pct", "canary_successes")},
+            "outcomes": outcome_summary(),
+            "classes": rows[:50],
+            "bumps": bumps}
+
+@app.post("/api/capability/toggle")
+def api_capability_toggle(payload: dict = None):
+    # same consent pattern as the scheduler gate: user knowingly opts in/out.
+    # The CAPABILITY gate line carries the same comment text as SCHEDULER's, so
+    # this must disambiguate - rewrite INSIDE the CAPABILITY block only.
+    payload = payload or {}
+    want = bool(payload.get("enabled"))
+    cfg_path = Path(__file__).parent.parent / "tierllama" / "config.py"
+    src = cfg_path.read_text(encoding="utf-8")
+    i = src.find("CAPABILITY = {")
+    j = src.find("SCHEDULER = {")
+    if i < 0 or j < 0 or j < i:
+        return {"ok": False, "error": "CAPABILITY block not found in config.py"}
+    block = src[i:j]
+    new_block = re.sub(r'("enabled": )(True|False)(,      # BETA feature gate)',
+                       lambda m: f"{m.group(1)}{want}{m.group(3)}", block, count=1)
+    if new_block == block:
+        return {"ok": False, "error": "gate line not found inside CAPABILITY block"}
+    cfg_path.write_text(src[:i] + new_block + src[j:], encoding="utf-8")
+    from . import config as _cfg
+    _cfg.CAPABILITY["enabled"] = want
+    return {"ok": True, "enabled": want}
+
+
 # ---------- J16 machines (hardware census) ----------
 @app.get("/api/machines")
 def api_machines():

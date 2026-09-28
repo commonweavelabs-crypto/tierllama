@@ -147,7 +147,29 @@ def bump_tier(tier: str, bump_level: int) -> str:
     i = min(DIFFICULTY_ORDER.index(tier) + max(0, bump_level), len(DIFFICULTY_ORDER) - 1)
     return DIFFICULTY_ORDER[i]
 
-def evaluate_bump(ledger: L = None, state: BumpState = None, bench_key: str = "",
+
+def load_recent_bumps(limit: int = 20) -> list:
+    """Recent class tier moves from BumpState files - for the UI report.
+    Transparency: moves exist in state only after apply_bump (performed by the
+    caller only when the gate is ON)."""
+    state_path = Path(__file__).parent.parent / "logs" / "capability_state.json"
+    if not state_path.exists():
+        return []
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    rows = []
+    for key, st in state.items():
+        mv = st.get("last_move")
+        if mv:
+            rows.append({"class": key, "at": mv.get("at"), "from": mv.get("from"),
+                         "to": mv.get("to"), "reason": mv.get("reason"),
+                         "bump_level": st.get("bump_level", 0)})
+    rows.sort(key=lambda r: r.get("at") or "", reverse=True)
+    return rows[:limit]
+
+def evaluate_bump(ledger: "Ledger" = None, state: "BumpState" = None, bench_key: str = "",
                   difficulty: str = "", timing: str = "", when: str = "",
                   current_tier: str | None = None, now=None) -> dict:
     """The gradual bump rule (dry-run safe: returns a DECISION; the caller

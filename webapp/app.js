@@ -326,3 +326,29 @@ document.querySelectorAll('nav.tabs button').forEach(b => {
   });
 });
 loadScheduler();
+
+// ---------- J14 capability loop (BETA) ----------
+async function loadCapability() {
+  const r = await (await fetch("/api/capability")).json();
+  const btn = document.getElementById("capToggleBtn");
+  const summary = document.getElementById("capSummary");
+  const bumps = document.getElementById("capBumps");
+  if (r.enabled) {
+    btn.textContent = "Disable capability loop";
+  } else {
+    btn.textContent = "Enable capability loop (beta)";
+  }
+  const o = r.outcomes || {};
+  summary.textContent = `outcomes so far: ${o.success || 0} success / ${o.failure || 0} failure / ${o.unknown || 0} unknown · gate ${r.enabled ? "ON (beta)" : "OFF"} · canary ${r.params.canary_pct}%`;
+  bumps.innerHTML = (r.bumps && r.bumps.length)
+    ? r.bumps.map(b => `<div class="muted">tired: ${b["class"]} ${b.from} -> ${b.to} — ${b.reason}</div>`).join("")
+    : '<div class="muted">No class bumps yet (none forced while the gate is off).</div>';
+}
+async function capToggle() {
+  const cur = await (await fetch("/api/capability")).json();
+  const r = await (await fetch("/api/capability/toggle", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({enabled: !cur.enabled})})).json();
+  document.getElementById("capMsg").textContent = r.ok ? (!cur.enabled ? "enabled — beta active" : "disabled") : (r.error || "failed");
+  loadCapability();
+}
+document.addEventListener("DOMContentLoaded", loadCapability);

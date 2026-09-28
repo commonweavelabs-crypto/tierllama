@@ -82,6 +82,14 @@
     <div class="card"><h3>Savings</h3><div id="savings">…</div></div>
     <div class="card"><h3>Fleet</h3><div id="fleet">…</div></div>
   </div>
+  <div class="card">
+    <h3>Capability loop <span class="badge" style="font-size:.6rem">BETA</span></h3>
+    <div class="muted">Learns from outcomes: a prompt-class that keeps failing gets bumped up a tier (that class only), and canary probes test whether classes can come down. <b>Beta feature: OFF — routing never changes on its own until you enable it, and every change is reported here.</b></div>
+    <div id="capSummary" class="muted" style="margin:.4rem 0">…</div>
+    <div id="capBumps"></div>
+    <button id="capToggleBtn" onclick="capToggle()">Enable capability loop (beta)</button>
+    <span id="capMsg" class="muted"></span>
+  </div>
 </div>
 
 <div class="tabpane" id="tab-routing">
@@ -148,7 +156,7 @@
     <h3>Scheduler <span class="badge" style="background:linear-gradient(90deg,#DA1417,#f07b5f)">BETA</span></h3>
     <div class="muted">Schedule jobs onto your lanes with real deadlines ("do this by Friday"). <b>Beta feature:</b> untested across use cases — date parsing will miss, schedules may need manual fixes, and rescheduling heuristics are still being tuned. It is off by default; nothing schedules until you turn it on.</div>
     <div id="schedState" style="margin:.6rem 0"></div>
-    <button class="primary" id="schedToggleBtn" onclick="schedToggle()">Enable scheduler (beta)</button>
+    <button id="schedToggleBtn" onclick="schedToggle()">Enable scheduler (beta)</button>
     <span id="schedMsg" class="muted"></span>
   </div>
   <div id="schedBody" style="display:none">
