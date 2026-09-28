@@ -240,6 +240,37 @@ loadProviders();
 loadStats(); loadFleet(); loadLog();
 
 
+// ---------- J16 machines ----------
+const MACHINE_CLASSES = ["workhorse", "always_on", "night_only", "cloud_scheduled"];
+async function loadMachines() {
+  const r = await (await fetch("/api/machines")).json();
+  const el = document.getElementById("machineList");
+  if (!r.machines || !r.machines.length) {
+    el.innerHTML = '<div class="muted">No machines yet. Run tierllama discovery or bench to find machines on your network.</div>';
+    return;
+  }
+  el.innerHTML = r.machines.map(m => `
+    <div class="tier-row" style="grid-template-columns:1fr auto;margin:.4rem 0">
+      <div>
+        <b>${m.name}</b> <span class="muted">(${m.host})</span><br>
+        <span class="muted">class: ${m.class ? m.class : "not set — pick one:"}</span>
+        ${m.class ? '' : `<select onchange="setMachineClass('${m.host}', this.value)">
+          <option value="">choose…</option>
+          ${MACHINE_CLASSES.map(c => `<option value="${c}">${c}</option>`).join("")}
+        </select>`}
+        ${m.class && m.class_confirmed_by === "user" ? '<span class="badge" style="font-size:.6rem">user-confirmed</span>' : ''}
+        ${m.pairs && m.pairs.length ? '<br><span class="muted">pairs: ' + m.pairs.map(p => `${p.model} (${p.timing_fit}/${p.max_fit}, ${p.tok_s} tok/s)`).join(" · ") + '</span>' : ''}
+        ${m.models && m.models.length ? '<br><span class="muted">models seen: ' + m.models.slice(0,4).join(", ") + (m.models.length>4?` +${m.models.length-4}`:'') + '</span>' : ''}
+      </div>
+    </div>`).join("");
+}
+async function setMachineClass(host, cls) {
+  if (!cls) return;
+  const r = await (await fetch("/api/machines/class", {method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({host, class: cls})})).json();
+  loadMachines();
+}
+
 // ---------- J13 scheduler (BETA) ----------
 async function loadScheduler() {
   const r = await (await fetch("/api/schedule")).json();
@@ -289,6 +320,9 @@ async function schedResolve(id, action) {
 }
 // refresh when the tab becomes active:
 document.querySelectorAll('nav.tabs button').forEach(b => {
-  b.addEventListener("click", () => { if (b.dataset.tab === "scheduler") loadScheduler(); });
+  b.addEventListener("click", () => {
+    if (b.dataset.tab === "scheduler") loadScheduler();
+    if (b.dataset.tab === "machines") loadMachines();
+  });
 });
 loadScheduler();

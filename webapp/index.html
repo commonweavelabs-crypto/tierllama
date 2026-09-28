@@ -66,6 +66,7 @@
   <button data-tab="overview" class="active">Overview</button>
   <button data-tab="routing">Routing</button>
   <button data-tab="providers">Providers</button>
+  <button data-tab="machines">Machines</button>
   <button data-tab="scheduler">Scheduler <span class="badge" style="font-size:.6rem">BETA</span></button>
   <button data-tab="activity">Activity</button>
 </nav>
@@ -133,6 +134,14 @@
   </div>
 </div>
 
+
+<div class="tabpane" id="tab-machines">
+  <div class="card">
+    <h3>Your machines</h3>
+    <div class="muted">Machines found on your network. Each gets a class — that's how Tierllama knows where overnight work belongs. You confirm each machine's class yourself; Tierllama never guesses.</div>
+    <div id="machineList" style="margin-top:.6rem"></div>
+  </div>
+</div>
 
 <div class="tabpane" id="tab-scheduler">
   <div class="card" id="schedGate">

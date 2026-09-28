@@ -285,6 +285,52 @@ def seed_rollback():
     return rollback()
 
 
+# ---------- J16 machines (hardware census) ----------
+@app.get("/api/machines")
+def api_machines():
+    from .machines import load_all
+    from .bench_keys import load_bench_by_key
+    from .pair_labels import label_pairs
+    bench = load_bench_by_key()
+    out = []
+    for host, prof in sorted(load_all().items()):
+        labeled = label_pairs(host) or prof   # refresh measured pairs on read
+        out.append({"host": host, "name": labeled.get("name") or host,
+                    "class": labeled.get("class"),
+                    "class_confirmed_by": labeled.get("class_confirmed_by"),
+                    "windows": labeled.get("windows"),
+                    "pairs": labeled.get("pairs") or []})
+    # un-profiled hosts found by discovery but never given a profile:
+    profiled = {m["host"] for m in out}
+    try:
+        from .discover import discover
+        for h in discover():
+            if h["host"] not in profiled:
+                out.append({"host": h["host"], "name": h["host"], "class": None,
+                            "windows": None, "pairs": [], "models": h.get("models") or []})
+    except Exception:
+        pass  # discovery offline - profiles alone still render
+    return {"machines": out}
+
+@app.post("/api/machines/class")
+def api_machine_class(payload: dict = None):
+    # THE consent boundary: this endpoint is the only path that sets a class,
+    # and it requires the user's explicit answer from the UI.
+    from .machines import upsert_profile
+    payload = payload or {}
+    host = payload.get("host")
+    machine_class = payload.get("class")
+    name = payload.get("name")
+    if not host or not machine_class:
+        return {"ok": False, "error": "host and class required"}
+    try:
+        prof = upsert_profile(host, name=name, machine_class=machine_class,
+                              windows=payload.get("windows"))
+    except ValueError as e:
+        return {"ok": False, "error": str(e)}
+    return {"ok": True, "profile": prof}
+
+
 # ---------- J13 scheduler (BETA) ----------
 @app.get("/api/schedule")
 def api_schedule():
