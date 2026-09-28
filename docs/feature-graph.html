@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tierllama — Feature Node Graph</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --line: #30363d; --txt: #e6edf3;
+    --muted: #8b949e; --done: #3fb950; --active: #d29922; --beta: #a371f7;
+    --brain: #58a6ff; --planned: #8b949e; --pair: #f0883e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--txt); font-family: 'Segoe UI', sans-serif; overflow:auto; }
+  h1 { font-size: 1.2rem; padding: 12px 20px; border-bottom: 1px solid var(--line); }
+  h1 small { color: var(--muted); font-weight: normal; }
+  .legend { display:flex; gap:14px; padding: 10px 20px; flex-wrap: wrap; border-bottom:1px solid var(--line); }
+  .legend span { font-size: .78rem; display:flex; align-items:center; gap:5px; color:var(--muted); }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .canvas { position: relative; width: 1700px; height: 1100px; margin: 20px; }
+  svg.wires { position:absolute; inset:0; width:100%; height:100%; }
+  .node {
+    position:absolute; width: 190px; padding: 10px 12px; border-radius: 10px;
+    background: var(--panel); border: 1px solid var(--line); font-size: .8rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+  .node b { display:block; font-size: .84rem; margin-bottom: 3px; }
+  .node small { color: var(--muted); line-height: 1.35; display:block; }
+  .node .status { font-size:.68rem; font-weight:600; letter-spacing:.4px; text-transform:uppercase; margin-top:5px; display:inline-block; padding:1px 7px; border-radius:8px; }
+  .done { border-left: 3px solid var(--done); } .done .status { background:#12351b; color:var(--done); }
+  .active { border-left: 3px solid var(--brain); box-shadow:0 0 12px rgba(88,166,255,.25); } .active .status { background:#12284a; color:var(--brain); }
+  .beta { border-left: 3px solid var(--beta); } .beta .status { background:#2a1e45; color:var(--beta); }
+  .planned { border-left: 3px solid var(--planned); opacity:.85; } .planned .status { background:#2a2f37; color:var(--planned); }
+  .pair { border-left: 3px solid var(--pair); } .pair .status { background:#3d2412; color:var(--pair); }
+  .lanebar { position:absolute; width:170px; font-size:.72rem; color:var(--muted); text-align:center; padding:4px; border:1px dashed var(--line); border-radius:8px; }
+</style>
+</head>
+<body>
+<h1>Tierllama — feature &amp; module graph <small>generated 2026-09-29 · roadmap: docs/jevllama-roadmap.md</small></h1>
+<div class="legend">
+  <span><i class="dot" style="background:var(--done)"></i> DONE (J1–J11, J12, J13 v1+v2 core)</span>
+  <span><i class="dot" style="background:var(--brain)"></i> MVP-ADJACENT (dogfood/polish)</span>
+  <span><i class="dot" style="background:var(--beta)"></i> BETA shipped (scheduler, gate OFF)</span>
+  <span><i class="dot" style="background:var(--planned)"></i> SPEC'D / BRAINSTORM</span>
+  <span><i class="dot" style="background:var(--pair)"></i> PAIR-inspired modules</span>
+</div>
+<div class="canvas">
+<svg class="wires">
+  <!-- Jev brain -> router -->
+  <line x1="300" y1="150" x2="480" y2="230" stroke="var(--brain)" stroke-width="2"/>
+  <line x1="480" y1="270" x2="480" y2="360" stroke="var(--line)" stroke-width="2"/>
+  <line x1="480" y1="440" x2="480" y2="520" stroke="var(--line)" stroke-width="2"/>
+  <line x1="560" y1="480" x2="900" y2="360" stroke="var(--beta)" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="900" y1="360" x2="900" y2="520" stroke="var(--beta)" stroke-width="2"/>
+  <line x1="560" y1="560" x2="900" y2="600" stroke="var(--line)" stroke-width="2"/>
+  <!-- lanes -->
+  <line x1="480" y1="600" x2="240" y2="700" stroke="var(--line)" stroke-width="1.5"/>
+  <line x1="520" y1="600" x2="520" y2="700" stroke="var(--line)" stroke-width="1.5"/>
+  <line x1="700" y1="600" x2="800" y2="700" stroke="var(--line)" stroke-width="1.5"/>
+  <line x1="940" y1="620" x2="1080" y2="700" stroke="var(--line)" stroke-width="1.5"/>
+  <!-- PAIR row -->
+  <line x1="300" y1="820" x2="300" y2="760" stroke="var(--pair)" stroke-width="2"/>
+  <line x1="490" y1="820" x2="490" y2="700" stroke="var(--pair)" stroke-width="2"/>
+  <line x1="680" y1="820" x2="680" y2="700" stroke="var(--pair)" stroke-width="2"/>
+  <line x1="870" y1="820" x2="870" y2="760" stroke="var(--pair)" stroke-width="2"/>
+  <!-- feedback loop -->
+  <line x1="1250" y1="450" x2="1250" y2="540" stroke="var(--planned)" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="1250" y1="620" x2="1250" y2="700" stroke="var(--planned)" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- jev-triage -->
+  <line x1="1420" y1="560" x2="1420" y2="640" stroke="var(--done)" stroke-width="2" stroke-dasharray="3,3"/>
+  <!-- mvp marker -->
+  <line x1="480" y1="500" x2="120" y2="500" stroke="var(--done)" stroke-width="1" stroke-dasharray="2,5"/>
+</svg>
+
+<div class="node done" style="left:210px; top:60px;"><b>Jev classifier (the brain)</b><small>qwen3:4b · logprob confidence · 4 dimensions: difficulty × timing × when (+when_raw) · rubric v-hardened</small><span class="status">done · golden 71/95.2/67.7</span></div>
+
+<div class="node done" style="left:400px; top:180px;"><b>Router core <span style="color:var(--muted)">J1</span></b><small>message → classify → lane_for → dispatch → decision log. temp 0.</small><span class="status">done</span></div>
+
+<div class="node done" style="left:400px; top:360px;"><b>Lane adapters <span style="color:var(--muted)">J3+J4</span></b><small>LOCAL / CLOUD_MED / CLOUD_HARD / BOX + escalation ladder (HARD fail → EXPERT retry)</small><span class="status">done</span></div>
+
+<div class="node done" style="left:150px; top:700px;"><b>LOCAL lane</b><small>Ollama on this machine · qwen3:4b + ornith fleet</small><span class="status">done</span></div>
+
+<div class="node done" style="left:445px; top:700px;"><b>CLOUD lanes</b><small>OpenAI-compat providers · keys · cost tracking (J10 v2)</small><span class="status">done</span></div>
+
+<div class="node done" style="left:720px; top:700px;"><b>BOX lane</b><small>mini box queue via SMB · qwen38-27b-iq3s · overnight async</small><span class="status">done</span></div>
+
+<div class="node beta" style="left:830px; top:300px;"><b>Scheduler <span style="color:var(--muted)">J13</span></b><small>WHEN dimension · clarify-or-ask · file queue · due loop · night window</small><span class="status">beta · gate OFF</span></div>
+
+<div class="node done" style="left:830px; top:520px;"><b>J13 v2 core</b><small>per-action thresholds (0.60/0.85/0.95) · worker classes (BOX=night_only) · shove w/ cap</small><span class="status">done 9/29</span></div>
+
+<div class="node pair" style="left:210px; top:820px;"><b>health.py <span style="color:var(--muted)">T1</span></b><small>EWMA α=.35 GPU pressure · bands 0-3 · hysteresis</small><span class="status">pair · done</span></div>
+
+<div class="node pair" style="left:400px; top:820px;"><b>fleet.py <span style="color:var(--muted)">T3</span></b><small>zeroconf LAN discovery · vouching liveness</small><span class="status">pair · done</span></div>
+
+<div class="node pair" style="left:595px; top:820px;"><b>dispatch.py <span style="color:var(--muted)">T4</span></b><small>reservations · failover · budget/deadline</small><span class="status">pair · done</span></div>
+
+<div class="node pair" style="left:790px; top:820px;"><b>engines.py <span style="color:var(--muted)">T4b</span></b><small>manifest-driven engine addition</small><span class="status">pair · done</span></div>
+
+<div class="node planned" style="left:1170px; top:360px;"><b>J16 hardware census</b><small>machine_profile · worker-class fit · model@machine bench keys</small><span class="status">spec'd · NEXT</span></div>
+
+<div class="node planned" style="left:1170px; top:540px;"><b>J14 capability loop</b><small>outcome signals · failure-driven bump · canary probes</small><span class="status">brainstorm</span></div>
+
+<div class="node planned" style="left:1170px; top:700px;"><b>J15 brain evolution</b><small>model reputation · demote/promote · versioned rubric</small><span class="status">brainstorm</span></div>
+
+<div class="node done" style="left:1340px; top:640px;"><b>jev-triage module</b><small>own repo · submission triage · built once, reused everywhere</small><span class="status">skeleton · JT-1 next</span></div>
+
+<div class="node planned" style="left:1430px; top:360px;"><b>Telemetry flywheel</b><small>opt-in · community seeds · live oracle API (enterprise)</small><span class="status">post-MVP</span></div>
+
+<div class="node planned" style="left:1430px; top:520px;"><b>J9 installers</b><small>one-click per OS · auto-update · Ollama bootstrap</small><span class="status">post-UI</span></div>
+
+<div class="lanebar" style="left:40px; top:490px;">← MVP LINE: J1-J6 done = MVP core shipped</div>
+<div class="node done" style="left:40px; top:180px;"><b>Dashboard <span style="color:var(--muted)">J7</span></b><small>FastAPI+SPA · fleet view · decision log · scheduler tab</small><span class="status">done</span></div>
+
+</div>
+</body>
+</html>
