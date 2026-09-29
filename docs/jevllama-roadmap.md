@@ -174,6 +174,26 @@ fleet members. Two directions: (1) CONSUME: find + route to whatever users alrea
   duplicate. HF itself will never be a fleet node (wrong layer).
 - Pairs with jev-triage-style modularity: adapters are plugins, not forks.
 
+## J25-adjacent research note: secure LAN exposure — difficulty corrected downward (2026-09-29 morning)
+Follow-up to the heterogeneous-fleet side-note. Gui asked: "how hard is the security problem,
+does LAN-only solve it, do we need a big model for it?" Research findings:
+- **Ollama did NOT solve it — it punted.** Default = localhost-only. Exposing to LAN
+  (OLLAMA_HOST=0.0.0.0) opens the port with NO authentication; official docs direct users
+  to reverse proxies. LM Studio + llama-swap same pattern. Everyone punts - no one shipped
+  secure exposure for consumers. Niche stands.
+- **LAN-only removes more than half the threat** (kills internet-scale attacks by design)
+  but NOT the rest: discovery protocols have no built-in auth; name-resolution spoofing
+  (mDNS/LLMNR poisoning) is documented and unauthenticated — a compromised LAN device can
+  impersonate a node. Trust must come from pairing, not from network presence.
+- **Cryptography is solved (not cutting-edge):** mutual TLS + cert pinning is old, proven,
+  standard-library-supported; PAIR does it, SSH-style pinning does it. The "hard part"
+  is product UX: pairing flow, untrusted-device handling, cert rotation policy.
+- **Difficulty honest call:** normal-model engineering with human review; NOT a
+  frontier-model task. Cryptography off-the-shelf; threat model documented; pattern
+  proven live 2026-09-29 (PAIR cluster mTLS both directions on our own hardware).
+- **Caveat:** threat-model details not guaranteed complete from memory; milestone ships
+  behind a security review checklist (J16/J13 mTLS precedent).
+
 ### Shared module: jev-triage (filed 2026-09-29, Gui's call — own repo, cross-project)
 **Repo:** github.com/commonweavelabs-crypto/jev-triage (MIT, skeleton committed 75d789e). Jev-powered
 submission triage (bug/feature/complaint/question + severity + subsystem split + intent routing,
