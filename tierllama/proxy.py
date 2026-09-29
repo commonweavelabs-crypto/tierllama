@@ -79,7 +79,8 @@ def chat(req: ChatReq):
         model = "glm-5.3-flash:cloud" if "glm-5.3-flash:cloud" in local_models else sorted(local_models)[0]
         lane = "LOCAL-FALLBACK"
     rec = {"ts": datetime.datetime.now().isoformat(timespec="seconds"),
-           "role": decision["role"], "difficulty": decision["difficulty"],
+           "role": decision.get("role", "UNKNOWN"),
+           "difficulty": decision["difficulty"],
            "timing": decision["timing"], "lane": lane, "model": model,
            "confidence": decision["confidence"],
            "classifier_latency_s": decision["classifier_latency_s"],

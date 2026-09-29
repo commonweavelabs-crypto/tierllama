@@ -46,7 +46,7 @@ def _classify_dims(message, timeout=60):
     """difficulty + timing via the enum-constrained chat endpoint (J1 path)."""
     from .config import CLASSIFIER as C
     body = {"model": C["model"], "stream": False, "think": False,
-        "options": {"temperature": C["temperature"]},
+        "options": {"temperature": C["temperature"], "num_predict": 200},
         "messages": [{"role": "user", "content":
             RUBRIC + f'\n\nMessage: "{message}"\nScore this message. Return confidence 0.0-1.0 per dimension.'}],
         "format": {"type": "object", "properties": {
