@@ -293,6 +293,50 @@ Gui's additions + the conflict question he raised:
 Open questions to answer in J12-J15 sequence: who curates the community
 rubric? How do per-user edits merge? Telemetry consent scope for rubric data?
 
+## Box Queue Policy v2 (Gui 2026-09-29 late night, pushback accepted — supersedes "box = overnight only" framing)
+
+**Gui's correction:** the box is NOT the night machine; it's the cheap-slow-workhorse lane.
+"Overnight" was a framing accident — the product is a JOB QUEUE, not a schedule-locked window.
+
+**The v2 policy (Gui's spec, verbatim intent):**
+- LATER-classified work (MEDIUM or HARD or EASY) -> BOX queue IMMEDIATELY (throw it at
+  the queue; the box starts when it starts — no night-window gating for the box lane)
+- Deadlines ("by Friday") remain the exception: deadline work routes to cloud if the
+  box queue can't make the deadline (queue-depth check), or SHOVES existing box jobs
+  when there's room. Priority work escalates to cloud when the box is full. Standard.
+- Night window remains a preference for the WORKER (when the box is free of human
+  competition), not for ACCEPTING work.
+
+**Existing pieces (verified):** LATER->BOX routing exists (`lane_for`); shove priority
+insert exists (`shove.py`); night-window gate exists in `worker_classes.py` (the piece
+that flips to per-machine preference instead of hard gate); cloud escalation for
+deadline-miss exists conceptually (J4 ladder + J13 deadline handling).
+
+**Compare-versions clause (Gui):** when we build v2, FIRST compare against (a) the
+overnight-window v1 (built, `4caddb1`), (b) this queue-first v2 spec, (c) any other
+documented version; pick by measured behavior, not preference. No silent replacement.
+
+**Decomposition pre-step (new idea from this same discussion, filed here):**
+- Jev does NOT decompose long/compound prompts — it one-glance classifies (cheap,
+  fixed questions, no reading). Breaking a long message into tasks = LLM job.
+- Cost guard chain (Gui's brainstorm, ordered cheapest-first):
+  1. pure-code length check vs Jev context (no model cost)
+  2. below threshold: ONE small-local-model pass for decomposition, ONLY for
+     multi-sentence/multi-request-looking messages (single-action messages skip entirely)
+  3. Jev then classifies each decomposed piece (fan-out — cheap per piece)
+  4. pieces route to the machine that can serve them (image model exists on exactly
+     one fleet node — routing respects capability, ties to J16 pairs)
+- Attribution: speculative fan-out pattern (validated by Simon Scrapes Jev walkthrough,
+  yt-2dai1jvyd5m); Tierllama application of it is original.
+
+**Filed as T5-image candidate job:** draw the full Tierllama blueprint — every node,
+description per node, real icons (not emoji) — as the first overnight test job for
+the decomposition path. (Also satisfied by docs/feature-graph.html today, but a
+rendered-graph version tests the image lane.)
+
+**Status:** roadmap item queued for a J13-v2-remainder / J15-adjacent session; not
+committed to code tonight. Compare-versions rule active.
+
 ## J12+ feature candidates from NVIDIA PAIR (added 2026-09-25, see docs/PAIR-CASE-STUDY.md)
 
 **Code study done 2026-09-25 (repo cloned, read, pattern-ranked): docs/PAIR-CODE-STUDY.md.**
