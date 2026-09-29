@@ -13,13 +13,14 @@ order ideas were brainstormed (9/22 night produced J14/J15 out of order).**
 | ✅ DONE | 11 | J1 J2 J3 J4 J5 J6 J7 J8 J9 J10 J11 |
 | ✅ DONE (v1+v2 core) | 1 | J13 |
 | ✅ DONE (PAIR port-picks) | 4 modules | T1/T3/T4/T4b (health, fleet, dispatch, engines) |
-| DONE | 1 | J16 (9/29: all 4 gaps, 119/119 tests) |
-| BRAINSTORM, unblocked | 2 | J14 (NEXT), J15 (after J14) |
+| DONE | 2 | J16 (9/29: all 4 gaps, 119/119 tests) · J14 (9/29: outcomes/ledger/bump/canary/dashboard, 153/153) |
+| BRAINSTORM, unblocked | 1 | J15 (needs live ledger data — fills via usage + dogfood) |
+| SPEC'D skeleton, queued | 1 | J24-SEC secure fleet (spec `docs/SPECS/jevllama-j24-secure-fleet.md`) |
 | ⏸ Deferred v2 remainder | — | J13 saturation offload (needs J16+PAIR), rubric relative-phrases |
 
-**Bottom line: 13 of 16 J-numbers done (J16 landed 9/29). J14 and J15 are the
-last two - J14 unblocked by J16's machine data; J15 depends on J14's outcome
-signal.**
+**Bottom line: 14 of 16 J-numbers done. J15 needs live ledger data (fills via usage + the
+overnight dogfood). NEW: J24-SEC Secure Fleet spec skeleton — the unclaimed niche
+(secure heterogeneous exposure), spec at docs/SPECS/jevllama-j24-secure-fleet.md.**
 
 ## Where we are vs MVP
 
