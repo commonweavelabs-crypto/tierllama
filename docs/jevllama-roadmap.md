@@ -140,6 +140,40 @@ Golden set v2 gate: PASSED (floors met, improvements recorded). 55/55 tests OK.
 Integration smoke verified (gate↔lane_for consistency, BOX night-gating, cap honored). **Suite: 89/89 OK.**
 **V2 remaining (deferred)**: saturation offload (needs J16 machine classes + PAIR dispatch); relative-phrase rubric refinement ('later today'/'this week' with '?' → DATE_UNCLEAR vs DEADLINE); rescheduling heuristics beyond the coarse duration classes (J14 outcome signals). Source of task 1: Simon Scrapes' Jev walkthrough yt-2dai1jvyd5m — per-action thresholds set by cost-of-being-wrong.
 
+## Side-note: heterogeneous backend fleet + secure exposure (Gui idea, 2026-09-29 evening, researched — NOT committing to a milestone yet)
+
+**Obsidian tags:** #tierllama #shared-exposure #niche-analysis #phase2
+
+**The idea (Gui):** Tierllama shouldn't require Ollama. Serve ALL local inference apps —
+llama-swap, LM Studio, llama.cpp server, vLLM, Jan, KoboldCPP, GPT4All — as first-class
+fleet members. Two directions: (1) CONSUME: find + route to whatever users already run;
+(2) EXPOSE: Tierllama itself acts as the discoverable, secured network server those apps
+(and Hugging-Face-GGUF model pulls) connect to — the thing they're all missing.
+
+**Market research done 2026-09-29 (real docs checked, not vibes):**
+- Unified proxy layer is CROWDED: LiteLLM, OpenRouter (cloud), and **Olla**
+  (thushan/olla — Go, unified model discovery across backends + failover, closest to this
+  idea; no cost policy/scheduler/decision log though).
+- NO existing app does secure auto-discovery + encrypted cross-machine routing across
+  **heterogeneous** backends. Nothing advertises itself: Ollama/LM Studio/llama-swap all
+  listen on ports but are invisible to each other (llama-swap = manual config only; LM
+  Studio has a headless server, no discovery; llama.cpp server = 1 model, LAN-exposed, no
+  auth). Gui's niche = real and unclaimed: **secure exposure is the gap.**
+- Security note (verified): consumer LLM servers bound to the LAN with no auth is a
+  documented unsolved risk — our J16/J13 mTLS cluster pattern is the differentiator.
+
+**Phased plan (Gui's call, sequenced):**
+1. MVP stays as-is (Ollama-first, works today).
+2. **Adapter phase (post-MVP):** LM Studio + llama-swap adapters (both OpenAI-compatible,
+   J5 discovery extension: scan known alternate ports, not just Ollama's).
+3. **Secure-exposure phase (later, OWN MILESTONE + security review):** Tierllama exposes
+   itself as a discoverable, authenticated, encrypted fleet node for non-Ollama engines
+   (J9 installer bootstrap: "install Ollama OR point Tierllama at your existing engine").
+- **HF note:** Hugging Face = model library, NOT an inference server (no serving daemon).
+  Its models reach local machines via Ollama-GGUF integration already — compose, don't
+  duplicate. HF itself will never be a fleet node (wrong layer).
+- Pairs with jev-triage-style modularity: adapters are plugins, not forks.
+
 ### Shared module: jev-triage (filed 2026-09-29, Gui's call — own repo, cross-project)
 **Repo:** github.com/commonweavelabs-crypto/jev-triage (MIT, skeleton committed 75d789e). Jev-powered
 submission triage (bug/feature/complaint/question + severity + subsystem split + intent routing,
