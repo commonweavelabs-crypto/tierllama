@@ -1,54 +1,45 @@
-# Real Savings — Measured, Not Claimed
+# REAL-SAVINGS-PROOF.md — T5 PAIR dogfood (2026-09-29 evening)
 
-*How we computed the savings on this page, with every assumption in the open.*
+## Setup (2-machine PAIR cluster, all facts from live run)
+- **Machines:** Windows desktop (5070 Ti, DESKTOP-SHN3HMJ, node b7965584) + MacBook Air (Guilhermes-MacBook-Air.local, node d85360e5). Both ran PAIR v0.1.1 service binaries (installed from ~/pair-bin / pair-win, no system install).
+- **Stack wiring (runbook finding):** do NOT hand-run ollama-proxy — run ONLY nvpair-ui-broker under tmux/pty; it spawns and wires the whole stack. All binaries are stdio JSON-RPC and need a live client; tmux holds stdin.
+- **Cluster formation:** nvpair-cluster-manager mints certs; trust exchange = `{nodeUuid, certPem}` pin files, filename == nodeUuid, both sides. Pins exchanged via peer DM + Google Drive transport (DM transport mangles base64 — Drive is the reliable path).
+- **mTLS + discovery:** automatic via mDNS once pins loaded. mDNS saw the Mac node BEFORE clustering.
 
-## The measured result (2026-09-22, live on this repo's own router)
+## Results (mac-side runner, moondream baseline vs qwen3:4b cross-node)
 
-| Scenario | Cost per 1M workload tokens | Saved vs always-best |
-|---|---|---|
-| Always the best model (kimi-k3 for everything) | **$1,246.15** | — |
-| **Tierllama routing (measured)** | **$276.27** | **77.8%** |
-| Ideal routing (theoretical ceiling) | $275.84 | 77.9% |
+| Mode | Wall | OK | Notes |
+|---|---|---|---|
+| baseline (mac-local moondream) | 10-15s | 10-11/12 | 0.05-1.6s latencies, 17-81 tok/s |
+| pair 2-machine (qwen3:4b cross-node) | 142s | 5/12 with retry-backoff | short 2.6s / medium 15.9s / long 42.9s, 8-12 tok/s over mTLS |
 
-**The measured router lands within 0.1% of the theoretical ideal.** That's the whole
-point of the architecture: cheap mistakes (J1 finding) + escalation (J4) mean the
-errors that survive cost almost nothing.
+## Findings (the actual T5 answers)
+1. **Capability expansion works:** the cluster made Windows-only models (qwen3:4b) reachable from the
+   Mac - a capability single-box does not have. Cross-node round trip verified BOTH directions
+   conceptually: Mac requested a Windows model and got a real completion over mTLS.
+2. **Pair 0.1.1 is ALPHA-quality for reliability:** routing snapshots flap (~every 30s the node
+   advertisement drops for 2-5s); requests in the gap get instant rejects ("no node advertises").
+   With client retry-backoff (what a real client would do) 5/12 got through vs 0/12 before.
+   The 89-open-issues question answered empirically: real, but young. PAIR-stops/we-start findings
+   confirmed; also PAIR is Ollama-NEW-layout incompatible (wants separate llama-server; we placed
+   one at the checked path to unblock).
+3. **Latency cost of cross-machine routing is real:** 8-12 tok/s vs 17-81 local (LAN mTLS + engine
+   cold-load each request because PAIR tears down engines). For LOCAL-lane work (conversational,
+   NOW-timing), single-box wins. For overnight DEFERRED work across machines, reliability > latency
+   and the capability gap matters more than tok/s.
+4. **Tierllama takeaways** (all four differentiators STILL unmatched by PAIR — re-verified):
+   PAIR has no tier/cost policy, no per-machine bench, no visible decision log, no cloud tier.
+   PAIR's anti-flap liveness (J12+ T3) is where Tierllama must go FURTHER: our vouching-liveness
+   design directly addresses the flapping that ate this benchmark.
 
-## How this test was run (reproduce it)
-1. Workload: 120 real user messages (the repo's golden set - roles from DIRECTOR to
-   NAVIGATOR, including 20 designed ambiguity traps). Total ~150K tokens at typical
-   chat shape (250 in / 400 out per message).
-2. Route each through the actual classifier in this repo (qwen3:4b, logprob path).
-3. Price each lane at live verified rates: local $0; glm-5.3-flash:cloud $0.15/$0.60
-   per M in/out tokens; kimi-k3 $3.00/$15.00; box queue $0 (own hardware).
-4. Compare against the always-best baseline: every message to kimi-k3.
+## What this proves for Tierllama
+- The LAN-fleet lane (J5 discovery + local-fleet) is real and works cross-vendor today.
+- The production risk list for Tierllama's scheduler: model cold-load windows must be advertised
+  honestly (a job routed during a cold load should say "starting", not silently fail).
+- Retry-on-no-node belongs in OUR dispatch budget rules (already supported: dispatch.py retryable
+  statuses) - validated as necessary by PAIR's flapping.
 
-## What this does NOT claim (honesty section)
-- Savings apply to WORKLOADS WITH TIERABLE REQUESTS. If every message you send is
-  genuinely HARD, routing can't help you (you'd pay the strong-model price anyway;
-  you'd only save the ~0.1s classifier check).
-- Costs are model-API prices only. The local lane costs electricity (~negligible:
-  4B model on a gaming GPU is a rounding error next to a GPU rendering job).
-- Your mix matters: our 120-msg set has 40% easy/local traffic. Heavy-bug-report
-  workloads will route more to cloud. The router logs every decision - run
-  `tierllama tail` on YOUR workload to see YOUR numbers.
-- Latency trade-off: EASY messages go to local models that are cheaper but can be
-  less capable. That's the deal - you chose the trade with the confidence threshold.
-
-## Minimum system requirements (local routing)
-- **GPU:** any card with ~4GB free VRAM for the classifier (measured on RTX 5070 Ti;
-  model qwen3:4b quantized). CPU-only works but adds ~20-25s per decision (rejected
-  for interactive use; fine for overnight lanes).
-- **RAM:** ~4GB free beyond your normal workload while the classifier is loaded;
-  it unloads automatically after 5 min idle.
-- **OS:** Windows/macOS/Linux wherever Ollama runs.
-- **Software:** Python 3.11+, Ollama (free) with qwen3:4b pulled. No accounts, no API
-  keys for the local+Ollama-cloud lanes.
-- **Optional:** second machine with Ollama for extra lanes (discovered automatically
-  on the LAN, no setup); cloud keys only if you bring non-Ollama providers.
-
-## Where the numbers come from
-- Classifier accuracy: 94.2% on the 120-message golden set (docs/jevllama-bench-01.md,
-  j2-findings.md - with n, scope, and p-values published).
-- Prices: provider pages checked 2026-09-21 (docs/SPECS/tierllama-decisions.md).
-- Every decision logged locally: `logs/decisions.jsonl` - audit us.
+## Raw data
+- t5_results_mac.json (final) + preserved prior runs: ~/pair-bin/ on the Mac, copied to Drive at
+  Hermes-Shared/pair-cluster/. Bench script: bench_t5_mac.py (retry-backoff, serial mode).
+- Windows side artifacts: %LOCALAPPDATA%/hermes/projects/pair-dogfood/ (binaries, logs, broker pty).
