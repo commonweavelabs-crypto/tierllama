@@ -213,6 +213,16 @@ does LAN-only solve it, do we need a big model for it?" Research findings:
 - **Caveat:** threat-model details not guaranteed complete from memory; milestone ships
   behind a security review checklist (J16/J13 mTLS precedent).
 
+### J24-SEC (spec skeleton 9/29, Gui-approved planning): Secure Fleet — secure exposure + pairing
+Full skeleton: docs/SPECS/jevllama-j24-secure-fleet.md. One toggle: node keypair at install
+(zero-touch), 6-char pairing-code handshake -> mutual cert pinning (pattern proven live
+via PAIR cluster), mTLS fleet transport LAN-bound default OFF. Threat model: discovery
+spoofing/plaintext interception in scope; public exposure OUT (review-gated); off-network =
+Tailscale-supported. MVP cut + security review checklist in the spec. Ships after debug
+session + polish backlog. Monetization mapped: free core / ~$10 household tier (secure fleet +
+multi-device + scheduler pro) / enterprise (J8) / cloud referral via Compute Fund. Market
+sanity: ~1M households w/ local LLM (est.) x 1-3% capture x $10 = $1-3M ARR consumer-only.
+
 ### Shared module: jev-triage (filed 2026-09-29, Gui's call — own repo, cross-project)
 **Repo:** github.com/commonweavelabs-crypto/jev-triage (MIT, skeleton committed 75d789e). Jev-powered
 submission triage (bug/feature/complaint/question + severity + subsystem split + intent routing,
