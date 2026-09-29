@@ -174,6 +174,25 @@ fleet members. Two directions: (1) CONSUME: find + route to whatever users alrea
   duplicate. HF itself will never be a fleet node (wrong layer).
 - Pairs with jev-triage-style modularity: adapters are plugins, not forks.
 
+## Market-research addendum to the secure-exposure side-note (2026-09-29 midday)
+Gui's question: "is the gap unclaimed because there's no use case?" Verdict: **genuine niche**
+- **Demand exists:** recurring r/LocalLLaMA threads ask exactly "share my local LLM with other
+  devices securely" — answers are all DIY (Tailscale, reverse proxy, VPN). Homelab/self-hosting
+  trend ~+40% YoY. Non-Tailscale users are the addressable segment (power users already have it).
+- **Incidents prove need:** 1,100-14,000+ Ollama instances found exposed to the open internet
+  with zero auth (cybersecuritynews, malwarepatrol); compute theft + model exfiltration
+  documented; multiple 2026 CVEs (SSRF etc.); "Shadow MCP" = same unsecured-surface problem
+  arriving at protocols. Risk is real, not theoretical.
+- **Why incumbents punted (3 structural reasons, not "no use case"):**
+  1. wrong layer — each owns runtime/chat/config; the between-machines layer belongs to nobody;
+  2. punt is rational for small teams (localhost default is safe; secure pairing UX is weeks of
+     unglamorous work with no punishment for shipping the footgun);
+  3. monetization — secure routing is invisible plumbing (OpenRouter's $140M ARR is the visible
+     cloud routing meter; no local meter exists yet — note: that IS the Compute Fund thesis gap).
+- **Positioning:** security = trust layer under the headline ("install one app, your whole fleet
+  routes, and it shows its reasoning"), not the headline itself. LAN-only secure exposure +
+  supporting Tailscale for off-network = full coverage without rebuilding a VPN company.
+
 ## J25-adjacent research note: secure LAN exposure — difficulty corrected downward (2026-09-29 morning)
 Follow-up to the heterogeneous-fleet side-note. Gui asked: "how hard is the security problem,
 does LAN-only solve it, do we need a big model for it?" Research findings:
