@@ -1,0 +1,1407 @@
+{
+  "difficulty_acc": 100.0,
+  "timing_acc": 100.0,
+  "exact_tier_acc": 0.0,
+  "n": 209,
+  "per_tier": {
+    "EASY/NOW": {
+      "n": 39,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "EASY/LATER": {
+      "n": 22,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "MEDIUM/NOW": {
+      "n": 35,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "MEDIUM/LATER": {
+      "n": 22,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "HARD/NOW": {
+      "n": 27,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "HARD/LATER": {
+      "n": 25,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "EXPERT/NOW": {
+      "n": 23,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    },
+    "EXPERT/LATER": {
+      "n": 16,
+      "difficulty_acc": 0.0,
+      "timing_acc": 0.0
+    }
+  },
+  "trap_results": [
+    {
+      "msg": "just do the next obvious step",
+      "pred": "None/None",
+      "truth": "MEDIUM/NOW",
+      "ok": false
+    },
+    {
+      "msg": "test message",
+      "pred": "None/None",
+      "truth": "EASY/NOW",
+      "ok": false
+    }
+  ],
+  "brain1_latency_median_s": null,
+  "brain2_tiers": {
+    "EASY/NOW": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "EASY/LATER": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "MEDIUM/NOW": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "MEDIUM/LATER": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "HARD/NOW": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "HARD/LATER": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "EXPERT/NOW": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    },
+    "EXPERT/LATER": {
+      "top": null,
+      "jev_score": null,
+      "matrix_ok": false,
+      "cap_ok": false,
+      "stance_ok": false,
+      "now_ok": false,
+      "passed": false,
+      "fail_reason": "no-matrix-scores"
+    }
+  },
+  "arm": {
+    "n": 0,
+    "classifier_acc": null,
+    "gemma3_acc": null,
+    "detail": []
+  },
+  "misses": [
+    {
+      "msg": "set the format to mp4",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "open the timeline and zoom to 200%",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "click export and set format to mp4",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "queue all scenes overnight",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "delete the last three clips from the timeline",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "toggle the grid overlay on",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "attach the voiceover file to scene 4",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "export the whole project as 4k by friday",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "submit the render job now",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "zoom into the third keyframe",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "hi",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "thanks, that worked!",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "how do I set the fps?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "what's the difference between t2v and i2v?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "explain how keyframes interpolate",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "what does the queue system do when I close the app?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "can you teach me how motion blur works in this pipeline?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "why is my render darker than the preview?",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "what's the best workflow for consistent lighting across scenes?",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "app crashes when I drag cards",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "audio out of sync after render",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "the export button does nothing when I click it",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "it crashed again but only on scene 7, here's the log",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "this thing is broken, fix it",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "render stuck at 99% for an hour",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "rewrite scene 3, sharper dialogue",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "give James a more menacing intro",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "improve the whole second act",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "convert the voiceover into dialogue",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "write dialogue for the interrogation scene, make it tense, two characters, about 90 seconds",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "polish this line: 'I never wanted this'",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "rewrite the entire screenplay from scratch, it's due next week",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "add a subplot about betrayal across acts 2 and 3",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "plan the render sequence for 10 scenes",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "what should we work on next?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "we have 3 hours before the deadline, what's the priority?",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "decide: practical effects or CGI for the explosion scene",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "recreate the universe, every particle and every interaction, on a computer simulation now",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "outline the whole film structure, no rush",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "fix this crash now please",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "write me a full movie script asap",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "do the whole intro sequence immediately",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "by tomorrow, rewrite everything",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "queue it now",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "render all 12 scenes asap",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "do this when you get a chance",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "I need the trailer cut today",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "sometime this week, transcribe the interviews",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "what is 2+2?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "debug the race condition in the render scheduler",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "optimize the particle system for 60fps on integrated graphics",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "change the color to blue",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "explain quantum entanglement in simple terms",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "design a reward function for RLHF on our subtitle model",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "architect a distributed render farm for 500 nodes",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "prove or disprove: this scene's pacing follows the 3-act structure mathematically",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "make it better",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "the thing from yesterday isn't working",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "just do it",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "you know what I mean, fix the pacing",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "I'm having trouble seeing the update, did the server refresh?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "can you check and see if everything is updated so I can see it",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "golden"
+    },
+    {
+      "msg": "rename this clip",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "what fps should I use?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "set the bitrate to 8000",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "open settings",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "mute the audio on clip 3",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "thanks",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "toggle dark mode on",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "crop to 16:9",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "add a fade in",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "what time is it?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rename this clip whenever you get a chance",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "no rush, but mute clip 3",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "whenever, add a fade in",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "fix the typo in the credits tomorrow",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "crop to 16:9 later",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "mute clip 3 when you get a chance",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "cleanup temp files sometime next week",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "add the watermark whenever",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rename these clips without any rush",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "do the thumbnail update later",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rewrite scene 12 to be funnier",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "the export button does nothing when clicked",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "how do I batch import 50 clips?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "subtitles drift on long videos, help",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "explain how the render queue works",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "make the intro clip punchier",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "convert this transcript into blog post format",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "why does color grading look washed out after export?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "add transitions between all scenes in chapter 2",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "trim the dead air from the podcast intro",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rewrite the intro scenes tomorrow",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rewrite the outro, no rush",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "batch import the footage whenever you get a chance",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "trim the podcast intros later this week",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "convert last month's transcripts when you have time",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "redo the color pass on chapter 2 sometime, no rush",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "add chapter markers to the video, whenever",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "summarize the meeting recording later",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "polish scene 7's pacing when you have a minute",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "update the thumbnail set tomorrow morning",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "audio desync AND flickering AND crashes after the latest render",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "fix the sync bug in scene 4, scene 9, and 12 now",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "plan the launch render pipeline for 8 videos tonight",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "the whole export stack broke, get it back today",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "refactor the ingest flow, everything's due tonight",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "debug why 3 scenes dropped frames simultaneously",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "retime all dialog across the full episode now",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "the render farm reports 4 different errors, triage them now",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "redesign the thumbnail pipeline before Friday",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "asap: the whole color pipeline has banding issues",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "restructure the second act whenever",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "do the full audio cleanup pass tomorrow",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "plan a render for all 40 scenes over the weekend",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "fix all the sync issues across episodes, no rush",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "redesign the editor's UI flow sometime",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rewrite the tutorial chapter when you have time",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "remaster all previous episodes later",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "organize the whole asset library whenever you get a chance",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "do the end-to-end trailer polish tomorrow",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "design a novel generative b-roll pipeline from scratch",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "build an agentic system that self-critiques renders, no one has tried this",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "invent a new codec-aware shot matching algorithm",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "architect a real-time collaborative editing engine from zero",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "design a research plan to beat the current SOTA upscaler",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "propose a novel prompt architecture for multi-agent film generation",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "create a new render-scheduling algorithm that is provably fair",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "write a full technical whitepaper on distributed consensus protocols",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "design the next-gen pipeline architecture whenever you have time",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "research a novel upscaling approach, no rush",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "invent our own shot-matching algorithm sometime",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "rewrite the render engine core from scratch whenever",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "explore a fundamentally new editing paradigm when you get time",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "build an experimental multi-agent film studio design, when you get a chance",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored"
+    },
+    {
+      "msg": "Give James a more menacing introduction",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Explain seed values like I'm new to this",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Explain in one sentence why the sky is blue.",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "what is 5+5?",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "hello",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Click export and set the format to mp4",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "The app crashes when I drag cards to the edge",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Rewrite scene 3 to make the dialogue sharper",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "just do the next obvious step",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Open the timeline and zoom to scene 2",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "export the trailer cut with the new codec settings",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "clean up the transcriptions by friday 5pm",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "summarize this doc soon please",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "test message",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "rewrite this paragraph to sound more professional",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Plan the render sequence for the 10 scenes",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "do everything needed to finish the trailer by friday",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "review my project end to end and fix what's wrong",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Plan the render sequence for the 10 scenes with attention to GPU memory",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "recreate the universe very particle and every interaction on a computer simulation now",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Export produces a black video file",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "write a full technical whitepaper with deep analysis of distributed consensus",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "design a rate limiter for an API gateway",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Queue all remaining scenes overnight",
+      "truth": "EASY/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Make the villain's motivation clearer",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Should we render the trailer first or the intro?",
+      "truth": "MEDIUM/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "Design a database schema for multi-tenant SaaS",
+      "truth": "HARD/NOW",
+      "pred": "None/None",
+      "source": "real-adjudicated"
+    },
+    {
+      "msg": "mute clip 7 later on",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "zoom the preview whenever",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "swap the icons when you can",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "rename batch 3 tomorrow",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "toggle grid off whenever",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "clear filters later",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "open docs sidebar sometime",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "reset zoom whenever",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "pin the timeline tomorrow",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "unmute track 2 later",
+      "truth": "EASY/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "transcribe the b-roll footage when free",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "recut the sizzle reel later",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "rewrite chapter 3 intros tomorrow",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "swap the outro music when you can",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "redo alt-text tomorrow",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "fix the lower thirds later",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "compress the scratch footage whenever",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "convert interviews to text sometime",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "update the release notes later",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "tag the archived clips when free",
+      "truth": "MEDIUM/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "restructure all three acts whenever",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "plan the 40-scene render over the weekend",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "full audio remaster, no rush",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "redesign the export presets sometime",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "fix continuity across all episodes when you can",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "remaster season one later",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "rebuild the LUT pipeline tomorrow",
+      "truth": "HARD/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "invent a shot-matching metric no one has tried",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "design a self-improving edit model from scratch",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "architect a zero-latency collab pipeline, research grade",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "propose a new scaling law experiment for render bots",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "design a novel neural color grade from zero",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "create an agentic editor that plans its own renders",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "solve multi-agent consistency in generative film, research grade",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "invent a codec that trades bitrate for editability",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "design a provably optimal render scheduler, research grade",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "propose a new paradigm for prompt-free editing",
+      "truth": "EXPERT/NOW",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "research a new generative edit paradigm whenever",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "design tomorrow's render engine architecture, no rush",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "invent our own diffusion-based continuity solver sometime",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "architect a fleet-wide self-optimizing render mesh when free",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "explore prompt-free film generation whenever",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "design a novel agent-verifier loop for renders, no rush",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "create a research roadmap for automated color science sometime",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "propose a fundamentally new codec architecture when you can",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "invent the studio's next-gen asset graph whenever",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    },
+    {
+      "msg": "plan a novel multi-agent A/V pipeline when time allows",
+      "truth": "EXPERT/LATER",
+      "pred": "None/None",
+      "source": "authored-topup"
+    }
+  ]
+}

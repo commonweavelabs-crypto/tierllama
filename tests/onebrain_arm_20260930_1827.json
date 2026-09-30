@@ -1,0 +1,288 @@
+{
+  "n": 40,
+  "acc_at_0.5": 44.4,
+  "best_threshold": 0.05,
+  "best_acc": 44.4,
+  "rows": [
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/LATER",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "truth_why": "stance-reserve",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": 1.0
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "truth_why": "too-slow-for-NOW",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "truth_why": "too-slow-for-NOW",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "truth_why": "meets-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "truth_why": "capability-floor",
+      "qwen4b_p_adequate": null
+    }
+  ]
+}
