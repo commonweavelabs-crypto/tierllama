@@ -117,8 +117,8 @@
     </label>
     <div id="unbenchedWarn" style="display:none;font-size:.8rem;color:#f6ad55;margin:.3rem 0"></div>
     <div style="display:flex;gap:.5rem">
-      <button onclick="rescanModels('price', document.getElementById('inclLocalCard').checked)">Re-scan: optimize for PRICE</button>
-      <button onclick="rescanModels('quality', document.getElementById('inclLocalCard').checked)">Re-scan: optimize for QUALITY</button>
+      <button onclick="rescanModels('price', document.getElementById('inclLocalCard').checked, document.getElementById('inclSmall').checked)">Re-scan: optimize for PRICE</button>
+      <button onclick="rescanModels('quality', document.getElementById('inclLocalCard').checked, document.getElementById('inclSmall').checked)">Re-scan: optimize for QUALITY</button>
     </div>
     <span id="seedStatus" class="muted"></span>
     <div id="seedDiff" style="display:none"></div>
