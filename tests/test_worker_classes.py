@@ -100,8 +100,12 @@ class TestTickIntegration(unittest.TestCase):
         return self.S.enqueue(message, lane, due, title="t")
 
     def test_always_on_due_job_dispatches_day_or_night(self):
-        job = self._enqueue("LOCAL", (datetime.now() - timedelta(seconds=5)).isoformat(timespec="seconds"))
-        summary = self.S.tick(now=datetime(2026, 9, 29, 14, 0))   # broad daylight
+        # due time relative to the FIXED tick time (14:00) - real now() drifts
+        # forward and eventually lands inside the tick window (past 2 PM this
+        # test passes, after 2 PM it went stale-3s and never dispatched)
+        tick = datetime(2026, 9, 29, 14, 0)
+        job = self._enqueue("LOCAL", (tick - timedelta(seconds=5)).isoformat(timespec="seconds"))
+        summary = self.S.tick(now=tick)   # broad daylight
         self.assertEqual(summary["dispatched"], 1)
         self.assertEqual(summary["shifted"], [])
 

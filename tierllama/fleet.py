@@ -22,6 +22,10 @@ Design (modular doctrine - own module, stdlib + zeroconf only):
 - Every node registered into the provider grid carries provenance
   "local-fleet" (per the seed/measured/user provenance model).
 """
+from __future__ import annotations  # Py3.13 evaluates annotations eagerly; the
+# `list` METHOD in class Fleet shadows the builtin for later `list[dict]`
+# annotations in the same class body (def as_providers 3.13 crash) - deferred
+# evaluation keeps annotations symbolic.
 import json, socket, threading, time, datetime
 from pathlib import Path
 
