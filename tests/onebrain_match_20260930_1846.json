@@ -1,0 +1,566 @@
+{
+  "blind": [
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "why": "too-slow-for-NOW",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "why": "too-slow-for-NOW",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    }
+  ],
+  "named": [
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EASY/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "stance-reserve",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "kimi-k3:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "glm-5.3-flash:cloud",
+      "tier": "EXPERT/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "HARD/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "gemma3:12b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/NOW",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/NOW",
+      "truth": false,
+      "why": "too-slow-for-NOW",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EASY/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/NOW",
+      "truth": false,
+      "why": "too-slow-for-NOW",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "MEDIUM/LATER",
+      "truth": true,
+      "why": "meets-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "HARD/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/NOW",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    },
+    {
+      "model": "ornith-1.5:35b",
+      "tier": "EXPERT/LATER",
+      "truth": false,
+      "why": "capability-floor",
+      "p": null
+    }
+  ]
+}

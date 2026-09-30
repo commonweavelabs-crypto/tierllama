@@ -1,0 +1,4 @@
+  File "<stdin>", line 20
+    'messages':[{'role':'user','content':RUBRIC+f'\n\nMessage: \"{c[\"msg\"]}\"\nScore this message. Return difficulty and timing only.'}]}
+                                                                     ^
+SyntaxError: unexpected character after line continuation character
