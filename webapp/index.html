@@ -19,7 +19,9 @@
     padding:.5rem 1rem; font-size:.9rem; cursor:pointer; border-radius:0; }
   nav.tabs button.active { color:#e6e8eb; border-bottom-color:#4c9aff; font-weight:600; }
   .card { background:#161b22; border:1px solid #2a313a; border-radius:12px; padding:1rem 1.25rem; margin-bottom:1rem; }
-  .tier-row { display:grid; grid-template-columns: 140px 1fr 190px; gap:.6rem; align-items:center; padding:.35rem 0; }
+  .tier-row { display:grid; grid-template-columns: 140px minmax(220px,1fr) 230px; gap:.6rem; align-items:center; padding:.35rem 0; }
+  .tier-row select.thinkSel, .tier-row select.modelSel { width:100%; min-width:0; }
+  .tier-row select.thinkSel option { font-size:.9rem; }
   .tier-row label { color:#9aa3ad; font-size:.85rem; }
   select, input[type=text], input[type=password] { background:#1c232b; border-color:#3a434e; color:#e6e8eb; }
   button { background:#242b33; border-color:#3a434e; color:#e6e8eb; }
@@ -86,6 +88,8 @@
     <h3>Capability loop <span class="badge" style="font-size:.6rem">BETA</span></h3>
     <div class="muted">Learns from outcomes: a prompt-class that keeps failing gets bumped up a tier (that class only), and canary probes test whether classes can come down. <b>Beta feature: OFF — routing never changes on its own until you enable it, and every change is reported here.</b></div>
     <div id="capSummary" class="muted" style="margin:.4rem 0">…</div>
+    <div id="capWould" style="margin:.4rem 0"></div>
+    <div id="capClasses" style="margin:.4rem 0;overflow-x:auto"></div>
     <div id="capBumps"></div>
     <button id="capToggleBtn" onclick="capToggle()">Enable capability loop (beta)</button>
     <span id="capMsg" class="muted"></span>
@@ -104,11 +108,17 @@
   </div>
 
   <div class="card" id="seedCard">
-    <h3>Model suggestions <span class="muted">(community data)</span></h3>
-    <div class="muted">New compiled recommendations are staged automatically but applied ONLY when you click Re-scan. Custom edits preserved unless you override.</div>
+    <h3>Model suggestions <span class="muted">(live-rated pool)</span></h3>
+    <div class="muted">Rates every model you can actually reach (your local hardware + cloud), then suggests per tier. Never suggests a model that can't do the job. Custom edits preserved unless you override.</div>
+    <label style="font-size:.85rem;display:block;margin:.4rem 0">
+      <input type="checkbox" id="inclLocalCard" checked onchange="rescanModels(window._lastMode || 'price', this.checked, document.getElementById('inclSmall').checked)"> include local-hardware models (uncheck = cloud only)
+      ·
+      <input type="checkbox" id="inclSmall" onchange="rescanModels(window._lastMode || 'price', document.getElementById('inclLocalCard').checked, this.checked)"> include small models (< 9B — toy class, off by default)
+    </label>
+    <div id="unbenchedWarn" style="display:none;font-size:.8rem;color:#f6ad55;margin:.3rem 0"></div>
     <div style="display:flex;gap:.5rem">
-      <button onclick="rescanModels('price')">Re-scan: optimize for PRICE</button>
-      <button onclick="rescanModels('quality')">Re-scan: optimize for QUALITY</button>
+      <button onclick="rescanModels('price', document.getElementById('inclLocalCard').checked)">Re-scan: optimize for PRICE</button>
+      <button onclick="rescanModels('quality', document.getElementById('inclLocalCard').checked)">Re-scan: optimize for QUALITY</button>
     </div>
     <span id="seedStatus" class="muted"></span>
     <div id="seedDiff" style="display:none"></div>

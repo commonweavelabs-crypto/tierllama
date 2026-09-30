@@ -27,14 +27,19 @@ class ChatReq(BaseModel):
     temperature: float | None = None
     max_tokens: int | None = None
 
-def _upstream(lane_model: str, messages, stream, temperature, max_tokens, timeout=180):
-    """Forward to local Ollama. Native /api/chat with think:False (J7 dogfood fix:
-    qwen3-class thinking mode eats the whole token budget -> empty content).
-    Wraps the Ollama response in OpenAI-compatible shape for the caller."""
-    body = {"model": lane_model, "messages": messages, "stream": False, "think": False}
-    # qwen3-class models ignore the think flag over /api/chat; /no_think system
-    # prompt is the soft-switch that works (J7 dogfood finding):
-    body["messages"] = [{"role": "system", "content": "/no_think"}] + messages
+def _upstream(lane_model: str, messages, stream, temperature, max_tokens, thinking="normal", timeout=180):
+    """Forward to local Ollama (which transparently proxies ':cloud' models to
+    ollama.com cloud — verified live). Native /api/chat. J18 thinking fix: the
+    tree's thinking level controls the think flag now — max turns it ON with
+    /think, normal/off suppress it (J7 dogfood: qwen3-class thinking ate the
+    token budget; /no_think system prompt is the reliable soft-switch)."""
+    body = {"model": lane_model, "messages": messages, "stream": False}
+    if thinking == "max":
+        body["think"] = True
+        body["messages"] = [{"role": "system", "content": "/think"}] + messages
+    else:
+        body["think"] = False
+        body["messages"] = [{"role": "system", "content": "/no_think"}] + messages
     if temperature is not None or max_tokens:
         opts = {}
         if temperature is not None: opts["temperature"] = temperature
@@ -71,11 +76,19 @@ def chat(req: ChatReq):
     target = tree.get(tier_key) or tree.get(f"{decision['difficulty']}/NOW") or {}
     lane = decision["lane"]
     model = target.get("model") if target else None
-    # v1 dogfood guardrail: LOCAL lanes only (models present on this machine):
+    thinking = (target.get("thinking") if target else None) or "normal"
+    # J7 dogfood guardrail, J18 revision: LOCAL lanes must be models present on
+    # this machine; ":cloud" models go to Ollama's CLOUD endpoint instead of
+    # being silently rewritten to a random local fallback (everything-same-model bug).
     tags = json.loads(urllib.request.urlopen(
         "http://127.0.0.1:11434/api/tags", timeout=5).read())["models"]
     local_models = {m["name"] for m in tags}
-    if not model or not any(model == m or m.startswith(model) for m in local_models):
+    if not model:
+        model = "glm-5.3-flash:cloud" if "glm-5.3-flash:cloud" in local_models else sorted(local_models)[0]
+        lane = "LOCAL-FALLBACK"
+    elif model.endswith(":cloud"):
+        lane = "CLOUD"   # host = ollama.com cloud inference
+    elif not any(model == m or m.startswith(model) for m in local_models):
         model = "glm-5.3-flash:cloud" if "glm-5.3-flash:cloud" in local_models else sorted(local_models)[0]
         lane = "LOCAL-FALLBACK"
     rec = {"ts": datetime.datetime.now().isoformat(timespec="seconds"),
@@ -88,7 +101,7 @@ def chat(req: ChatReq):
     t0 = time.time()
     try:
         out = _upstream(model, [m.model_dump() for m in req.messages], req.stream,
-                        req.temperature, req.max_tokens)
+                        req.temperature, req.max_tokens, thinking=thinking)
         rec["status"] = "ok"; rec["latency_s"] = round(time.time()-t0, 2)
     except Exception as e:
         rec["status"] = "error"; rec["error"] = str(e)[:150]
@@ -96,6 +109,20 @@ def chat(req: ChatReq):
         out = {"error": rec["error"]}
     with PROXY_LOG.open("a", encoding="utf-8") as f:
         f.write(json.dumps(rec) + "\n")
+    # J17 cold start: every real routed outcome feeds the capability ledger so
+    # the bump rule accumulates evidence from live traffic (gate still decides
+    # whether bumps APPLY — recording happens always, per the dry-run spec).
+    try:
+        from .capability import Ledger, class_key
+        led = Ledger()
+        led.record({"bench_key": f"{model}@127.0.0.1",
+                    "difficulty": decision["difficulty"], "timing": decision["timing"],
+                    "when": "NOW" if decision["timing"] == "NOW" else "LATER",
+                    "outcome": ("success" if rec["status"] == "ok" else "failure"),
+                    "latency_s": rec.get("latency_s"),
+                    "ts": rec["ts"]})
+    except Exception:
+        pass  # ledger telemetry must never break routing
     if rec["status"] == "error":
         return JSONResponse(out, status_code=502)
     return JSONResponse(out)

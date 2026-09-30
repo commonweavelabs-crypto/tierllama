@@ -1,52 +1,50 @@
 {
- "tiers": {
-  "EASY/NOW": {
-   "provider": "auto",
-   "model": "qwen3:0.6b",
-   "thinking": "normal",
-   "source": "measured"
-  },
-  "EASY/LATER": {
-   "provider": "auto",
-   "model": "ornith-1.5:9b",
-   "thinking": "normal",
-   "source": "measured"
-  },
-  "MEDIUM/NOW": {
-   "provider": "auto",
-   "model": "qwen3:0.6b",
-   "thinking": "normal",
-   "source": "measured"
-  },
-  "MEDIUM/LATER": {
-   "provider": "auto",
-   "model": "ornith-1.5:9b",
-   "thinking": "normal",
-   "source": "measured"
-  },
-  "HARD/NOW": {
-   "provider": "auto",
-   "model": "qwen3:0.6b",
-   "thinking": "max",
-   "source": "measured"
-  },
-  "HARD/LATER": {
-   "provider": "auto",
-   "model": "ornith-1.5:9b",
-   "thinking": "max",
-   "source": "measured"
-  },
-  "EXPERT/NOW": {
-   "provider": "auto",
-   "model": "glm-5.3-flash:cloud",
-   "thinking": "max",
-   "source": "seed"
-  },
-  "EXPERT/LATER": {
-   "provider": "auto",
-   "model": "glm-5.3-flash:cloud",
-   "thinking": "max"
-  }
+ "EASY/NOW": {
+  "provider": "auto",
+  "model": "qwen3-vl:8b",
+  "thinking": "normal",
+  "source": "measured"
  },
- "_user_edited": []
+ "EASY/LATER": {
+  "provider": "auto",
+  "model": "qwen3-vl:8b",
+  "thinking": "normal",
+  "source": "measured"
+ },
+ "MEDIUM/NOW": {
+  "provider": "auto",
+  "model": "qwen3-vl:8b",
+  "thinking": "normal",
+  "source": "measured"
+ },
+ "MEDIUM/LATER": {
+  "provider": "auto",
+  "model": "qwen3-vl:8b",
+  "thinking": "normal",
+  "source": "measured"
+ },
+ "HARD/NOW": {
+  "provider": "auto",
+  "model": "gemma3:12b",
+  "thinking": "max",
+  "source": "measured"
+ },
+ "HARD/LATER": {
+  "provider": "auto",
+  "model": "gemma3:12b",
+  "thinking": "max",
+  "source": "measured"
+ },
+ "EXPERT/NOW": {
+  "provider": "auto",
+  "model": "glm-5.3-flash:cloud",
+  "thinking": "max",
+  "source": "seed"
+ },
+ "EXPERT/LATER": {
+  "provider": "auto",
+  "model": "glm-5.3-flash:cloud",
+  "thinking": "max",
+  "source": "seed"
+ }
 }

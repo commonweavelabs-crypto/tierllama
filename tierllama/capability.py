@@ -201,3 +201,66 @@ def evaluate_bump(ledger: "Ledger" = None, state: "BumpState" = None, bench_key:
     decision["to_tier"] = bump_tier(base, 1)
     decision["reason"] = f"{streak} consecutive failures on class (rate {st['failure_rate']})"
     return decision
+
+
+# ---------- J17: seed from bench history + dry-run visibility ----------
+def seed_from_bench(bench_log: Path | None = None) -> dict:
+    """J17 T2 one-shot backfill: convert bench.jsonl pass/fail results into
+    ledger outcome events so the panel shows evidence on day one. Idempotent:
+    a marker records the last bench ts seeded; re-runs only add newer rows."""
+    import datetime as dt2
+    path = bench_log or (Path(__file__).parent.parent / "logs" / "bench.jsonl")
+    state_path = Path(__file__).parent.parent / "logs" / "capability_seed.json"
+    done_until = ""
+    if state_path.exists():
+        try:
+            done_until = json.loads(state_path.read_text(encoding="utf-8")).get("seeded_until", "")
+        except Exception:
+            pass
+    if not path.exists():
+        return {"seeded": 0, "reason": "no bench history"}
+    added = 0
+    led = Ledger()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except Exception:
+            continue
+        ts = row.get("ts", "")
+        if ts <= done_until:
+            continue
+        if row.get("easy_pass") is None:
+            continue  # row shape without pass fields: old/foreign, skip
+        key = row.get("bench_key") or f"{row.get('model')}@{row.get('host', 'localhost')}"
+        timing = row.get("timing_fit", "NOW")
+        # one bench row = one ledger event per measured difficulty
+        for diff, ok, lat in (("EASY", row.get("easy_pass"), row.get("tok_s")),
+                              ("MEDIUM", row.get("medium_pass"), row.get("medium_s")),
+                              ("HARD", row.get("hard_pass"), row.get("hard_s"))):
+            if ok is None:
+                continue
+            led.record({"bench_key": key, "difficulty": diff,
+                        "timing": timing, "when": "NOW",
+                        "outcome": "success" if ok else "failure",
+                        "latency_s": lat, "ts": ts, "source": "bench-seed"})
+            added += 1
+    if added:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps({"seeded_until": _last_bench_ts(path)}), encoding="utf-8")
+    return {"seeded": added}
+
+
+def _last_bench_ts(path: Path) -> str:
+    last = ""
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            ts = json.loads(line).get("ts", "")
+            if ts > last:
+                last = ts
+        except Exception:
+            continue
+    return last

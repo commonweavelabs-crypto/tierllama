@@ -27,6 +27,17 @@ def check_and_stage():
         remote_v = manifest.get("version", "0")
         local_v = _current_version()
         if remote_v <= local_v:
+            # J18 fix: a staged file may still hold unapplied suggestions for
+            # THIS version (staged last session, never clicked "apply").
+            # Report it so the UI offers the diff instead of dead-ending.
+            if STAGED.exists():
+                try:
+                    staged_v = json.loads(STAGED.read_text(encoding="utf-8")).get("version", "0")
+                    if staged_v >= local_v:
+                        return {"staged": True, "version": staged_v,
+                                "reason": "staged, not applied yet"}
+                except Exception:
+                    pass
             return {"staged": False, "reason": "already up to date", "version": remote_v}
         STAGED.parent.mkdir(exist_ok=True)
         STAGED.write_bytes(data)
@@ -64,14 +75,43 @@ def preview_diff(user_edited_tiers: set, mode: str = "price"):
             "mode": mode}
 
 def apply_staged():
-    """Explicit apply (Re-scan button). Backs up current staged file for rollback."""
+    """Explicit apply (Re-scan button). Backs up BOTH files. J18 wiring fix:
+    applies the staged tiers INTO routing.json — the file the router actually
+    reads — skipping user-edited tiers (their models are sacred, J10)."""
     if not STAGED.exists():
         return {"applied": False, "reason": "nothing staged"}
     CURRENT.parent.mkdir(exist_ok=True)
     if CURRENT.exists():
         shutil.copy2(CURRENT, BACKUP)
     shutil.copy2(STAGED, CURRENT)
-    return {"applied": True, "version": _current_version()}
+    # J18 wiring fix: merge into routing.json (previously this pipeline wrote a
+    # file nobody consumed — the Re-scan button appeared to do nothing).
+    routing_path = ROOT / "routing.json"
+    rdata = json.loads(routing_path.read_text(encoding="utf-8")) if routing_path.exists() else {}
+    if routing_path.exists():
+        shutil.copy2(routing_path, routing_path.with_suffix(".json.bak"))
+    current_tiers = rdata.get("tiers", {})
+    user_edited = set(rdata.get("_user_edited", []))
+    staged_tiers = json.loads(STAGED.read_text(encoding="utf-8")).get("tiers", {})
+    applied, skipped = [], []
+    for tier, new in staged_tiers.items():
+        if tier in user_edited:
+            skipped.append(tier)
+            continue
+        cur = current_tiers.get(tier, {})
+        if cur.get("model") != new.get("model"):
+            current_tiers[tier] = {**current_tiers[tier], **new, "source": "seed"}
+            applied.append(tier)
+        else:
+            # keep model, refresh thinking/source if the seed refines them
+            if cur.get("thinking") != new.get("thinking"):
+                cur["thinking"] = new["thinking"]
+                applied.append(tier + " (thinking)")
+    rdata["tiers"] = current_tiers
+    rdata["_user_edited"] = sorted(user_edited)
+    routing_path.write_text(json.dumps(rdata, indent=2), encoding="utf-8")
+    return {"applied": True, "version": _current_version(), "tiers_changed": applied,
+            "tiers_skipped_user_edited": skipped}
 
 def rollback():
     if not BACKUP.exists():

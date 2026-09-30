@@ -53,5 +53,10 @@ def discover(subnet=None, ports=(11434, 8080), workers=64, timeout=1.2):
             if r:
                 found.append(r)
     # enrich open ports with model lists (few hosts; sequential fine):
-    out = [_tags(ip, port) for (ip, port) in sorted(found)]
+    out = [r for r in (_tags(ip, port) for (ip, port) in sorted(found))
+           # J17 debug fix: a TCP-open port is NOT an engine. T-Mobile 5G
+           # Gateway:8080 answered but serves no models/Ollama routes —
+           # require a real model list (or at least an engine kind), never
+           # ship a zombie "0 models / unknown" peer to the UI.
+           if r.get("models") or r.get("kind") not in ("unknown", None)]
     return out

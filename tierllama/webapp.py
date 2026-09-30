@@ -9,7 +9,7 @@ Endpoints:
   GET  /api/savings     savings summary vs always-best baseline
   POST /api/route       route a test message live
 """
-import json, re, os, re, time, datetime
+import json, re, os, re, platform, socket, subprocess, threading, time, datetime
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
@@ -28,23 +28,298 @@ class TierTarget(BaseModel):
     model: str
     thinking: str = "normal"   # normal | max | off
 
+_discovery_cache: dict = {"ts": 0.0, "peers": None}   # raw scan result cache
+_DISCOVERY_TTL_S = 60.0        # serve cached scan for 1 min; refresh in background
+_discovery_lock = threading.Lock()
+
+def _discover_cached() -> list:
+    """LAN scan with instant serve + background refresh (J17 T4 policy: the
+    response NEVER waits on the network; a background thread keeps it fresh)."""
+    import time as _t
+    now = _t.time()
+    with _discovery_lock:
+        fresh = now - _discovery_cache["ts"] < _DISCOVERY_TTL_S
+        cached = _discovery_cache["peers"]
+    if cached is not None and fresh:
+        return cached
+    if cached is not None:            # stale: serve it, refresh behind the lock
+        def worker():
+            try:
+                result = discover()
+                with _discovery_lock:
+                    _discovery_cache["ts"] = _t.time()
+                    _discovery_cache["peers"] = result
+            except Exception:
+                pass
+        if not any(getattr(t, 'daemon', False) and t.name == 'fleet-refresh' for t in threading.enumerate()):
+            threading.Thread(target=worker, daemon=True, name='fleet-refresh').start()
+        return cached
+    # cold: scan inline once (server just booted), then always serve cached
+    result = discover()
+    with _discovery_lock:
+        _discovery_cache["ts"] = now
+        _discovery_cache["peers"] = result
+    return result
+
 @app.get("/api/fleet")
 def fleet():
-    peers = discover()
+    peers = _discover_cached()
     # J7 fix: include THIS machine's Ollama (localhost) in the fleet - the LAN scan
     # skips 127.0.0.1, so local models never showed in the UI dropdowns:
+    mine = _this_machine_hosts()
+    # J17: fold any discovered peer that IS this machine (its own LAN IP, e.g.
+    # seen as host.docker.internal) into the localhost entry — one row, models
+    # reused from the scan (no second /api/tags fetch that can timeout under load).
+    self_models: list | None = None
+    kept = []
+    for p in peers:
+        if p.get("host") in mine:
+            if p.get("models"):
+                self_models = p["models"]
+        else:
+            kept.append(p)
+    peers = kept
+    # this machine's own Ollama (localhost) first — independent of the LAN scan:
     try:
-        tags = json.loads(urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=5).read())
-        local = {"host": "127.0.0.1", "port": 11434, "kind": "ollama (this machine)",
-                 "models": [m["name"] for m in tags.get("models", [])]}
-        peers = [local] + [p for p in peers if p.get("host") != "127.0.0.1"]
+        tags = json.loads(urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=8).read())
+        peers.insert(0, {"host": "127.0.0.1", "port": 11434, "kind": "ollama (this machine)",
+                         "models": [m["name"] for m in tags.get("models", [])]})
+    except Exception:
+        if self_models:  # scan already saw this machine's models — use them
+            peers.insert(0, {"host": "127.0.0.1", "port": 11434, "kind": "ollama (this machine)",
+                             "models": self_models})
+    # J17 T4: enrich NEW machines in the background (slow probes never block
+    # this response); this request serves instantly from the enrichment cache.
+    _ensure_enriched([p.get("host", "") for p in peers if p.get("host") not in ("127.0.0.1", "localhost")])
+    peers = [_with_fleet_name(p) for p in peers]
+    return {"peers": peers, "generated": datetime.datetime.now().isoformat(timespec="seconds")}
+
+
+# ---------- J17 T1: fleet naming ----------
+# Names live in their own sidecar so the discovery scan (which rewrites peers
+# every call) never clobbers a user's rename. Key = "host:port" because the
+# discover path has no stable node_id (unlike Fleet's zeroconf uuid).
+FLEET_NAMES_PATH = ROOT / "logs" / "fleet_names.json"
+# J17 T4: enrichment cache — name/OS lookups are SLOW (nbtstat ~6s, ping ~5s),
+# so they run ONCE per new machine in a background thread and persist here.
+# /api/fleet serves from this cache instantly; it never blocks on probes.
+FLEET_ENRICH_PATH = ROOT / "logs" / "fleet_enrich.json"
+
+# Auto-name chain (informed initial naming, J17 spec — user can always override):
+# 1. reverse DNS / mDNS hostname  (Mac: "MacBookAir.lan" -> "MacBookAir")
+# 2. NetBIOS name broadcast       (Windows/Mac answer: e.g. "DESKTOP-SHN3HMJ")
+# 3. OS fingerprint via ping TTL  (128=Windows, 64=Mac/Linux) -> "Windows machine (ip)"
+# 4. raw IP
+_DNS_ALIAS_JUNK = {"host.docker.internal", "docker.internal", "localhost",
+                   "ip6-localhost", "ip6-allnodes", "ip6-allrouters"}
+_name_cache: dict[str, str] = {}          # ip -> netbios/os name (slow lookups only)
+def _fleet_names() -> dict:
+    if not FLEET_NAMES_PATH.exists():
+        return {}
+    try:
+        return json.loads(FLEET_NAMES_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def _load_enrich() -> dict:
+    try:
+        return json.loads(FLEET_ENRICH_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def _save_enrich(d: dict):
+    FLEET_ENRICH_PATH.parent.mkdir(parents=True, exist_ok=True)
+    FLEET_ENRICH_PATH.write_text(json.dumps(d, indent=1), encoding="utf-8")
+
+def _enrich_host(ip: str) -> dict:
+    """One slow enrichment pass: name chain + OS fingerprint. Called only from
+    the background enricher (never inside a request)."""
+    name = _reverse_dns_name(ip) or _netbios_name(ip) or _os_fallback_name(ip) or ip
+    os_guess = ""
+    try:
+        ttl = _ping_ttl(ip)
+        if ttl >= 127:
+            os_guess = "Windows"
+        elif 56 <= ttl <= 64:
+            os_guess = "Mac/Linux"
     except Exception:
         pass
-    return {"peers": peers, "generated": datetime.datetime.now().isoformat(timespec="seconds")}
+    return {"name": name, "os": os_guess, "enriched_at": datetime.datetime.now().isoformat(timespec="seconds")}
+
+def _ping_ttl(ip: str) -> int:
+    import re as _re
+    r = subprocess.run(["ping", "-n", "1", "-w", "1500", ip],
+                       capture_output=True, text=True, timeout=5)
+    m = _re.search(r"TTL[=:]\s*(\d+)", r.stdout or "")
+    return int(m.group(1)) if m else -1
+
+def _ensure_enriched(ips: list[str]):
+    """Kick a background thread to enrich any cache-miss IPs (fire-and-forget).
+    This is the J17 T4 lightweight policy: probe ONLY new machines, never poll."""
+    enr = _load_enrich()
+    missing = [ip for ip in ips if ip not in enr]
+    if not missing:
+        return
+    def worker():
+        for ip in missing:
+            try:
+                result = _enrich_host(ip)
+                d = _load_enrich()
+                d[ip] = result
+                _save_enrich(d)
+            except Exception:
+                continue
+    threading.Thread(target=worker, daemon=True).start()
+
+def _fleet_names() -> dict:
+    if not FLEET_NAMES_PATH.exists():
+        return {}
+    try:
+        return json.loads(FLEET_NAMES_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+def _reverse_dns_name(ip: str) -> str:
+    """mDNS/DNS reverse lookup, sanitized. Empty on junk aliases or failure."""
+    try:
+        full = socket.gethostbyaddr(ip)[0].strip()
+    except Exception:
+        return ""
+    # Docker Desktop maps the HOST's own LAN IP to host.docker.internal — a
+    # self-alias, never a real peer name. Reject before taking the first label.
+    if "docker" in full.lower() or full.lower() in _DNS_ALIAS_JUNK:
+        return ""
+    host = full.split(".")[0]
+    if not host or host.replace(".", "").isdigit():
+        return ""
+    return host
+
+def _netbios_name(ip: str) -> str:
+    """Windows broadcasts its machine name via NetBIOS (works cross-OS: a Mac
+    also answers). Slow (~4s on misses) - cached per process."""
+    import re as _re
+    if ip in _name_cache:
+        return _name_cache[ip]
+    out = ""
+    try:
+        res = _run_nbtstat(ip)
+        m = _re.search(r"([A-Za-z0-9\-_]{2,15})\s+<00>\s+UNIQUE", res, _re.IGNORECASE)
+        if m:
+            out = m.group(1).strip()
+    except Exception:
+        pass
+    _name_cache[ip] = out
+    return out
+
+def _run_nbtstat(ip: str) -> str:
+    import subprocess
+    r = subprocess.run(["nbtstat", "-A", ip], capture_output=True, text=True, timeout=6)
+    return r.stdout or ""
+
+def _os_fallback_name(ip: str) -> str:
+    """Ping-TTL OS fingerprint: Windows default TTL 128, Unix-family 64."""
+    import subprocess
+    if ip in _name_cache:
+        return _name_cache[ip]
+    out = ""
+    try:
+        r = subprocess.run(["ping", "-n", "1", "-w", "1500", ip],
+                           capture_output=True, text=True, timeout=5)
+        import re as _re
+        m = _re.search(r"TTL[=:]\s*(\d+)", r.stdout or "")
+        if m:
+            ttl = int(m.group(1))
+            if ttl >= 127:
+                out = f"Windows machine ({ip})"
+            elif 56 <= ttl <= 64:
+                out = f"Mac/Linux machine ({ip})"
+    except Exception:
+        pass
+    if not out:
+        out = ip
+    _name_cache[ip] = out
+    return out
+
+def _this_machine_hosts() -> set:
+    """All host labels this machine answers to (loopback + its LAN IP), so the
+    fleet list doesn't show the same PC twice (localhost + LAN IP)."""
+    mine = {"127.0.0.1", "localhost"}
+    try:
+        hn = socket.gethostname()
+        mine.add(hn.lower())
+        # resolve hostname to ALL its interface addresses (Tailscale 100.x,
+        # LAN 192.168.x, ...) so a peer entry for any of them is recognized
+        # as this machine and hidden (J17 dedupe).
+        import getpass
+        mine.add(getpass.getuser().lower() + "-pc")  # legacy naming hint, harmless
+        for info in socket.getaddrinfo(hn, None, socket.AF_INET):
+            mine.add(info[4][0].lower())
+    except Exception:
+        pass
+    # Docker's self-alias maps the host LAN IP to host.docker.internal —
+    # treat the LAN IP itself as "mine" by asking the OS which interfaces exist.
+    try:
+        import ipaddress
+        raw = subprocess_run_ipconfig()
+        for ip in __import__("re").findall(r"IPv4[^\n]*?:\s*([0-9.]+)", raw):
+            mine.add(ip.strip())
+    except Exception:
+        pass
+    return mine
+
+def subprocess_run_ipconfig() -> str:
+    r = subprocess.run(["ipconfig"], capture_output=True, text=True, timeout=6)
+    return r.stdout or ""
+
+def _default_fleet_name(peer: dict) -> str:
+    host = peer.get("host", "")
+    if host.lower() in ("127.0.0.1", "localhost"):
+        return socket.gethostname()
+    enriched = _load_enrich().get(host, {})
+    return enriched.get("name", "") or peer.get("host", "")
+
+def _with_fleet_name(peer: dict) -> dict:
+    key = f"{peer.get('host')}:{peer.get('port')}"
+    name = _fleet_names().get(key, "")
+    peer = dict(peer)
+    is_self = peer.get("host", "").lower() in ("127.0.0.1", "localhost")
+    if is_self:
+        # this machine: name it plainly and read the OS straight from the OS
+        peer.setdefault("name", socket.gethostname())
+        peer["name"] = peer["name"] if not name else name
+        peer.setdefault("kind", "ollama (this machine)")
+        peer["os"] = f"{platform.system()} {platform.release()}" if platform.system() else "this machine"
+    else:
+        peer["name"] = name or _default_fleet_name(peer) or peer.get("host", "")
+        enr = _load_enrich().get(peer.get("host", ""), {})
+        if enr.get("os"):
+            peer["os"] = enr["os"]
+    peer["name_user_set"] = bool(name)
+    return peer
+
+@app.post("/api/fleet/name")
+def api_fleet_name(payload: dict = None):
+    payload = payload or {}
+    host, name = str(payload.get("host", "")), str(payload.get("name", "")).strip()
+    port = int(payload.get("port", 0))
+    if not host:
+        return {"ok": False, "error": "host required"}
+    names = _fleet_names()
+    if name:
+        names[f"{host}:{port}"] = name[:64]
+    else:
+        names.pop(f"{host}:{port}", None)   # empty name = back to the hostname default
+    FLEET_NAMES_PATH.write_text(json.dumps(names, indent=1), encoding="utf-8")
+    return {"ok": True, "name": name}
 
 @app.get("/api/config")
 def get_config():
-    return {"tiers": _load_tiers(), "classifier": CLASSIFIER["model"]}
+    try:
+        rdata = json.loads((ROOT / "routing.json").read_text(encoding="utf-8"))
+        user_edited = rdata.get("_user_edited", [])
+    except Exception:
+        user_edited = []
+    return {"tiers": _load_tiers(), "classifier": CLASSIFIER["model"], "user_edited": user_edited}
 
 def _load_tiers():
     """Decision tree as data: routing.json (user-editable via UI) with defaults."""
@@ -285,16 +560,158 @@ def seed_rollback():
     return rollback()
 
 
+# ---------- J19 model rater (dynamic categorization) ----------
+def user_stance_notes() -> list[str]:
+    """Gui's standing model-trust stances (Sep 29-30 session, recorded in the
+    tierllama-debug-sessions skill) — fed to Jev as operator preferences."""
+    return [
+        "qwen3 small variants (0.6b/4b) are NOT trusted for interactive driving",
+        "ornith-1.5:35b is acceptable for EASY-NOW or async work at most",
+        "box model qwen38-27b-iq3s is the trusted overnight/LATER workhorse",
+        "kimi-k3:cloud is premium — reserve for EXPERT when optimizing for price",
+    ]
+
+@app.get("/api/models/rated")
+def api_models_rated(mode: str = "price", include_local: bool = True,
+                     include_small: bool = False):
+    """THE per-tier candidate lists (Gui spec): every reachable model, rated,
+    grouped by tier, best-pick first. Serves instantly; probes run background.
+    include_small: sub-9B models are toy class — out of suggestions by default."""
+    from .rater import tier_categories, unbenched_models
+    cats = tier_categories(mode, include_local=include_local, include_small=include_small)
+    cats["unbenched"] = unbenched_models()
+    return cats
+
+@app.post("/api/bench/run")
+def api_bench_run(payload: dict = None):
+    """J19: benchmark specific unbenched models on request (from the UI warning
+    button). Background thread; polled via GET on the same path."""
+    payload = payload or {}
+    models = payload.get("models") or []
+    if not models:
+        return {"started": False, "reason": "no models given"}
+    if getattr(api_bench_run, "_running", False):
+        return {"running": True, "current": getattr(api_bench_run, "_current", "?")}
+    api_bench_run._running = True
+    def worker():
+        from .bench import probe_model
+        done = []
+        try:
+            for m in models:
+                api_bench_run._current = m
+                try:
+                    probe_model(m)
+                    done.append(m)
+                except Exception:
+                    continue
+        finally:
+            api_bench_run._running = False
+            api_bench_run._last = len(done)
+            api_bench_run._current = ""
+    import threading as _th
+    _th.Thread(target=worker, daemon=True).start()
+    return {"started": True, "total": len(models)}
+
+@app.get("/api/bench/run")
+def api_bench_status():
+    return {"running": getattr(api_bench_run, "_running", False),
+            "current": getattr(api_bench_run, "_current", ""),
+            "last_result": getattr(api_bench_run, "_last", None)}
+
+@app.get("/api/suggestions")
+def api_suggestions(mode: str = "price", include_local: bool = True,
+                    include_small: bool = False):
+    """Single picks for the decision tree. J19 v2: JEV brains the pick — every
+    guardrailed candidate gets a dossier; Jev scores 0-100 per tier with user
+    stance notes weighed; the top score wins. The heuristic rater (bands,
+    ceiling caps, cost sort) demoted to FALLBACK when Jev is unreachable."""
+    from .rater import tier_categories
+    cats = tier_categories(mode, include_local=include_local, include_small=include_small)
+    # gather guardrail-legal candidates per tier (the three hard lines):
+    guardrailed = {}
+    for key, info in cats["tiers"].items():
+        diff, timing = key.split("/")
+        # rebuild the same qualification tier_categories used: ask the rater
+        # for its full row set so we can re-derive with timings included
+        guardrailed[key] = info
+    picks, jev_meta = {}, {}
+    try:
+        from .jev_rater import rate_tiers, TIER_JOBS
+        from .rater import rate_all, gather_pool
+        pool = gather_pool()
+        if not include_local:
+            pool = {"local": [], "cloud": pool["cloud"]}
+        rows = rate_all(pool)
+        tiers = [(k.split("/")[0], k.split("/")[1]) for k in cats["tiers"]]
+        ratings = rate_tiers(rows, tiers, user_stance_notes())
+        from .jev_rater import apply_stance_guardrails
+        ratings = apply_stance_guardrails(ratings, rows)
+        for key, info in cats["tiers"].items():
+            cands = info.get("candidates") or []
+            if not cands:
+                continue
+            diff, timing = key.split("/")
+            legal = {r["model"]: r for r in rows
+                     if r["model"] in {c["model"] for c in cands}}
+            jr = ratings.get(key, {})
+            if jr.get("ok") and jr.get("scores"):
+                # Jev's pick among guardrailed candidates ONLY:
+                scored = [(s, m) for m, s in jr["scores"].items() if m in legal]
+                if scored:
+                    scored.sort(reverse=True)
+                    m = scored[0][1]
+                    picks[key] = {"provider": "auto", "model": m,
+                                  "thinking": "max" if diff in ("HARD", "EXPERT") else "normal",
+                                  "source": "jev"}
+                    jev_meta[key] = {"scores": jr["scores"], "jev": True}
+                    continue
+            # fallback: heuristic first candidate
+            pick = cands[0]
+            picks[key] = {"provider": "auto", "model": pick["model"],
+                          "thinking": "max" if diff in ("HARD", "EXPERT") else "normal",
+                          "source": f"rated-{mode}"}
+            jev_meta[key] = {"scores": jr.get("scores") or {}, "jev": False}
+        return {"tiers": picks, "mode": mode, "pool_size": cats["pool_size"],
+                "tiers_flagged": {k: v["flag"] for k, v in cats["tiers"].items() if v.get("flag")},
+                "jev": {"used": any(v.get("jev") for v in jev_meta.values()), "tiers": jev_meta}}
+    except Exception as e:
+        # hard fallback: heuristic-only (never break suggestions)
+        picks = {}
+        for key, info in cats["tiers"].items():
+            diff = key.split("/")[0]
+            cands = info.get("candidates") or []
+            if cands:
+                picks[key] = {"provider": "auto", "model": cands[0]["model"],
+                              "thinking": "max" if diff in ("HARD", "EXPERT") else "normal",
+                              "source": f"rated-{mode}"}
+        return {"tiers": picks, "mode": mode, "pool_size": cats["pool_size"],
+                "tiers_flagged": {k: v["flag"] for k, v in cats["tiers"].items() if v.get("flag")},
+                "jev": {"used": False, "error": str(e)[:120]}}
+
 # ---------- J14 capability loop (BETA) ----------
 @app.get("/api/capability")
 def api_capability():
-    from .capability import Ledger, load_recent_bumps
+    from .capability import Ledger, load_recent_bumps, evaluate_bump, seed_from_bench
     from .outcomes import summary as outcome_summary
+    # J17 T2: idempotent backfill from bench history — first call populates the
+    # ledger so the panel shows evidence instead of an empty beta scaffold.
+    seed = seed_from_bench()
     led = Ledger()
     led.load()
     keys = sorted(led.events.keys())
     rows = [{"key": k, **led.stats(k)} for k in keys]
     rows.sort(key=lambda r: -(r["samples"]))
+    # J17 T3 dry-run visibility: for every class with evidence, show what the
+    # bump rule WOULD decide right now (independent of the gate).
+    would = []
+    for r in rows[:50]:
+        parts = r["key"].split("|")
+        d = evaluate_bump(led, None, bench_key=parts[0], difficulty=parts[1],
+                          timing=parts[2], when=parts[3] if len(parts) > 3 else "NOW",
+                          current_tier=parts[1])
+        if d.get("would_bump"):
+            would.append({"key": d["key"], "from": d["from_tier"], "to": d["to_tier"],
+                          "reason": d["reason"]})
     from .config import CAPABILITY
     # bump events recorded in state (they exist even when gate OFF - dry-run transparency)
     bumps = load_recent_bumps()
@@ -304,7 +721,9 @@ def api_capability():
                         "min_samples", "canary_pct", "canary_successes")},
             "outcomes": outcome_summary(),
             "classes": rows[:50],
-            "bumps": bumps}
+            "bumps": bumps,
+            "would_bump": would,
+            "seeded": seed}
 
 @app.post("/api/capability/toggle")
 def api_capability_toggle(payload: dict = None):
