@@ -1,0 +1,11 @@
+=== SHAPE A: legend word-matching -> ADEQUATE/INADEQUATE ===
+JOB: HARD, LATER skill tag 'competent', speed tag 'slow'      want=True  got=think-burned(2000)     MISS (169.9s ev=2000)
+JOB: HARD, NOW   skill tag 'competent', speed tag 'slow'      want=False got=INADEQUATE             OK (118.6s ev=1467)
+JOB: EASY, NOW   skill tag 'weak', speed tag 'fast'           want=True  got=think-burned(2000)     MISS (170.7s ev=2000)
+JOB: EXPERT, NOW skill tag 'weak', speed tag 'fast', cloud    want=False got=INADEQUATE             OK (161.7s ev=1916)
+JOB: EASY, NOW   skill tag 'competent', speed tag 'fast'      want=True  got=think-burned(2000)     MISS (169.1s ev=2000)
+JOB: EXPERT, LATER skill tag 'competent', speed tag 'slow'      want=False got=think-burned(2000)     OK (169.9s ev=2000)
+JOB: MEDIUM, NOW skill tag 'competent', speed tag 'fast'      want=True  got=think-burned(2000)     MISS (169.6s ev=2000)
+JOB: MEDIUM, NOW skill tag 'weak', speed tag 'fast'           want=False got=think-burned(2000)     OK (172.5s ev=2000)
+SHAPE A: 4/8   positives 0/4  negatives 4/4
+EXIT=0
