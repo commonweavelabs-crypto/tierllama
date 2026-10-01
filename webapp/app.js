@@ -108,6 +108,22 @@ async function pollOptimize() {
 async function rescanModels(mode = "price", includeLocal = true, includeSmall = false) {
   mode = mode || (window._lastMode || "price");
   window._lastMode = mode;
+  // J19.5 hardware gate: the suggestions feature runs the Jev brain — check
+  // hardware state BEFORE rating. Never locked out silently; never promised
+  // a feature the machine can't run (CPU-only 8b = ~66s/decision, measured).
+  const hw = await (await fetch("/api/jev/hardware")).json();
+  const gate = document.getElementById("hardwareGate");
+  if (!hw.usable) {
+    gate.style.display = "block";
+    gate.innerHTML = hw.installed
+      ? `⚠ <b>Not usable right now:</b> ${hw.reason}. Free up VRAM or run suggestions on a stronger machine — brain (${hw.model}) is installed (${hw.size_mb}MB on disk).`
+      : `⚠ <b>Model suggestions need the Jev brain (${hw.model}, ~5.2GB download${hw.gpu ? ", 6GB+ free VRAM" : ""}).</b>
+         ${hw.gpu ? "Your GPU reports " + hw.vram_free_mb + "MB free — enough once downloaded." : "No discrete GPU detected — suggested picks will take minutes per decision on this machine."}
+         <button style="font-size:.7rem;margin-left:.4rem" onclick="downloadJevBrain(this)">Pull ${hw.model}</button> <span id="pullMsg" class="muted"></span>`;
+    document.getElementById("seedStatus").textContent = "Suggestions locked — brain/hardware gate.";
+    return;
+  }
+  gate.style.display = "none";
   const cardT = document.getElementById("inclLocalCard");
   const cardS = document.getElementById("inclSmall");
   if (cardT && cardT.checked !== includeLocal) cardT.checked = includeLocal;
@@ -199,15 +215,16 @@ async function loadJevCard() {
   document.getElementById("jevDesc").textContent =
     "Jev is not a chat LLM - it's a System One model that returns typed decisions " +
     "(difficulty, timing) with calibrated confidence in ~80ms, not tokens of prose. " +
-    "Every message you send is classified by a Jev-style brain before routing. " +
+    "Every message you send is classified by a Jev-class brain (qwen3:8b) before routing — " +
+    "the same brain matches pre-rated models to jobs in the suggestions panel. " +
     "The original Jev is TypeSafe AI's model (Diogo Almeida, ChatGPT co-creator); " +
-    "our open-source local brain is a Jev-style qwen3:4b you run yourself - free. " + st.price + ".";
+    "our open-source local brain is a Jev-class qwen3:8b you run yourself - free, Apache-2.0. " + st.price + ".";
   document.getElementById("jevBody").innerHTML = `
     <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.3rem 0">
       <span class="key-dot ${st.local_available ? "key-ok" : "key-missing"}"></span>
-      <b style="font-size:.85rem">Local brain — Jev-style qwen3:4b</b>
+      <b style="font-size:.85rem">Local brain — Jev (qwen3:8b, one brain: classifies prompts + matches models)</b>
       <span class="muted">${st.local_available ? "running on your machine · free" : "not installed yet"}</span>
-      ${!st.local_available ? `<button onclick="installJevLocal()" style="font-size:.75rem">Download local brain (ollama pull qwen3:4b)</button>` : ""}
+      ${!st.local_available ? `<button onclick="installJevLocal()" style="font-size:.75rem">Download local brain (ollama pull qwen3:8b, ~5.2GB)</button>` : ""}
     </div>
     <div style="display:flex;gap:.5rem;align-items:center;margin-top:.3rem;flex-wrap:wrap">
       <span class="key-dot ${st.configured ? "key-ok" : "key-missing"}"></span>
@@ -219,9 +236,20 @@ async function loadJevCard() {
   const tg = document.getElementById("jevToggle");
   if (tg) tg.classList.toggle("on", !!st.configured);
 }
+async function downloadJevBrain(btn) {
+  // J19.5: pull the configured Jev brain from the Ollama registry (digest-pinned
+  // registry pull, never a random URL). Progress is honest: pull takes minutes.
+  const msg = document.getElementById("pullMsg");
+  btn.disabled = true;
+  msg.textContent = "pulling (5.2GB) — watch 'ollama ps' or this box; on a fast line ~2-4 min...";
+  const r = await (await fetch("/api/jev/install-local", {method: "POST"})).json();
+  btn.disabled = false;
+  if (r.ok) { msg.textContent = "✓ brain ready — re-run Re-scan, gate has lifted."; }
+  else msg.textContent = "pull failed: " + (r.error || "?");
+}
 async function installJevLocal() {
   const r = await (await fetch("/api/jev/install-local", {method:"POST"})).json();
-  alert(r.ok ? "qwen3:4b pulled - local brain ready." : "pull failed: " + (r.error||"?"));
+  alert(r.ok ? "Local brain pulled - ready." : "pull failed: " + (r.error||"?"));
   loadJevCard();
 }
 async function toggleJev(el) {

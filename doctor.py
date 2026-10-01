@@ -10,14 +10,40 @@ from tierllama.discover import discover
 def check_classifier():
     try:
         import urllib.request, json as J
-        body = {"model": "qwen3:4b", "stream": False, "max_tokens": 3, "logprobs": True, "top_logprobs": 3,
+        from tierllama.config import CLASSIFIER
+        body = {"model": CLASSIFIER["model"], "stream": False, "max_tokens": 3, "logprobs": True, "top_logprobs": 3,
           "messages": [{"role":"user","content":"Say OK"}]}
         req = urllib.request.Request("http://127.0.0.1:11434/v1/chat/completions",
           data=json.dumps(body).encode(), headers={"Content-Type":"application/json"})
-        t0=time.time(); r = json.loads(urllib.request.urlopen(req, timeout=60).read())
-        return {"check": "classifier", "ok": True, "latency_s": round(time.time()-t0,2)}
+        t0=time.time(); r = json.loads(urllib.request.urlopen(req, timeout=120).read())
+        return {"check": "classifier", "ok": True, "latency_s": round(time.time()-t0,2),
+                "model": CLASSIFIER["model"]}
     except Exception as e:
         return {"check": "classifier", "ok": False, "error": str(e)[:120]}
+
+def check_jev_brain_pin():
+    """J19.5: the Jev brain must match the config pin — digest compare against
+    the registry identity the swap was benched with. Pin drift = silent behavior
+    change (the Ollama-updater lesson: versions must never drift unannounced)."""
+    import urllib.request
+    from tierllama.config import CLASSIFIER
+    tag = CLASSIFIER["model"]
+    # pin: digest observed at the Jev swap bench (qwen3:8b, 2026-09-30)
+    PIN = {"qwen3:8b": "500a1f067a9f"}
+    try:
+        tags = json.loads(urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=10).read())
+        m = next((m for m in tags["models"] if m["name"] == tag), None)
+        if m is None:
+            return {"check": "jev_brain_pin", "ok": False, "error": f"{tag} not installed — doctor cannot verify the brain"}
+        dg = (m.get("digest") or "")[:12]
+        expect = PIN.get(tag)
+        if expect and not dg.startswith(expect):
+            return {"check": "jev_brain_pin", "ok": False, "model": tag,
+                    "error": f"digest drifted: {dg} != pinned {expect} — re-bench the brain or re-pin"}
+        return {"check": "jev_brain_pin", "ok": True, "model": tag, "digest": dg,
+                "note": "matches the swap-bench pin"}
+    except Exception as e:
+        return {"check": "jev_brain_pin", "ok": False, "error": str(e)[:120]}
 
 def check_lane_models():
     import urllib.request
@@ -70,7 +96,7 @@ def check_lan_discovery(subnet=None):
 def main():
     print("tierllama doctor")
     print("=" * 50)
-    results = [check_classifier()]
+    results = [check_classifier(), check_jev_brain_pin()]
     results += check_lane_models()
     results.append(check_lan_discovery())
     print("\n--- queue canary (async, may take up to 5 min) ---")

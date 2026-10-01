@@ -449,13 +449,17 @@ def optimize_status():
 @app.post("/api/jev/install-local")
 def jev_install_local():
     """Secure pull: pinned model tag from the Ollama registry (content-addressed
-    digests = hash-verified by Ollama itself). We never fetch from random URLs."""
+    digests = hash-verified by Ollama itself). We never fetch from random URLs.
+    J19.5: pulls the ACTUAL configured Jev brain (qwen3:8b since the swap) — tag
+    derived from config, never hardcoded, so a future brain bump updates itself."""
     import subprocess as _sp
+    from .config import CLASSIFIER as C
+    tag = C["model"]
     try:
-        r = _sp.run(["ollama","pull","qwen3:4b"], capture_output=True, text=True, timeout=1800)
-        return {"ok": r.returncode == 0, "error": r.stderr[-200:] if r.returncode else ""}
+        r = _sp.run(["ollama", "pull", tag], capture_output=True, text=True, timeout=3600)
+        return {"ok": r.returncode == 0, "error": r.stderr[-200:] if r.returncode else "", "model": tag}
     except Exception as e:
-        return {"ok": False, "error": str(e)[:150]}
+        return {"ok": False, "error": str(e)[:150], "model": tag}
 
 @app.post("/api/jev/toggle")
 def jev_toggle(payload: dict = None):
@@ -483,6 +487,59 @@ def jev_status():
         pass
     st["local_available"] = local_ok
     return st
+
+# ---------- J19.5: model-suggestions hardware gate ----------
+# The model-suggestions feature (Brain 2 + Rescan) uses the Jev brain for its
+# matrix read — on constrained hardware that's unaffordable to keep resident.
+# Gate design (docs/JEV-BRAIN-DECISION.md §Hardware tiers): state is reported,
+# never assumed; "usable" requires the brain present AND enough free VRAM.
+JEV_VRAM_NEED_MB = 6000   # 8b Q4_K_M ≈ 5.2GB weights + headroom for KV ctx
+
+def _vram_mb() -> dict:
+    """Total/free VRAM in MB via nvidia-smi. None on no-GPU machines (the gate
+    treats 'no discrete GPU' as constrained — CPU-only 8b = ~66s/decision)."""
+    import subprocess as _sp
+    try:
+        r = _sp.run(["nvidia-smi", "--query-gpu=memory.total,memory.used",
+                     "--format=csv,noheader,nounits"],
+                    capture_output=True, text=True, timeout=10)
+        if r.returncode != 0 or not r.stdout.strip():
+            return {"total": None, "free": None}
+        t, u = [int(x) for x in r.stdout.strip().splitlines()[0].split(",")]
+        return {"total": t, "free": t - u}
+    except Exception:
+        return {"total": None, "free": None}
+
+@app.get("/api/jev/hardware")
+def jev_hardware():
+    """Gate state for the model-suggestions toggle. installed = brain digest on
+    disk; usable = installed AND (GPU with free VRAM >= need)."""
+    import urllib.request as _u
+    from .config import CLASSIFIER as C
+    tag = C["model"]
+    installed = False
+    digest = None
+    size_mb = None
+    try:
+        tags = json.loads(_u.urlopen("http://127.0.0.1:11434/api/tags", timeout=5).read())
+        for m in tags.get("models", []):
+            if m.get("name") == tag:
+                installed = True
+                digest = (m.get("digest") or "")[:12]
+                size_mb = round((m.get("size") or 0) / 1e6)
+                break
+    except Exception:
+        pass
+    v = _vram_mb()
+    gpu = v["total"] is not None
+    vram_ok = gpu and v["free"] is not None and v["free"] >= JEV_VRAM_NEED_MB
+    usable = bool(installed and vram_ok)
+    reason = ("ok" if usable else
+              (f"brain '{tag}' not downloaded yet" if not installed else
+               f"free VRAM {v['free']}MB < need {JEV_VRAM_NEED_MB}MB — close big apps (ComfyUI, games) or run on the GPU box"))
+    return {"model": tag, "installed": installed, "digest": digest, "size_mb": size_mb,
+            "gpu": gpu, "vram_total_mb": v["total"], "vram_free_mb": v["free"],
+            "vram_need_mb": JEV_VRAM_NEED_MB, "usable": usable, "reason": reason}
 
 @app.get("/api/providers/all")
 def providers_all():
