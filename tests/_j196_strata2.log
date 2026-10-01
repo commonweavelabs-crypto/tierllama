@@ -1,0 +1,30 @@
+MISS why is my render darker than the preview?                  want=HARD/NOW    got=MEDIUM/NOW
+MISS it crashed again but only on scene 7, here's the log       want=HARD/NOW    got=MEDIUM/NOW
+MISS we have 3 hours before the deadline, what's the priority   want=HARD/NOW    got=MEDIUM/NOW
+MISS decide: practical effects or CGI for the explosion scene   want=HARD/NOW    got=MEDIUM/NOW
+OK   fix this crash now please                                  want=HARD/NOW    got=HARD/NOW
+OK   I need the trailer cut today                               want=HARD/NOW    got=HARD/NOW
+OK   optimize the particle system for 60fps on integrated gra   want=HARD/NOW    got=HARD/NOW
+OK   plan the launch render pipeline for 8 videos tonight       want=HARD/NOW    got=HARD/NOW
+OK   refactor the ingest flow, everything's due tonight         want=HARD/NOW    got=HARD/NOW
+MISS debug why 3 scenes dropped frames simultaneously           want=HARD/NOW    got=HARD/LATER
+OK   redesign the thumbnail pipeline before Friday              want=HARD/NOW    got=HARD/NOW
+OK   asap: the whole color pipeline has banding issues          want=HARD/NOW    got=HARD/NOW
+OK   do everything needed to finish the trailer by friday       want=HARD/NOW    got=HARD/NOW
+MISS queue all scenes overnight                                 want=EASY/NOW    got=EASY/LATER
+MISS do this when you get a chance                              want=EASY/LATER  got=MEDIUM/LATER
+OK   rename these clips without any rush                        want=EASY/LATER  got=EASY/LATER
+OK   zoom the preview whenever                                  want=EASY/LATER  got=EASY/LATER
+OK   reset zoom whenever                                        want=EASY/LATER  got=EASY/LATER
+Traceback (most recent call last):
+  File "C:\Users\Guilherme\tierllama\tests\_j196_strata_check.py", line 58, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\Guilherme\tierllama\tests\_j196_strata_check.py", line 49, in main
+    r = classify(msg)
+  File "C:\Users\Guilherme\tierllama\tierllama\classifier.py", line 43, in classify
+    d = _classify_dims(message, timeout=timeout)
+  File "C:\Users\Guilherme\tierllama\tierllama\classifier.py", line 82, in _classify_dims
+    raise ValueError("classifier returned empty content after retry (thinking burned budget)")
+ValueError: classifier returned empty content after retry (thinking burned budget)
+EXIT=1

@@ -1,0 +1,29 @@
+OK   why is my render darker than the preview?                  want=HARD/NOW    got=HARD/NOW
+MISS it crashed again but only on scene 7, here's the log       want=HARD/NOW    got=MEDIUM/NOW
+OK   we have 3 hours before the deadline, what's the priority   want=HARD/NOW    got=HARD/NOW
+OK   decide: practical effects or CGI for the explosion scene   want=HARD/NOW    got=HARD/NOW
+OK   fix this crash now please                                  want=HARD/NOW    got=HARD/NOW
+OK   I need the trailer cut today                               want=HARD/NOW    got=HARD/NOW
+OK   optimize the particle system for 60fps on integrated gra   want=HARD/NOW    got=HARD/NOW
+OK   plan the launch render pipeline for 8 videos tonight       want=HARD/NOW    got=HARD/NOW
+OK   refactor the ingest flow, everything's due tonight         want=HARD/NOW    got=HARD/NOW
+OK   debug why 3 scenes dropped frames simultaneously           want=HARD/NOW    got=HARD/NOW
+OK   redesign the thumbnail pipeline before Friday              want=HARD/NOW    got=HARD/NOW
+OK   asap: the whole color pipeline has banding issues          want=HARD/NOW    got=HARD/NOW
+OK   do everything needed to finish the trailer by friday       want=HARD/NOW    got=HARD/NOW
+OK   queue all scenes overnight                                 want=EASY/LATER  got=EASY/LATER
+OK   do this when you get a chance                              want=EASY/LATER  got=EASY/LATER
+OK   rename these clips without any rush                        want=EASY/LATER  got=EASY/LATER
+OK   zoom the preview whenever                                  want=EASY/LATER  got=EASY/LATER
+OK   reset zoom whenever                                        want=EASY/LATER  got=EASY/LATER
+OK   pin the timeline tomorrow                                  want=EASY/LATER  got=EASY/LATER
+OK   set the format to mp4                                      want=EASY/NOW    got=EASY/NOW
+OK   export the trailer cut before 5pm                          want=MEDIUM/NOW    got=MEDIUM/NOW
+OK   rename this clip whenever you get a chance                 want=EASY/LATER  got=EASY/LATER
+OK   improve the whole second act                               want=HARD/NOW    got=HARD/NOW
+OK   hi                                                         want=EASY/NOW    got=EASY/NOW
+OK   rewrite scene 3 to make the dialogue sharper               want=MEDIUM/NOW    got=MEDIUM/NOW
+OK   plan the render sequence for the 10 scenes                 want=HARD/NOW    got=HARD/NOW
+
+STRATA CHECK: 25/26
+EXIT=0

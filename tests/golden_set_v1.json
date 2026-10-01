@@ -25,7 +25,8 @@
   "truth": {
    "difficulty": "EASY",
    "timing": "LATER"
-  }
+  },
+  "note": " | J19.6 self-consistency: overnight=batch defer word -> LATER (matches batch rule; was contradictory anchor EASY/NOW causing 8b think-loops)"
  },
  {
   "msg": "delete the last three clips from the timeline",
@@ -194,8 +195,9 @@
   "msg": "improve the whole second act",
   "truth": {
    "difficulty": "HARD",
-   "timing": "LATER"
-  }
+   "timing": "NOW"
+  },
+  "note": " | J19.6 truth correction: no defer word, timing law v2"
  },
  {
   "msg": "convert the voiceover into dialogue",
@@ -236,8 +238,9 @@
   "msg": "plan the render sequence for 10 scenes",
   "truth": {
    "difficulty": "HARD",
-   "timing": "LATER"
-  }
+   "timing": "NOW"
+  },
+  "note": " | J19.6 truth correction: no defer word, timing law v2"
  },
  {
   "msg": "what should we work on next?",
