@@ -1,0 +1,8 @@
+JOB EASY needs25 NOW1min | CAND capability52 tok125    want=EASY  got=''             MISS eval=3000
+JOB EXPERT needs82 NOW | CAND capability52 tok125 lo   want=NONE  got='The job descri' MISS eval=3000
+JOB HARD needs62 LATERovernight | CAND capability56    want=HARD  got=''             MISS eval=3000
+JOB EXPERT needs82 NOW | CAND capability95 cloudspee   want=EXPERT got='The job descri' MISS eval=1226
+JOB EASY needs25 NOW1min | CAND capability56 tok36 l   want=NONE  got=''             MISS eval=3000
+JOB MEDIUM needs45 NOW1min | CAND capability66 tok57   want=NONE  got=''             MISS eval=3000
+micro-format: 0/6 | med_lat=309.9s
+DONE
