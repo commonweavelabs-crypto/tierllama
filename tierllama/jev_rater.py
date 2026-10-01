@@ -79,12 +79,15 @@ def _dossier_block(rows: list, user_stances: list[str]) -> str:
         lines.append("Operator stance notes: " + "; ".join(user_stances))
     return "\n".join(lines)
 
-def _jev_ask(system: str, user: str, timeout: int = 45, num_predict: int = 900,
+def _jev_ask(system: str, user: str, timeout: int = 180, num_predict: int = 900,
              model: str | None = None) -> str | None:
     """One LLM completion via ollama /api/chat. None on failure.
-    Default brain = CLASSIFIER model; the rater call pins gemma3:12b (the 4b
-    loops endlessly on scoring tasks — probed). No think flag here: gemma3
-    has none, and a 'think' kwarg errors on non-qwen3 models."""
+    Default brain = CLASSIFIER model (qwen3:8b since the Jev swap). The rater
+    call pins gemma3:12b when passed explicitly (the 4b loops endlessly — the
+    8b is also unproven for the full matrix; gemma3 stays the rater pin).
+    qwen3 law: with think:False on qwen3 the content CAN come back empty when
+    thinking is internally triggered; we fall back to the thinking trail, and
+    callers must budget for that (hence num_predict above 900 for qwen3)."""
     from .config import CLASSIFIER
     brain = model or CLASSIFIER["model"]
     payload = {"model": brain, "stream": False,
@@ -93,7 +96,8 @@ def _jev_ask(system: str, user: str, timeout: int = 45, num_predict: int = 900,
                "options": {"temperature": 0, "num_predict": num_predict,
                            "num_ctx": 4096}}
     if brain.startswith("qwen3"):
-        payload["think"] = False     # ollama forces thinking on qwen3 otherwise
+        payload["think"] = False     # keep direct-answer mode for scoring calls
+        payload["options"]["num_predict"] = max(num_predict, 3000)
     body = json.dumps(payload).encode()
     req = urllib.request.Request(CLASSIFIER["endpoint"], data=body,
                                  headers={"Content-Type": "application/json"})

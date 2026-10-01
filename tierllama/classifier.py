@@ -42,11 +42,16 @@ def classify(message, last_exchanges=None, timeout=60):
     return d
 
 
-def _classify_dims(message, timeout=60):
-    """difficulty + timing via the enum-constrained chat endpoint (J1 path)."""
+def _classify_dims(message, timeout=120):
+    """difficulty + timing via the enum-constrained chat endpoint (J1 path).
+    Jev swap 9/30: read think/num_predict from CLASSIFIER config — qwen3 models
+    NEED think:True + >=1500 num_predict (thinking burns smaller budgets and
+    the enum-JSON path returns empty). 4b fallback stays valid at these values."""
     from .config import CLASSIFIER as C
-    body = {"model": C["model"], "stream": False, "think": False,
-        "options": {"temperature": C["temperature"], "num_predict": 200},
+    body = {"model": C["model"], "stream": False,
+        "think": C.get("think", False),
+        "options": {"temperature": C["temperature"],
+                    "num_predict": C.get("num_predict", 200)},
         "messages": [{"role": "user", "content":
             RUBRIC + f'\n\nMessage: "{message}"\nScore this message. Return confidence 0.0-1.0 per dimension.'}],
         "format": {"type": "object", "properties": {

@@ -7,7 +7,14 @@ LANES = {
 }
 
 CLASSIFIER = {
-    "model": "qwen3:4b",
+    # Jev brain: SWAPPED to qwen3:8b 2026-09-30 (Gui decision, benched — docs/JEV-BRAIN-DECISION.md).
+    # 4b (previous) classifies acceptably but CANNOT match rated models (tests/_4b_pattern_legend.py
+    # et al: negatives 4/4, positives 0/4) — one-brain doctrine needs a brain that does both.
+    # qwen3 law: think MUST be true and num_predict >= 1500 or thinking burns the budget
+    # silently and the enum-JSON path returns empty.
+    "model": "qwen3:8b",
+    "think": True,                  # qwen3: forced on for 8b (see above); keep for safety
+    "num_predict": 1500,            # thinking budget headroom; JSON verdict is ~20 tokens
     "endpoint": "http://127.0.0.1:11434/api/chat",
     "v1_endpoint": "http://127.0.0.1:11434/v1/chat/completions",
     "temperature": 0,
