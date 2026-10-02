@@ -52,7 +52,7 @@ def _tree_lookup(difficulty, timing):
     tiers = _load_tree()
     return tiers.get(f"{difficulty}/{timing}") or tiers.get(f"{difficulty}/NOW")
 
-def route(message, dispatch=True, last_exchanges=None):
+def route(message, dispatch=True, last_exchanges=None, source="dashboard"):
     c = classify(message, last_exchanges)
     conf = min(c["difficulty_conf"], c["timing_conf"])
     when = c.get("when", "NOW")
@@ -73,6 +73,8 @@ def route(message, dispatch=True, last_exchanges=None):
         "dispatched": False,
         "classifier_latency_s": c["latency_s"],
     }
+    if source != "dashboard":
+        record["source"] = source   # J20.5 dogfood provenance
     try:
         from .clarify import needs_clarify as _nc, ask as _ask, log_exchange as _logx
         nc = _nc({"difficulty_conf": c["difficulty_conf"], "timing_conf": c["timing_conf"]})

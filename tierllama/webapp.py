@@ -380,12 +380,45 @@ def savings():
 
 class RouteReq(BaseModel):
     message: str
+    source: str = "dashboard"   # J20.5: dogfood collector tags its live-traffic taps
+    my_rating: dict | None = None   # agent's own judgment (difficulty/timing/conf)
 
 @app.post("/api/route")
 def do_route(payload: RouteReq):
     from .router import route
-    r = route(payload.message[:8192], dispatch=False)  # log-only: show the decision
+    r = route(payload.message[:8192], dispatch=False, source=payload.source)  # log-only
+    # J20.5: dogfood provenance rides the DECISION LOG (single source of truth).
+    if payload.source and payload.source != "dashboard":
+        r["source"] = payload.source   # also surface it in the response
+    if payload.my_rating:
+        r["my_rating"] = payload.my_rating
+        _append_my_rating(r)
     return r
+
+
+def _append_my_rating(record: dict):
+    """The agent's own on-the-fly comparison rating (Gui idea): appended as a
+    separate dogfood entry referencing the jev decision — keeps decisions.jsonl
+    rows immutable while enabling agreement analytics on pairs."""
+    from pathlib import Path as _P
+    import datetime as _dt
+    pair_log = _P(__file__).parent.parent / "logs" / "dogfood_pairs.jsonl"
+    pair_log.parent.mkdir(exist_ok=True)
+    pair_log.open("a", encoding="utf-8").write(json.dumps({
+        "ts": _dt.datetime.now().isoformat(timespec="seconds"),
+        "message": record.get("message"),
+        "jev": {k: record.get(k) for k in ("difficulty", "timing", "difficulty_conf", "timing_conf")},
+        "mine": record["my_rating"],
+        "source": record.get("source", "telegram-dogfood"),
+    }, ensure_ascii=False) + "\n")
+
+@app.get("/api/dogfood")
+def api_dogfood(n: int = 200):
+    """J20.5: live-traffic dogfood summary — Jev vs agent agreement, buckets,
+    hook health. The dashboard panel + `python cli.py dogfood` both read this."""
+    from .dogfood import summary
+    return summary(n)
+
 
 # ---- J8 Optimize flow -------------------------------------------------------
 import threading, time as _time
