@@ -18,10 +18,12 @@ and ownership is unclear: STOP and ask Gui which lane it belongs to. (v1 — 202
 ## Manifesto (one paragraph)
 AI access is bloated: every message hits the biggest model by default, users pay for
 compute they don't need, and providers profit from the waste. Jevllama flips it: a
-sub-second Jev-class classifier reads each message, scores it against your available
+fast Jev-class classifier (qwen3:8b) reads each message, scores it against your available
 models, and routes it to the CHEAPEST model that can do the job — local first, cloud only
-when it earns its cost. Measured on our own hardware: 86.7% routing accuracy at 0.2s,
-free, on a 4B model that fits 4GB VRAM. Tiered routing saves 40–80% (market research:
+when it earns its cost. Measured on our own hardware: 80.0% exact-tier accuracy at ~3s
+median on GPU, free, on a 5.2GB Apache-2.0 brain (the original 4b ran 86.7% @ 0.2s on the
+older 120-message golden set but cannot match models — see
+docs/JEV-BRAIN-DECISION.md). Tiered routing saves 40–80% (market research:
 64.8% base case). We commoditize intelligence: users keep their money and their hardware
 works for them, instead of renting a data center. Open core, Apache-2.0; enterprise =
 managed cloud routing + dashboards. *Jev's paradox says efficiency increases consumption —
@@ -31,10 +33,14 @@ we make that consumption cheap and local.*
 - **Ecosystem proof:** browser-use/jev-ultrafast (17.7K★, MIT, entry 272) = a shipping
   product on our exact mechanism (TypeSafe Jev typed decisions over an indexed table,
   one round trip). Validates the architecture AND the category's momentum.
-- Classifier: qwen3:4b + rubric v1 = **86.7% @ 0.196s** on the 120-message golden set
-  (5 roles × difficulty × timing, incl. 20 ambiguity traps). Rubric tuning: v1 > v3 > v2 —
-  over-specification overcorrects; prompt iteration has diminishing returns.
-- 0.6B rejected (50%). 8B adds VRAM, not accuracy. **4B = the floor and the pick.**
+- **Brain history:** qwen3:4b + rubric v1 = 86.7% @ 0.196s on the original 120-message
+  golden set — now HISTORICAL. Sep 30 brain swap (qwen3:8b, one-brain doctrine incl.
+  model matching) + Oct 1 calibration = 80.0% exact-tier on the 211-case bench; the 4b
+  is classify-only evidence and CANNOT match models (docs/JEV-BRAIN-DECISION.md).
+  Rubric tuning lesson stands: v1 > v3 > v2 — over-specification overcorrects.
+- 0.6B rejected (50%). The 4B was the floor-and-pick for CLASSIFY-ONLY until Sep 30:
+  matching requires order-comparison reasoning the 4b lacks (negatives 4/4, positives
+  0/4 across 4 shapes, incl. the word-tag legend). 8B = the one-brain floor now.
 - Residual errors are GENUINELY ambiguous asks — exactly what the confidence-threshold
   fallback to the main LLM is for. Next lever: SemIf-style logit probabilities.
 - Multi-dim scoring proven in ONE call: {difficulty, timing} pairs, 0.23–0.45s.
@@ -105,7 +111,7 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   goes, and prove the savings per decision in the log. Routing accuracy is the product.
 
 ## Standing decisions (locked)
-Open-core split per spec; classifier runs on the local GPU (sub-second), not the box;
+Open-core split per spec; classifier runs on the local GPU (seconds-class), not the box;
 cloud classifier = enterprise bundle option, opt-out local; Hermes/Telegram first consumer,
 Video UI adapter #2; no blockchain sign-in for now; hardware auto-discovery = post-MVP.
 

@@ -13,22 +13,24 @@ subscriptions. Less waste, cheaper AI, for everyone.
 *(Easter egg: yes, we considered "Jev-o-llama". Gui won.)*
 
 ## What it does
-A sub-second classifier reads every incoming message, decides what kind of request it
+A fast Jev-class classifier (qwen3:8b) reads every incoming message, decides what kind of request it
 is (role/difficulty/timing) with REAL probabilities read from token logits, and routes
 it to the right lane: local model, cheap cloud, expensive flagship, or overnight batch
 queue. Failures auto-escalate up the ladder. Every decision logged.
 
 **Measured savings: 77.8% token-cost reduction** on our 120-message real-world
-workload, landing within 0.1% of the theoretical ideal — with every assumption
-published in [docs/REAL-SAVINGS-PROOF.md](docs/REAL-SAVINGS-PROOF.md). Classifier
-accuracy: 94.2% @ ~80ms (benchmarks with n + scope published — we publish what the
-numbers do NOT claim, too).
+workload (Sep 21-era classifier; may vary with traffic mix — every assumption
+published in [docs/REAL-SAVINGS-PROOF.md](docs/REAL-SAVINGS-PROOF.md)). Classifier
+accuracy: 94.2% @ ~80ms was the original 4b rubric v1; the current brain is
+**qwen3:8b (80.0% exact-tier on the 211-case bench, ~3s median on GPU)** —
+see [docs/JEV-BRAIN-DECISION.md](docs/JEV-BRAIN-DECISION.md) for the full
+decision record and why the brain grew.
 
 ## Fresh install (Windows)
     git clone https://github.com/commonweavelabs-crypto/tierllama.git
     cd tierllama
-    # requires: Python 3.11+, Ollama running locally with qwen3:4b pulled
-    ollama pull qwen3:4b
+    # requires: Python 3.11+, Ollama 0.35+ running locally with the Jev brain pulled
+    ollama pull qwen3:8b        # the Jev brain (5.2GB, Apache-2.0)
     python cli.py route "click export and set format to mp4"
     python cli.py discover    # find every Ollama/llama-swap on your LAN (no accounts!)
     python cli.py doctor      # validate config + box queue canary
@@ -36,7 +38,7 @@ numbers do NOT claim, too).
 
 ## Layout
     tierllama/config.py      lanes, models, confidence threshold
-    tierllama/classifier.py  qwen3:4b logprob scorer (SemIf-style prefill, injection-hardened)
+    tierllama/classifier.py  JeV-class classifier (qwen3:8b, logprob scorer, injection-hardened)
     tierllama/router.py      message -> classify -> lane -> dispatch/escalate -> log
     tierllama/adapters.py    LOCAL / CLOUD / BOX dispatch adapters
     tierllama/ladder.py      escalation ladder (J4)
@@ -46,8 +48,8 @@ numbers do NOT claim, too).
     docs/                    findings + specs (tech + plain-language per milestone)
 
 ## Minimum system requirements
-- ~4GB free VRAM for the classifier (any CUDA/Apple GPU; auto-unloads after 5 min idle)
-- Python 3.11+ and [Ollama](https://ollama.com) (free) with `qwen3:4b` pulled — no accounts, no API keys
+- ~5.2GB disk + ~6GB free VRAM for the Jev classifier brain qwen3:8b (any CUDA/Apple GPU; auto-unloads after 5 min idle; a hardware gate in the dashboard reports real VRAM state)
+- Python 3.11+ and [Ollama](https://ollama.com) (free) 0.35+ with the Jev brain pulled — no accounts, no API keys
 - Optional: more Ollama machines on your LAN (auto-discovered), cloud keys for non-Ollama providers
 - Full details: docs/REAL-SAVINGS-PROOF.md
 
