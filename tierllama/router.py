@@ -58,6 +58,9 @@ def route(message, dispatch=True, last_exchanges=None):
     when = c.get("when", "NOW")
     when_conf = c.get("when_conf", 1.0)
     when_raw = c.get("when_raw", "")
+    # J20 clarify lane: dim-aware floors BELOW the fallback threshold trigger an
+    # ASK instead of a silent guess. The lane decision itself stays deterministic;
+    # clarify is a RECORD + surface state, not a dispatch detour.
     lane = lane_for(c["difficulty"], c["timing"], conf, when=when, when_conf=when_conf)
     record = {
         "ts": datetime.datetime.now().isoformat(timespec="seconds"),
@@ -70,6 +73,20 @@ def route(message, dispatch=True, last_exchanges=None):
         "dispatched": False,
         "classifier_latency_s": c["latency_s"],
     }
+    try:
+        from .clarify import needs_clarify as _nc, ask as _ask, log_exchange as _logx
+        nc = _nc({"difficulty_conf": c["difficulty_conf"], "timing_conf": c["timing_conf"]})
+        if nc is not None:
+            asked = _ask(message, nc["dim"])
+            record["clarify"] = {"dim": nc["dim"], "jev_conf": nc["conf"],
+                                 "asker_model": asked.get("latency_s") and "tev1:0.8b" or "tev1:0.8b",
+                                 "suggested": asked.get("answer"),
+                                 "asker_conf": asked.get("confidence"),
+                                 "asker_latency_s": asked.get("latency_s")}
+            _logx(message, c, nc["dim"], asked, answer=None)   # answer filled by /api/clarify/answer
+    except Exception:
+        # the clarify lane must NEVER break routing (Jev fallback law)
+        pass
     # J13: scheduler handles DEADLINE/DEFERRED-with-date jobs when beta enabled.
     # J13 v2: per-action confidence gate (actions.py) — schedule=0.85, query=0.60;
     # below threshold is ALWAYS clarify, never guess-execute. Checked BEFORE the

@@ -789,6 +789,67 @@ def api_catalog_pool():
                             for m in new if rows.get(m.split(':')[0])],
             "live_rows": len(C.catalog_rows())}
 
+# ---------- J20 clarify lane (API surface) ----------
+@app.get("/api/clarify/pending")
+def clarify_pending():
+    """Unanswered clarify exchanges (the dashboard's prompt to the user)."""
+    from .clarify import LEDGER_PATH
+    if not LEDGER_PATH.exists():
+        return {"pending": []}
+    out = []
+    for line in LEDGER_PATH.read_text(encoding="utf-8").splitlines():
+        try:
+            r = json.loads(line)
+        except Exception:
+            continue
+        if r.get("user_answer") is None:
+            out.append({"ts": r["ts"], "message": r["message"], "dim": r["dim"],
+                        "suggested": (r.get("asked") or {}).get("answer"),
+                        "asker_conf": (r.get("asked") or {}).get("confidence")})
+    return {"pending": out}
+
+@app.post("/api/clarify/answer")
+def clarify_answer(payload: dict = None):
+    """The dashboard's one-tap answer. payload: {ts, message, dim, answer}.
+    Fills the matching ledger row (the newest pending row for that message+dim)."""
+    p = payload or {}
+    msg, dim, ans = p.get("message"), p.get("dim"), p.get("answer")
+    ts = p.get("ts")
+    if not (msg and dim and ans):
+        return {"ok": False, "reason": "need message+dim+answer"}
+    from .clarify import LEDGER_PATH
+    if not LEDGER_PATH.exists():
+        return {"ok": False, "reason": "no ledger"}
+    rows = [json.loads(l) for l in LEDGER_PATH.read_text(encoding="utf-8").splitlines() if l.strip()]
+    target = None
+    for r in reversed(rows):
+        if r.get("message") == msg and r.get("dim") == dim and r.get("user_answer") is None \
+           and (not ts or r.get("ts") == ts):
+            target = r
+            break
+    if target is None:
+        return {"ok": False, "reason": "no pending row for that message+dim"}
+    target["user_answer"] = ans
+    tmp = LEDGER_PATH.with_suffix(".tmp")
+    tmp.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n"
+                           for r in rows if not (r is target)), encoding="utf-8")
+    # rewrite with the answered row in its original position
+    out_lines = []
+    for r in rows:
+        if r is target:
+            r["user_answer"] = ans
+        out_lines.append(json.dumps(r, ensure_ascii=False) + "\n")
+    tmp.write_text("".join(out_lines), encoding="utf-8")
+    tmp.replace(LEDGER_PATH)
+    return {"ok": True, "dim": dim, "accepted": ans,
+            "bucket": target.get("bucket")}
+
+@app.get("/api/clarify/patterns")
+def clarify_patterns():
+    """THE sanctioned export shape: distilled buckets only — never prompt text."""
+    from .clarify import export_patterns
+    return {"patterns": export_patterns()}
+
 # ---------- J14 capability loop (BETA) ----------
 @app.get("/api/capability")
 def api_capability():
