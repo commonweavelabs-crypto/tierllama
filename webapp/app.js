@@ -105,9 +105,10 @@ async function pollOptimize() {
   if (st.running) setTimeout(pollOptimize, 3000);
   else { document.getElementById("optDone").textContent = "done - tree refilled"; loadConfig(); }
 }
-async function rescanModels(mode = "price", includeLocal = true, includeSmall = false) {
+async function rescanModels(mode = "price", includeLocal = true, includeSmall = false, useCatalog = false) {
   mode = mode || (window._lastMode || "price");
   window._lastMode = mode;
+  const src = useCatalog ? "catalog" : "used";
   // J19.5 hardware gate: the suggestions feature runs the Jev brain — check
   // hardware state BEFORE rating. Never locked out silently; never promised
   // a feature the machine can't run (CPU-only 8b = ~66s/decision, measured).
@@ -132,8 +133,8 @@ async function rescanModels(mode = "price", includeLocal = true, includeSmall = 
   st.textContent = "Rating your models...";
   const loc = includeLocal ? "true" : "false";
   const sm = includeSmall ? "true" : "false";
-  const sg = await (await fetch(`/api/suggestions?mode=${mode}&include_local=${loc}&include_small=${sm}`)).json();
-  const rc = await (await fetch(`/api/models/rated?mode=${mode}&include_local=${loc}&include_small=${sm}`)).json();
+  const sg = await (await fetch(`/api/suggestions?mode=${mode}&include_local=${loc}&include_small=${sm}&source=${src}`)).json();
+  const rc = await (await fetch(`/api/models/rated?mode=${mode}&include_local=${loc}&include_small=${sm}&source=${src}`)).json();
   // J19: unbekannten models warning + benchmark-offer (never leave the user stranded)
   const warn = document.getElementById("unbenchedWarn");
   if (rc.unbenched && rc.unbenched.length) {
@@ -152,7 +153,7 @@ async function rescanModels(mode = "price", includeLocal = true, includeSmall = 
         <div class="muted" style="font-size:.72rem;overflow-x:auto;white-space:nowrap">all: ${info.candidates.map(c => `${c.model}${c.cloud?"☁":""} (${c.capability})`).join(" · ")}</div>
       </div></div>`;
   }
-  html += `<button class="primary" onclick="applySuggestions('${mode}',${includeLocal},${includeSmall})">Apply these suggestions</button>`;
+  html += `<button class="primary" onclick="applySuggestions('${mode}',${includeLocal},${includeSmall},${useCatalog})">Apply these suggestions</button>`;
   box.innerHTML = html; box.style.display = "block";
   st.textContent = "Review, then apply.";
 }
@@ -171,11 +172,12 @@ async function benchmarkMissing() {
     }, 5000);
   } else msg.textContent = r.reason || r.error || "could not start bench";
 }
-async function applySuggestions(mode, includeLocal = true, includeSmall = false) {
+async function applySuggestions(mode, includeLocal = true, includeSmall = false, useCatalog = false) {
   // never touch user-edited tiers (J10 sacred rule)
   const loc = includeLocal ? "true" : "false";
   const sm = includeSmall ? "true" : "false";
-  const sg = await (await fetch(`/api/suggestions?mode=${mode}&include_local=${loc}&include_small=${sm}`)).json();
+  const src = useCatalog ? "catalog" : "used";
+  const sg = await (await fetch(`/api/suggestions?mode=${mode}&include_local=${loc}&include_small=${sm}&source=${src}`)).json();
   const cfg = await (await fetch("/api/config")).json();
   const edited = new Set(cfg.user_edited || []);
   const merged = { ...cfg.tiers };

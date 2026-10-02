@@ -44,6 +44,26 @@ CLOUD_CATALOG = [
     "deepseek-v4-flash:cloud", "qwen3-max:cloud", "gpt-oss:120b-cloud",
 ]
 
+# J20 catalog oracle: live-scraped cloud families extend this pool. The static
+# list above stays as the always-on base; catalog_applied.json holds families
+# the oracle verified live (staged-apply, human-auditable, no timers).
+def _catalog_extended_catalog() -> list[str]:
+    """Base CLOUD_CATALOG + catalog-oracle live families (dedup, ':cloud' suffixed)."""
+    try:
+        applied = json.loads((ROOT / "logs" / "catalog_applied.json").read_text(encoding="utf-8"))
+    except Exception:
+        return list(CLOUD_CATALOG)
+    out = list(CLOUD_CATALOG)
+    for fam in applied.get("added", []):
+        tag = f"{fam}:cloud"
+        base = tag.split(":")[0]
+        if not any(t.split(":")[0] == base for t in out):
+            out.append(tag)
+    return out
+
+
+# CATALOG_PATH etc. defined in catalog.py; rater only reads its OUTPUT file.
+
 def _load_liveness() -> dict:
     try:
         return json.loads(LIVENESS_PATH.read_text(encoding="utf-8"))
@@ -148,12 +168,21 @@ def _ensure_liveness(models: list[str]):
             _save_liveness(d)
     threading.Thread(target=worker, daemon=True).start()
 
-def gather_pool() -> dict:
-    """All reachable models, split local/cloud, each with rater stats."""
+def gather_pool(source: str = "used") -> dict:
+    """All reachable models, split local/cloud, each with rater stats.
+    J20 source scoping (Gui's two UI states):
+    - 'used' (default): base CLOUD_CATALOG — models the ecosystem has vetted.
+    - 'catalog': CLOUD_CATALOG + catalog-oracle live families (the full provider
+      catalog — Jev discovers models the user never touched).
+    The dead/deprecated (deepseek-v4-flash) still require liveness==True below."""
     import urllib.request as _u
     tags = json.loads(_u.urlopen("http://127.0.0.1:11434/api/tags", timeout=8).read())
     local = sorted(m["name"] for m in tags.get("models", []))
-    cloud = [m for m in CLOUD_CATALOG if not any(m == l for l in local)]
+    if source == "catalog":
+        cloud_all = _catalog_extended_catalog()
+    else:
+        cloud_all = list(CLOUD_CATALOG)
+    cloud = [m for m in cloud_all if not any(m == l for l in local)]
     liv = _load_liveness()
     cloud_live = [m for m in cloud if liv.get(m, {}).get("live") is True]
     cloud_unknown = [m for m in cloud if m not in liv]
@@ -260,7 +289,7 @@ def unbenched_models(pool: dict | None = None) -> list[str]:
     return [m for m in pool["local"] if not bench.get(m)]
 
 def tier_categories(mode: str = "price", include_local: bool = True,
-                    include_small: bool = False) -> dict:
+                    include_small: bool = False, source: str = "used") -> dict:
     """THE Gui lists: for every tier, ALL qualifying models, best-pick first.
     mode 'price': qualify by capability, order cheap→expensive (fast breaks ties)
     mode 'quality': qualify by capability, order most-capable first; the user's
@@ -272,8 +301,10 @@ def tier_categories(mode: str = "price", include_local: bool = True,
     They stay in the rated table (visible in /api/models/rated rows) but are
     filtered out of every tier's candidate list unless the user opts in.
     Default OFF: sensible for driver/agentic use; other users (pure chat,
-    embedded toys) can flip the toggle to see them suggested."""
-    pool = gather_pool()
+    embedded toys) can flip the toggle to see them suggested.
+    source: 'used' = the vetted base cloud catalog; 'catalog' = + the J20
+    oracle's live-verified families (discover models never used before)."""
+    pool = gather_pool(source=source)
     if not include_local:
         pool = {"local": [], "cloud": pool["cloud"]}
     rows = rate_all(pool)

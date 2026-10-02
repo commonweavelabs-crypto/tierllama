@@ -111,12 +111,14 @@
     <h3>Model suggestions <span class="muted">(live-rated pool)</span></h3>
     <div class="muted">Rates every model you can actually reach (your local hardware + cloud), then suggests per tier. Never suggests a model that can't do the job. Custom edits preserved unless you override.</div>
     <label style="font-size:.85rem;display:block;margin:.4rem 0">
-      <input type="checkbox" id="inclLocalCard" checked onchange="rescanModels(window._lastMode || 'price', this.checked, document.getElementById('inclSmall').checked)"> include local-hardware models (uncheck = cloud only)
+      <input type="checkbox" id="inclLocalCard" checked onchange="rescanModels(window._lastMode || 'price', this.checked, document.getElementById('inclSmall').checked, document.getElementById('srcCatalog').checked)"> include local-hardware models (uncheck = cloud only)
       ·
-      <input type="checkbox" id="inclSmall" onchange="rescanModels(window._lastMode || 'price', document.getElementById('inclLocalCard').checked, this.checked)"> include small models (< 9B — toy class, off by default)
+      <input type="checkbox" id="inclSmall" onchange="rescanModels(window._lastMode || 'price', document.getElementById('inclLocalCard').checked, this.checked, document.getElementById('srcCatalog').checked)"> include small models (< 9B — toy class, off by default)
+      ·
+      <input type="checkbox" id="srcCatalog" onchange="rescanModels(window._lastMode || 'price', document.getElementById('inclLocalCard').checked, document.getElementById('inclSmall').checked, this.checked)"> <b>J20:</b> use provider's full catalog <span class="muted" style="font-size:.72rem">(live-verified — Jev discovers models you never used)</span>
     </label>
     <div class="muted" style="font-size:.75rem;margin:.2rem 0;border:1px dashed #3a434e;border-radius:8px;padding:.4rem .6rem;background:#11161d">
-      🗺 <b>J20 placeholder — model source scope:</b>
+      🗺 <b>J20 placeholder — model source scope:</b> <span class="muted" style="font-size:.7rem">(SHIPPED → the "provider's full catalog" checkbox above is the live version of this sketch)</span><br>
       ☐ <b>"Models you've used"</b> — from local tags · familiar · low risk
       ☐ <b>"Provider's full catalog"</b> — everything the provider offers · Jev discovers models you never touched ("this one's cheaper AND more capable, you have the keys")
       <span style="opacity:.7">(built in J20 — catalog oracle; these toggles will switch the suggestion pool's source)</span>

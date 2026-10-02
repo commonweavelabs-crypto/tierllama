@@ -630,12 +630,15 @@ def user_stance_notes() -> list[str]:
 
 @app.get("/api/models/rated")
 def api_models_rated(mode: str = "price", include_local: bool = True,
-                     include_small: bool = False):
+                     include_small: bool = False, source: str = "used"):
     """THE per-tier candidate lists (Gui spec): every reachable model, rated,
     grouped by tier, best-pick first. Serves instantly; probes run background.
-    include_small: sub-9B models are toy class — out of suggestions by default."""
+    include_small: sub-9B models are toy class — out of suggestions by default.
+    source: 'used' (base vetted catalog) | 'catalog' (full provider catalog
+    via the J20 oracle — models the user never used, live-validated)."""
     from .rater import tier_categories, unbenched_models
-    cats = tier_categories(mode, include_local=include_local, include_small=include_small)
+    cats = tier_categories(mode, include_local=include_local, include_small=include_small,
+                           source=source)
     cats["unbenched"] = unbenched_models()
     return cats
 
@@ -677,13 +680,16 @@ def api_bench_status():
 
 @app.get("/api/suggestions")
 def api_suggestions(mode: str = "price", include_local: bool = True,
-                    include_small: bool = False):
+                    include_small: bool = False, source: str = "used"):
     """Single picks for the decision tree. J19 v2: JEV brains the pick — every
     guardrailed candidate gets a dossier; Jev scores 0-100 per tier with user
     stance notes weighed; the top score wins. The heuristic rater (bands,
-    ceiling caps, cost sort) demoted to FALLBACK when Jev is unreachable."""
+    ceiling caps, cost sort) demoted to FALLBACK when Jev is unreachable.
+    J20: source='catalog' widens the pool to the full live-validated provider
+    catalog (Jev discovers models the user never used)."""
     from .rater import tier_categories
-    cats = tier_categories(mode, include_local=include_local, include_small=include_small)
+    cats = tier_categories(mode, include_local=include_local, include_small=include_small,
+                           source=source)
     # gather guardrail-legal candidates per tier (the three hard lines):
     guardrailed = {}
     for key, info in cats["tiers"].items():
@@ -695,7 +701,7 @@ def api_suggestions(mode: str = "price", include_local: bool = True,
     try:
         from .jev_rater import rate_tiers, TIER_JOBS
         from .rater import rate_all, gather_pool
-        pool = gather_pool()
+        pool = gather_pool(source=source)
         if not include_local:
             pool = {"local": [], "cloud": pool["cloud"]}
         rows = rate_all(pool)
@@ -744,6 +750,44 @@ def api_suggestions(mode: str = "price", include_local: bool = True,
         return {"tiers": picks, "mode": mode, "pool_size": cats["pool_size"],
                 "tiers_flagged": {k: v["flag"] for k, v in cats["tiers"].items() if v.get("flag")},
                 "jev": {"used": False, "error": str(e)[:120]}}
+
+# ---------- J20 catalog oracle (admin endpoints) ----------
+@app.get("/api/catalog")
+def api_catalog_refresh(source: str = "cloud", max_pages: int = 1, include_detail: bool = False):
+    """Refresh the catalog (no timers — refresh happens ONLY when this is hit
+    or when the UI toggle first enables catalog mode). Fast mode: listings
+    only; detail mode adds ctx/params/price per family (slower, ~1 req each)."""
+    from . import catalog as C
+    if source == "library":
+        st = C.scrape_library(max_pages=max_pages, include_detail=include_detail)
+    else:
+        st = C.scrape_cloud(include_detail=include_detail)
+    st["live_rows"] = len(C.catalog_rows())
+    return st
+
+@app.post("/api/catalog/validate")
+def api_catalog_validate(payload: dict = None):
+    """Liveness re-validation for catalog entries (rot guard). No payload =
+    re-check all cloud entries. The deepseek-v4-flash 410 lesson, runnable."""
+    from . import catalog as C
+    names = (payload or {}).get("names")
+    return C.validate_liveness(names)
+
+@app.get("/api/catalog/pool")
+def api_catalog_pool():
+    """What the catalog adds vs the base vetted catalog (UI disclosure)."""
+    from . import catalog as C
+    from .rater import _catalog_extended_catalog, CLOUD_CATALOG
+    ext = _catalog_extended_catalog()
+    new = [m for m in ext if m not in CLOUD_CATALOG]
+    rows = {r["model"]: r for r in C.catalog_rows()}
+    return {"base": CLOUD_CATALOG, "extended": ext,
+            "new_from_catalog": new,
+            "new_details": [{"model": m, "ctx": rows.get(m.split(':')[0], {}).get("context_length"),
+                             "price_in": rows.get(m.split(':')[0], {}).get("price_in_per_mtok"),
+                             "price_out": rows.get(m.split(':')[0], {}).get("price_out_per_mtok")}
+                            for m in new if rows.get(m.split(':')[0])],
+            "live_rows": len(C.catalog_rows())}
 
 # ---------- J14 capability loop (BETA) ----------
 @app.get("/api/capability")
