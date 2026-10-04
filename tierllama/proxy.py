@@ -10,7 +10,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from .router import route
-from .adapters import dispatch
+from .adapters import dispatch, DEFAULT_NUM_CTX
 
 app = FastAPI(title="Tierllama proxy", docs_url=None, redoc_url=None)
 ROOT = Path(__file__).parent.parent
@@ -33,7 +33,8 @@ def _upstream(lane_model: str, messages, stream, temperature, max_tokens, thinki
     tree's thinking level controls the think flag now — max turns it ON with
     /think, normal/off suppress it (J7 dogfood: qwen3-class thinking ate the
     token budget; /no_think system prompt is the reliable soft-switch)."""
-    body = {"model": lane_model, "messages": messages, "stream": False}
+    body = {"model": lane_model, "messages": messages, "stream": False,
+            "options": {"num_ctx": DEFAULT_NUM_CTX}}
     if thinking == "max":
         body["think"] = True
         body["messages"] = [{"role": "system", "content": "/think"}] + messages
@@ -41,10 +42,8 @@ def _upstream(lane_model: str, messages, stream, temperature, max_tokens, thinki
         body["think"] = False
         body["messages"] = [{"role": "system", "content": "/no_think"}] + messages
     if temperature is not None or max_tokens:
-        opts = {}
-        if temperature is not None: opts["temperature"] = temperature
-        if max_tokens: opts["num_predict"] = max_tokens
-        body["options"] = opts
+        if temperature is not None: body["options"]["temperature"] = temperature
+        if max_tokens: body["options"]["num_predict"] = max_tokens
     req = urllib.request.Request("http://127.0.0.1:11434/api/chat",
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
     r = json.loads(urllib.request.urlopen(req, timeout=timeout).read())

@@ -11,6 +11,14 @@ import json, re, re, re, uuid, datetime, urllib.request, urllib.error, time
 from pathlib import Path
 from .config import LANES, CLASSIFIER
 
+# J20.5-context law (measured Oct 4): Ollama's default context comes from the HOST env
+# (OLLAMA_CONTEXT_LENGTH, on this machine 262144 for the ornith-262k chats). A vision
+# model at that ctx wants a ~36GB KV cache -> llama.cpp offloads most layers to CPU
+# -> 6.6 tok/s. Explicit per-call num_ctx makes BOTH the runtime and the bench
+# immune to whatever env the host happens to carry. 8192 covers the rubric +
+# a chat-sized prompt with huge headroom; bench parity measured 73 tok/s with it.
+DEFAULT_NUM_CTX = 8192
+
 BOX_API = "http://192.168.12.150:8080"          # llama-swap (direct inference)
 BOX_JOBS = Path(r"\\192.168.12.150\C$\jobs")   # job queue (async, overnight)
 
@@ -22,8 +30,11 @@ def _post_chat(endpoint, body, timeout=120):
 
 def _thinking_body(message, model, system, thinking, timeout=120):
     """J7: unified body builder with thinking-level support.
-    thinking='max' -> think:true (qwen3-class models; cloud models may reject -> retry without)."""
+    thinking='max' -> think:true (qwen3-class models; cloud models may reject -> retry without).
+    options.num_ctx is set EXPLICITLY (J20.5-context law): the host's OLLAMA_CONTEXT_LENGTH
+    (262144 here) makes vision models build a city-sized KV cache and crawl at 6 tok/s."""
     body = {"model": model, "stream": False,
+            "options": {"num_ctx": DEFAULT_NUM_CTX},
             "messages": ([{"role": "system", "content": system}] if system else [])
                        + [{"role": "user", "content": message}]}
     if thinking == "max":

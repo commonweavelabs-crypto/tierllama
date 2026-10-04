@@ -15,6 +15,8 @@ The Optimize flow (webapp /api/optimize) consumes this to prefill routing.json.
 import json, time, urllib.request, datetime
 from pathlib import Path
 
+from .adapters import DEFAULT_NUM_CTX
+
 ROOT = Path(__file__).parent.parent
 BENCH_LOG = ROOT / "logs" / "bench.jsonl"
 OLLAMA = "http://127.0.0.1:11434"
@@ -56,7 +58,7 @@ def _get_models(endpoint=OLLAMA):
 def _run_probe(model, prompt, num_predict=2500):
     body = {"model": model, "messages": [{"role": "user", "content": prompt}],
             "stream": False, "think": False,
-            "options": {"num_predict": num_predict}, "keep_alive": 600}
+            "options": {"num_predict": num_predict, "num_ctx": DEFAULT_NUM_CTX}, "keep_alive": 600}
     r = _post("/api/chat", body)
     m_ = r.get("message", {})
     txt = m_.get("content", "")
