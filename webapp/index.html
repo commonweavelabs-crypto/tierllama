@@ -80,10 +80,16 @@
     <button class="primary" onclick="testRoute()">Route it</button>
     <pre id="routeOut" style="display:none"></pre>
   </div>
-  <div class="grid2">
-    <div class="card"><h3>Savings</h3><div id="savings">…</div></div>
-    <div class="card"><h3>Fleet</h3><div id="fleet">…</div></div>
-  </div>
+  <div class="card" id="clarifyCard">
+      <h3>Clarify lane</h3>
+      <div class="muted">When Jev is unsure about ONE dimension of a message (difficulty or timing, conf below floor), the router asks instead of guessing — the other dimension keeps Jev's verdict. One tap answers; the exchange feeds the learned-calibration ledger. <b>Privacy:</b> full detail stays on this machine; only distilled pattern buckets ever leave.</div>
+      <div id="clarPending" style="margin-top:.6rem"></div>
+      <div id="clarPatterns" class="muted" style="margin-top:.4rem"></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Savings</h3><div id="savings">…</div></div>
+      <div class="card"><h3>Fleet</h3><div id="fleet">…</div></div>
+    </div>
   <div class="card">
     <h3>Capability loop <span class="badge" style="font-size:.6rem">BETA</span></h3>
     <div class="muted">Learns from outcomes: a prompt-class that keeps failing gets bumped up a tier (that class only), and canary probes test whether classes can come down. <b>Beta feature: OFF — routing never changes on its own until you enable it, and every change is reported here.</b></div>

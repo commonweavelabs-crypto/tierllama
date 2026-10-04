@@ -455,3 +455,49 @@ async function capToggle() {
   loadCapability();
 }
 document.addEventListener("DOMContentLoaded", loadCapability);
+
+// ---------- J20.5 clarify lane (Overview card) ----------
+const CLAR_DIFF_CHOICES = ["EASY", "MEDIUM", "HARD", "EXPERT"];
+async function loadClarify() {
+  const pendEl = document.getElementById("clarPending");
+  const patEl = document.getElementById("clarPatterns");
+  let r;
+  try {
+    r = await (await fetch("/api/clarify/pending")).json();
+  } catch (e) {
+    pendEl.innerHTML = '<span class="muted">clarify lane offline.</span>';
+    return;
+  }
+  const pending = (r.pending || []).filter(p => Date.now() - Date.parse(p.ts) < 48 * 3600 * 1000);
+  pendEl.innerHTML = pending.length ? pending.map(p => {
+    const dim = p.dim;
+    const choices = dim === "timing" ? ["NOW", "LATER"] : CLAR_DIFF_CHOICES;
+    const suggested = (p.suggested || "").toUpperCase();
+    // suggested answer first (highlighted), then the rest — one tap each
+    const ordered = suggested && choices.includes(suggested)
+      ? [suggested, ...choices.filter(c => c !== suggested)] : choices;
+    const buttons = ordered.map((c, i) =>
+      `<button style="${i === 0 ? 'background:#2b6cb0;border-color:#2b6cb0;font-weight:600' : ''}"
+         onclick="clarifyAnswer('${p.ts}','${c.replace(/'/g, "")}','${dim}')">${c}</button>`).join("");
+    const conf = (p.asker_conf != null) ? ` · asker conf ${(p.asker_conf).toFixed(2)}` : "";
+    return `<div class="tier-row" style="grid-template-columns:1fr auto">
+      <div style="min-width:0"><b>${(p.message || "").slice(0, 70)}</b><br>
+        <span class="muted">unsure: ${dim}${suggested ? ` — suggest: ${suggested}` : ""}${conf}</span></div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap">${buttons}</div>
+    </div>`;
+  }).join("") : '<div class="muted">Nothing waiting — Jev is sure about everything routed so far.</div>';
+  let pat;
+  try {
+    pat = await (await fetch("/api/clarify/patterns")).json();
+  } catch (e) { pat = { patterns: [] }; }
+  patEl.innerHTML = (pat.patterns && pat.patterns.length)
+    ? "learned patterns: " + pat.patterns.map(p =>
+        `${p.bucket} ×${p.count} (top: ${p.user_answer_top})`).join(" · ")
+    : "";
+}
+async function clarifyAnswer(ts, answer, dim) {
+  await fetch("/api/clarify/answer", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ts, answer, dim})});
+  loadClarify();
+}
+document.addEventListener("DOMContentLoaded", loadClarify);
