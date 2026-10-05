@@ -12,7 +12,7 @@ Output: tests/golden_set_results_<stamp>.json + printed scorecard.
 import json, sys, time
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv(r"C:\Users\Guilherme\AppData\Local\hermes\.env")
+load_dotenv(r"C:/Users/<user>\AppData\Local\hermes\.env")
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tierllama.classifier import classify
 

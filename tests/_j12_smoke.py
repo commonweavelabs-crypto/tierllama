@@ -17,7 +17,7 @@ assert rank[0]["node_id"] == "mac", f"ranking wrong: {rank}"
 # 2. fleet: upsert with local-fleet provenance, persists
 tmp = Path(tempfile.mkdtemp()) / "fleet.json"
 f = fleet.Fleet(store_path=tmp)
-f.upsert("desktop", "192.168.12.150", 11434, models=["qwen3:4b"])
+f.upsert("desktop", "<box-lan-ip>", 11434, models=["qwen3:4b"])
 assert f.as_providers()[0]["provenance"] == "local-fleet"
 
 # 3. dispatch: both nodes idle (equal pressure -> stable-id tie-break: desktop < mac)

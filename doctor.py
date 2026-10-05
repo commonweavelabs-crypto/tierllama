@@ -72,7 +72,7 @@ def check_lane_models():
 
 def check_box_canary():
     try:
-        box_jobs = Path(r"\\192.168.12.150\C$\jobs")
+        box_jobs = Path(r"\\<box-lan-ip>\C$\jobs")
         if not (box_jobs / "pending").exists():
             return {"check": "box_canary", "ok": False, "error": "queue unreachable"}
         jid = f"job-canary-{uuid.uuid4().hex[:8]}"

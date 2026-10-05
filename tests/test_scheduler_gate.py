@@ -64,7 +64,7 @@ class TestRouterScheduling(unittest.TestCase):
         self.cfg = C
         C.SCHEDULER["enabled"] = True
         # 2026-09-29 incident: route(dispatch=True) on a BOX-lane message wrote 6
-        # real job files to \\\\192.168.12.150\\C$\\jobs\\pending (the box worker
+        # real job files to \\\\<box-lan-ip>\\C$\\jobs\\pending (the box worker
         # would have burned queue time on test prompts). Tests must never touch
         # real adapters: sandbox BOX_JOBS + the decision log to a temp dir.
         self._tmp = tempfile.mkdtemp()

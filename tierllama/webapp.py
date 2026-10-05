@@ -107,7 +107,7 @@ FLEET_ENRICH_PATH = ROOT / "logs" / "fleet_enrich.json"
 
 # Auto-name chain (informed initial naming, J17 spec — user can always override):
 # 1. reverse DNS / mDNS hostname  (Mac: "MacBookAir.lan" -> "MacBookAir")
-# 2. NetBIOS name broadcast       (Windows/Mac answer: e.g. "DESKTOP-SHN3HMJ")
+# 2. NetBIOS name broadcast       (Windows/Mac answer: e.g. "<desktop-hostname>")
 # 3. OS fingerprint via ping TTL  (128=Windows, 64=Mac/Linux) -> "Windows machine (ip)"
 # 4. raw IP
 _DNS_ALIAS_JUNK = {"host.docker.internal", "docker.internal", "localhost",

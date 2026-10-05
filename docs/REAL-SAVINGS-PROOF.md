@@ -1,7 +1,7 @@
 # REAL-SAVINGS-PROOF.md — T5 PAIR dogfood (2026-09-29 evening)
 
 ## Setup (2-machine PAIR cluster, all facts from live run)
-- **Machines:** Windows desktop (5070 Ti, DESKTOP-SHN3HMJ, node b7965584) + MacBook Air (Guilhermes-MacBook-Air.local, node d85360e5). Both ran PAIR v0.1.1 service binaries (installed from ~/pair-bin / pair-win, no system install).
+- **Machines:** Windows desktop (5070 Ti, <desktop-hostname>, node b7965584) + MacBook Air (<macbook>.local, node d85360e5). Both ran PAIR v0.1.1 service binaries (installed from ~/pair-bin / pair-win, no system install).
 - **Stack wiring (runbook finding):** do NOT hand-run ollama-proxy — run ONLY nvpair-ui-broker under tmux/pty; it spawns and wires the whole stack. All binaries are stdio JSON-RPC and need a live client; tmux holds stdin.
 - **Cluster formation:** nvpair-cluster-manager mints certs; trust exchange = `{nodeUuid, certPem}` pin files, filename == nodeUuid, both sides. Pins exchanged via peer DM + Google Drive transport (DM transport mangles base64 — Drive is the reliable path).
 - **mTLS + discovery:** automatic via mDNS once pins loaded. mDNS saw the Mac node BEFORE clustering.

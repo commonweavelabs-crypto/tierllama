@@ -108,7 +108,7 @@ def tick(now=None):
     for j in due:
         # J16: BOX jobs consult the box host's machine_profile (if profiled);
         # everything else uses the lane mapping (all cloud/local = always_on anyway)
-        host = "192.168.12.150" if j["lane"] == "BOX" else None
+        host = "<box-lan-ip>" if j["lane"] == "BOX" else None
         ok, reason = can_dispatch_now(j["lane"], now, host=host)
         if not ok:
             # visible shift, not silent deferral: due_at moves to next window open

@@ -1,29 +1,29 @@
-set built: 209 cases
+set built: 211 cases
 === Brain 1: classifier on live GPU ===
-  brain1 20/209
-  brain1 40/209
-  brain1 60/209
-  brain1 80/209
-  brain1 100/209
-  brain1 120/209
-  brain1 140/209
-  brain1 160/209
-  brain1 180/209
-  brain1 200/209
+  brain1 20/211
+  brain1 40/211
+  brain1 60/211
+  brain1 80/211
+  brain1 100/211
+  brain1 120/211
+  brain1 140/211
+  brain1 160/211
+  brain1 180/211
+  brain1 200/211
 === Brain 2: gemma3 matrix ===
 === comparison arm: qwen3:4b logprob vs gemma3 ===
 
 ============================================================
-EXACT TIER ACC: 79.5%   (diff 84.9% / timing 94.1%)  n=209
-med latency: 3.201s
+EXACT TIER ACC: 80.0%   (diff 83.3% / timing 95.2%)  n=211
+med latency: 4.473s
   EASY/NOW       n= 39  diff= 89.7  timing= 97.4
-  EASY/LATER     n= 22  diff= 81.8  timing= 81.8
-  MEDIUM/NOW     n= 35  diff= 88.6  timing= 94.3
-  MEDIUM/LATER   n= 22  diff= 63.6  timing=100.0
-  HARD/NOW       n= 27  diff= 59.3  timing= 81.5
-  HARD/LATER     n= 25  diff= 92.0  timing= 88.0
-  EXPERT/NOW     n= 23  diff= 95.7  timing=100.0
-  EXPERT/LATER   n= 16  diff= 93.8  timing= 93.8
+  EASY/LATER     n= 22  diff=100.0  timing=100.0
+  MEDIUM/NOW     n= 35  diff= 74.3  timing= 97.1
+  MEDIUM/LATER   n= 22  diff= 36.4  timing= 95.5
+  HARD/NOW       n= 29  diff= 93.1  timing=100.0
+  HARD/LATER     n= 25  diff= 80.0  timing= 68.0
+  EXPERT/NOW     n= 23  diff= 91.3  timing=100.0
+  EXPERT/LATER   n= 16  diff=100.0  timing=100.0
 === Brain 2 (gemma3 matrix, strict stances) ===
   EASY/NOW       top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
   EASY/LATER     top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
@@ -34,19 +34,19 @@ med latency: 3.201s
   EXPERT/NOW     top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
   EXPERT/LATER   top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
 === ARM (40 pairs, truth=measured floors+stances): 4b classifier 45.0%  vs  gemma3 67.5%
-saved: C:/Users/<user>\tierllama\tests\j19_bench_results_20260930_2232.json
-total wall time: 860s
+saved: C:\Users\Guilherme\tierllama\tests\j19_bench_results_20261001_1512.json
+total wall time: 1146s
 MISSES (first 12):
-  [golden] 'queue all scenes overnight' truth=EASY/LATER pred=None/None
-  [golden] 'why is my render darker than the preview?' truth=HARD/NOW pred=MEDIUM/NOW
+  [golden] 'export the whole project as 4k by friday' truth=MEDIUM/LATER pred=HARD/NOW
+  [golden] 'submit the render job now' truth=EASY/NOW pred=MEDIUM/NOW
+  [golden] 'what does the queue system do when I close the app?' truth=MEDIUM/NOW pred=EASY/NOW
   [golden] 'it crashed again but only on scene 7, here's the log' truth=HARD/NOW pred=MEDIUM/NOW
   [golden] 'give James a more menacing intro' truth=EASY/NOW pred=MEDIUM/NOW
-  [golden] 'convert the voiceover into dialogue' truth=HARD/LATER pred=MEDIUM/NOW
+  [golden] 'convert the voiceover into dialogue' truth=HARD/LATER pred=EASY/NOW
+  [golden] 'rewrite the entire screenplay from scratch, it's due next we' truth=HARD/LATER pred=HARD/NOW
   [golden] 'add a subplot about betrayal across acts 2 and 3' truth=HARD/LATER pred=HARD/NOW
-  [golden] 'we have 3 hours before the deadline, what's the priority?' truth=HARD/NOW pred=MEDIUM/NOW
-  [golden] 'decide: practical effects or CGI for the explosion scene' truth=HARD/NOW pred=MEDIUM/NOW
   [golden] 'recreate the universe, every particle and every interaction,' truth=HARD/NOW pred=EXPERT/NOW
-  [golden] 'fix this crash now please' truth=HARD/NOW pred=MEDIUM/NOW
+  [golden] 'by tomorrow, rewrite everything' truth=HARD/LATER pred=HARD/NOW
   [golden] 'render all 12 scenes asap' truth=MEDIUM/NOW pred=HARD/NOW
-  [golden] 'do this when you get a chance' truth=EASY/LATER pred=MEDIUM/LATER
+  [golden] 'sometime this week, transcribe the interviews' truth=MEDIUM/LATER pred=EASY/LATER
 EXIT=0

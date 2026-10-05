@@ -18,7 +18,7 @@ class TestFleetBasics(unittest.TestCase):
         self.tmp.unlink(missing_ok=True)
 
     def test_upsert_and_persist(self):
-        self.f.upsert("n1", "192.168.12.150", 11434, models=["qwen3:4b"])
+        self.f.upsert("n1", "<box-lan-ip>", 11434, models=["qwen3:4b"])
         f2 = Fleet(store_path=self.tmp)   # new instance reads the store
         self.assertEqual(len(f2.list()), 1)
         self.assertEqual(f2.list()[0]["models"], ["qwen3:4b"])

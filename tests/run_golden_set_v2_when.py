@@ -4,7 +4,7 @@ Run: C:/Python313/python.exe tests/run_golden_set_v2_when.py
 import json, sys, time
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv(r"C:\Users\Guilherme\AppData\Local\hermes\.env")
+load_dotenv(r"C:/Users/<user>\AppData\Local\hermes\.env")
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tierllama.classifier import classify
 from tierllama.router import _resolve_due

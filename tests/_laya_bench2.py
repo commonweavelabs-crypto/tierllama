@@ -4,7 +4,7 @@ import laya
 
 agent = laya.load("convaiinnovations/laya-typed-decisions")
 
-gs = json.load(open(r"C:\Users\Guilherme\tierllama\tests\golden_set_v1.json", encoding="utf-8"))
+gs = json.load(open(r"C:/Users/<user>\tierllama\tests\golden_set_v1.json", encoding="utf-8"))
 results = []; lat=[]
 for i, item in enumerate(gs):
     questions = {
@@ -35,7 +35,7 @@ for i, item in enumerate(gs):
         results.append({"i": i, "msg": item["msg"], "truth": item["truth"], "got": None, "error": str(e)[:200]})
     if (i+1) % 20 == 0: print(f"{i+1}/62", flush=True)
 
-json.dump(results, open(r"C:\Users\Guilherme\tierllama\tests\laya_typed_bench_results.json","w",encoding="utf-8"), indent=1, ensure_ascii=False)
+json.dump(results, open(r"C:/Users/<user>\tierllama\tests\laya_typed_bench_results.json","w",encoding="utf-8"), indent=1, ensure_ascii=False)
 scores={"difficulty":0,"timing":0}; full=0; n=0
 for r in results:
     if not r.get("got"): continue

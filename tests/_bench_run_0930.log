@@ -1,0 +1,53 @@
+set built: 209 cases
+=== Brain 1: classifier on live GPU ===
+  brain1 20/209
+  brain1 40/209
+  brain1 60/209
+  brain1 80/209
+  brain1 100/209
+  brain1 120/209
+  brain1 140/209
+  brain1 160/209
+  brain1 180/209
+  brain1 200/209
+=== Brain 2: gemma3 matrix ===
+=== comparison arm: qwen3:4b logprob vs gemma3 ===
+  arm fail kimi-k3:cloud MEDIUM/LATER: 'logprobs'
+  arm fail qwen3-vl:8b EXPERT/NOW: 'logprobs'
+
+============================================================
+EXACT TIER ACC: 67.9%   (diff 74.6% / timing 91.4%)  n=209
+med latency: 6.123s
+  EASY/NOW       n= 39  diff= 82.1  timing=100.0
+  EASY/LATER     n= 22  diff= 45.5  timing= 86.4
+  MEDIUM/NOW     n= 35  diff= 77.1  timing= 88.6
+  MEDIUM/LATER   n= 22  diff= 31.8  timing= 95.5
+  HARD/NOW       n= 27  diff= 66.7  timing= 81.5
+  HARD/LATER     n= 25  diff= 92.0  timing= 96.0
+  EXPERT/NOW     n= 23  diff=100.0  timing=100.0
+  EXPERT/LATER   n= 16  diff=100.0  timing= 75.0
+=== Brain 2 (gemma3 matrix, strict stances) ===
+  EASY/NOW       top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  EASY/LATER     top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  MEDIUM/NOW     top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  MEDIUM/LATER   top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  HARD/NOW       top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  HARD/LATER     top=glm-5.3-flash:cloud      cap_ok=True stance_ok=True now_ok=True -> PASS
+  EXPERT/NOW     top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
+  EXPERT/LATER   top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
+=== ARM (40 pairs, truth=measured floors+stances): 4b classifier 42.1%  vs  gemma3 68.4%
+saved: C:\Users\Guilherme\tierllama\tests\j19_bench_results_20260930_1824.json
+total wall time: 1320s
+MISSES (first 12):
+  [golden] 'queue all scenes overnight' truth=EASY/LATER pred=EASY/NOW
+  [golden] 'delete the last three clips from the timeline' truth=EASY/NOW pred=MEDIUM/NOW
+  [golden] 'export the whole project as 4k by friday' truth=MEDIUM/LATER pred=HARD/LATER
+  [golden] 'zoom into the third keyframe' truth=EASY/NOW pred=MEDIUM/NOW
+  [golden] 'why is my render darker than the preview?' truth=HARD/NOW pred=MEDIUM/NOW
+  [golden] 'what's the best workflow for consistent lighting across scen' truth=HARD/NOW pred=MEDIUM/NOW
+  [golden] 'it crashed again but only on scene 7, here's the log' truth=HARD/NOW pred=MEDIUM/NOW
+  [golden] 'this thing is broken, fix it' truth=MEDIUM/NOW pred=HARD/NOW
+  [golden] 'render stuck at 99% for an hour' truth=MEDIUM/NOW pred=HARD/NOW
+  [golden] 'give James a more menacing intro' truth=EASY/NOW pred=MEDIUM/NOW
+  [golden] 'convert the voiceover into dialogue' truth=HARD/LATER pred=EASY/NOW
+  [golden] 'polish this line: 'I never wanted this'' truth=EASY/NOW pred=MEDIUM/NOW

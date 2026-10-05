@@ -1,7 +1,7 @@
 ﻿# Box: Ollama deployment + self-benching (J21 prep)
 
 **Target Host:** DESKTOP-0GIFKM1  
-**LAN IP:** 192.168.12.150  
+**LAN IP:** <box-lan-ip>  
 **Tailscale IP:** 100.73.6.74  
 **Role:** CPU-only inference node (Secondary)  
 **Existing Service:** llama-swap on `:8080` (SYSTEM scheduled task)  
@@ -70,7 +70,7 @@ Scope access to the main PC only. Do not open port 11434 to the entire LAN.
 From the **Main PC** (192.168.12.126), verify connectivity:
 
 ```bash
-curl http://192.168.12.150:11434/api/tags
+curl http://<box-lan-ip>:11434/api/tags
 ```
 
 *   **Expected Output:** JSON list of installed models (initially empty `{"models":[]}`).

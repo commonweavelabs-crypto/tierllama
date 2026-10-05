@@ -15,7 +15,7 @@ In Hermes: `/model tierllama-auto --provider tierllama-local`
 1. Stop the proxy: `schtasks /End /TN tierllama-proxy` then
    `schtasks /Delete /TN tierllama-proxy /F`
 2. Restore the backup config: copy
-   `C:\Users\Guilherme\AppData\Local\hermes\config.yaml.j6-backup-20260922`
+   `C:/Users/<user>\AppData\Local\hermes\config.yaml.j6-backup-20260922`
    over `config.yaml` (the tierllama-local provider is the only diff).
 3. Hermes keeps talking to Ollama directly - nothing else changes.
 

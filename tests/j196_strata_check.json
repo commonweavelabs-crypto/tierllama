@@ -1,0 +1,158 @@
+[
+ {
+  "msg": "why is my render darker than the preview?",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "it crashed again but only on scene 7, here's the log",
+  "want": "HARD/NOW",
+  "got": "MEDIUM/NOW",
+  "ok": false
+ },
+ {
+  "msg": "we have 3 hours before the deadline, what's the priority?",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "decide: practical effects or CGI for the explosion scene",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "fix this crash now please",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "I need the trailer cut today",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "optimize the particle system for 60fps on integrated graphics",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "plan the launch render pipeline for 8 videos tonight",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "refactor the ingest flow, everything's due tonight",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "debug why 3 scenes dropped frames simultaneously",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "redesign the thumbnail pipeline before Friday",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "asap: the whole color pipeline has banding issues",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "do everything needed to finish the trailer by friday",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "queue all scenes overnight",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "do this when you get a chance",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "rename these clips without any rush",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "zoom the preview whenever",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "reset zoom whenever",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "pin the timeline tomorrow",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "set the format to mp4",
+  "want": "EASY/NOW",
+  "got": "EASY/NOW",
+  "ok": true
+ },
+ {
+  "msg": "export the trailer cut before 5pm",
+  "want": "MEDIUM/NOW",
+  "got": "MEDIUM/NOW",
+  "ok": true
+ },
+ {
+  "msg": "rename this clip whenever you get a chance",
+  "want": "EASY/LATER",
+  "got": "EASY/LATER",
+  "ok": true
+ },
+ {
+  "msg": "improve the whole second act",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ },
+ {
+  "msg": "hi",
+  "want": "EASY/NOW",
+  "got": "EASY/NOW",
+  "ok": true
+ },
+ {
+  "msg": "rewrite scene 3 to make the dialogue sharper",
+  "want": "MEDIUM/NOW",
+  "got": "MEDIUM/NOW",
+  "ok": true
+ },
+ {
+  "msg": "plan the render sequence for the 10 scenes",
+  "want": "HARD/NOW",
+  "got": "HARD/NOW",
+  "ok": true
+ }
+]

@@ -3,7 +3,7 @@
 LOCAL        -> Ollama local models (ornith-1.5:9b / qwen3:4b), sync, sub-second-ish
 CLOUD_MEDIUM -> Ollama cloud models (glm-5.3-flash:cloud), sync, ~2s
 CLOUD_HARD   -> Ollama cloud (kimi/glm big class) or OpenAI-compatible API (config)
-BOX          -> overnight job queue on the mini box (UNC share \\192.168.12.150\C$\jobs)
+BOX          -> overnight job queue on the mini box (UNC share \\<box-lan-ip>\C$\jobs)
 
 Every dispatch is recorded in the decision log with result + latency. Adapters never
 raise: failures return {"status": "error", ...} so the router can escalate (J4)."""
@@ -19,8 +19,8 @@ from .config import LANES, CLASSIFIER
 # a chat-sized prompt with huge headroom; bench parity measured 73 tok/s with it.
 DEFAULT_NUM_CTX = 8192
 
-BOX_API = "http://192.168.12.150:8080"          # llama-swap (direct inference)
-BOX_JOBS = Path(r"\\192.168.12.150\C$\jobs")   # job queue (async, overnight)
+BOX_API = "http://<box-lan-ip>:8080"          # llama-swap (direct inference)
+BOX_JOBS = Path(r"\\<box-lan-ip>\C$\jobs")   # job queue (async, overnight)
 
 def _post_chat(endpoint, body, timeout=120):
     req = urllib.request.Request(endpoint, data=json.dumps(body).encode(),
@@ -96,7 +96,7 @@ def dispatch_box(message, title="tierllama-box-job", model="qwen38-27b-iq3s", sy
         job_path.write_text(json.dumps(payload), encoding="utf-8")
         return {"status": "queued", "lane": "BOX", "job_id": job_id,
                 "path": str(job_path), "latency_s": round(time.time()-t0, 2),
-                "note": "async - result at \\192.168.12.150\C$\jobs\done\<id>.response.json"}
+                "note": "async - result at \\<box-lan-ip>\C$\jobs\done\<id>.response.json"}
     except Exception as e:
         return {"status": "error", "lane": "BOX", "error": str(e)[:200],
                 "latency_s": round(time.time()-t0, 2)}
