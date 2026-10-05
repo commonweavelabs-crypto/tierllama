@@ -36,7 +36,7 @@ med latency: 6.123s
   EXPERT/NOW     top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
   EXPERT/LATER   top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
 === ARM (40 pairs, truth=measured floors+stances): 4b classifier 42.1%  vs  gemma3 68.4%
-saved: C:\Users\Guilherme\tierllama\tests\j19_bench_results_20260930_1824.json
+saved: C:\Users\<user>\tierllama\tests\j19_bench_results_20260930_1824.json
 total wall time: 1320s
 MISSES (first 12):
   [golden] 'queue all scenes overnight' truth=EASY/LATER pred=EASY/NOW

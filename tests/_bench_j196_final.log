@@ -34,7 +34,7 @@ med latency: 4.473s
   EXPERT/NOW     top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
   EXPERT/LATER   top=kimi-k3:cloud            cap_ok=True stance_ok=True now_ok=True -> PASS
 === ARM (40 pairs, truth=measured floors+stances): 4b classifier 45.0%  vs  gemma3 67.5%
-saved: C:\Users\Guilherme\tierllama\tests\j19_bench_results_20261001_1512.json
+saved: C:\Users\<user>\tierllama\tests\j19_bench_results_20261001_1512.json
 total wall time: 1146s
 MISSES (first 12):
   [golden] 'export the whole project as 4k by friday' truth=MEDIUM/LATER pred=HARD/NOW
