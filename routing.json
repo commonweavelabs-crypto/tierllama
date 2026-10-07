@@ -1,39 +1,41 @@
 {
  "EASY/NOW": {
   "provider": "auto",
-  "model": "qwen3-vl:8b",
+  "model": "qwen3:4b",
   "thinking": "normal",
-  "source": "measured"
+  "source": "measured+j26-vl-think-burn-fix"
  },
  "EASY/LATER": {
   "provider": "auto",
-  "model": "qwen3-vl:8b",
+  "model": "qwen3:4b",
   "thinking": "normal",
-  "source": "measured"
+  "source": "measured+j26-vl-think-burn-fix"
  },
  "MEDIUM/NOW": {
   "provider": "auto",
-  "model": "qwen3-vl:8b",
+  "model": "qwen3:4b",
   "thinking": "normal",
-  "source": "measured"
+  "source": "measured+j26-vl-think-burn-fix"
  },
  "MEDIUM/LATER": {
   "provider": "auto",
-  "model": "qwen3-vl:8b",
+  "model": "qwen3:4b",
   "thinking": "normal",
-  "source": "measured"
+  "source": "measured+j26-vl-think-burn-fix"
  },
  "HARD/NOW": {
   "provider": "auto",
-  "model": "gemma3:12b",
+  "model": "qwen3:8b",
   "thinking": "max",
-  "source": "measured"
+  "source": "measured+j26-gemma-no-think-fix",
+  "num_predict": 2000
  },
  "HARD/LATER": {
   "provider": "auto",
-  "model": "gemma3:12b",
+  "model": "qwen3:8b",
   "thinking": "max",
-  "source": "measured"
+  "source": "measured+j26-gemma-no-think-fix",
+  "num_predict": 2000
  },
  "EXPERT/NOW": {
   "provider": "auto",

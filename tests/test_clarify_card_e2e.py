@@ -64,7 +64,8 @@ class ClarifyCardE2E(unittest.TestCase):
         self.assertEqual(r["pending"], [])
 
     def test_pending_empty(self):
-        r = client.get("/api/clarify/pending").json()
+        with mock.patch("tierllama.clarify.LEDGER_PATH", self.ledger):
+            r = client.get("/api/clarify/pending").json()
         self.assertEqual(r["pending"], [])
 
     def test_answer_flow(self):

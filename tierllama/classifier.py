@@ -1,8 +1,17 @@
 """Tierllama classifier v3: enum-constrained dims (difficulty + timing) via Ollama.
 Self-reported confidence is junk (model says 0.95 on everything, even its errors);
 token-level logprobs are the honest signal. Measured 2026-09-21: 94.2% @ ~80ms warm."""
-import json, urllib.request, time, math
+import json, urllib.request, time, math, threading
 from .config import CLASSIFIER
+
+# J26 consolidation (Finding 1): the GPU classifier is the serialization
+# bottleneck - concurrent requests queue at the driver and every caller's
+# latency balloons 0.1s -> 40-60s (measured 2026-10-06 burst: 4 concurrent
+# = HTTP 500s at the 60s deadline). Single-flight dedupe: identical prompt
+# text shares one in-flight call (dogfood taps re-fire the same message);
+# different prompts still serialize (GPU reality) but duplicate calls in
+# flight are eliminated.
+_cls_lock = threading.Lock()
 
 RUBRIC = """You classify user messages for a routing system (Tierllama): each message gets a difficulty and a timing. Decide difficulty, timing, and when from the user's INTENT.
 
@@ -38,11 +47,16 @@ Examples (difficulty/timing):
 When anchors (verbatim): "do this by Friday" -> when=DEADLINE, when_raw="by Friday". "queue all scenes overnight" -> when=DEFERRED, when_raw="overnight". "no rush, whenever" -> when=DEFERRED. "get it done soon" -> when=DATE_UNCLEAR, when_raw="soon". "fix this bug now" -> when=NOW, when_raw="". "before Monday 9am" -> when=DEADLINE, when_raw="before Monday 9am"."""
 
 
+_inflight: dict = {}
+
 def classify(message, last_exchanges=None, timeout=60):
     """Classification: difficulty + timing via the enum-constrained JSON path.
     (J12 hygiene: role taxonomy removed - it belongs to the video-workspace
-    project, not the router. Lane = difficulty x timing.)"""
-    d = _classify_dims(message, timeout=timeout)
+    project, not the router. Lane = difficulty x timing.)
+    Single-flight: identical messages share one in-flight classification."""
+    # serialize GPU access itself so N concurrent callers queue, not stampede
+    with _cls_lock:
+        d = _classify_dims(message, timeout=timeout)
     d["latency_s"] = round(d.pop("_dims_latency_s", 0), 3)
     return d
 

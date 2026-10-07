@@ -160,14 +160,14 @@ class TestJ16ProfileHookup(unittest.TestCase):
 
     def test_box_profile_workhorse_overrides_night_only(self):
         M2, W2 = self._fresh()
-        M2.upsert_profile("<box-lan-ip>", machine_class="workhorse")
-        ok, why = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="<box-lan-ip>")
+        M2.upsert_profile("203.0.113.10", machine_class="workhorse")
+        ok, why = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="203.0.113.10")
         self.assertTrue(ok)   # would be False under provisional night_only
 
     def test_box_profile_night_only_keeps_window(self):
         M2, W2 = self._fresh()
-        M2.upsert_profile("<box-lan-ip>", machine_class="night_only")
-        ok, _ = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="<box-lan-ip>")
+        M2.upsert_profile("203.0.113.10", machine_class="night_only")
+        ok, _ = W2.can_dispatch_now("BOX", datetime(2026, 9, 29, 14, 0), host="203.0.113.10")
         self.assertFalse(ok)
 
     def test_unprofiled_host_uses_provisional(self):
@@ -178,5 +178,5 @@ class TestJ16ProfileHookup(unittest.TestCase):
     def test_corrupt_profile_falls_back(self):
         M2, W2 = self._fresh()
         M2.FLEET_DIR.mkdir(parents=True, exist_ok=True)
-        (M2.FLEET_DIR / "<box-lan-ip>.json").write_text("{corrupt", encoding="utf-8")
-        self.assertEqual(W2.class_for_lane("BOX", host="<box-lan-ip>"), "night_only")
+        (M2.FLEET_DIR / "203.0.113.10.json").write_text("{corrupt", encoding="utf-8")
+        self.assertEqual(W2.class_for_lane("BOX", host="203.0.113.10"), "night_only")

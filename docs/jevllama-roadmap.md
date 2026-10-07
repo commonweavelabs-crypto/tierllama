@@ -101,6 +101,16 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   classifier option in-UI, team dashboards, usage analytics.
 - **J9 — Installers/distribution** (post-UI): one-click install per OS, auto-update,
   bundled Ollama bootstrap for non-Ollama users.
+- **J26-CLEF — Clef benchmark** (added 10/05 from Gui-shared vetting,
+  docs links: `cloudflare-clef-vs-jev-betterstack` in link-archive): Cloudflare's
+  Clef/Clef-flash are Jev-API-compatible decision models (open weights, Apache 2.0,
+  27B/9B, vision-capable; Clef-flash 9B may fit the 5070 Ti 16GB). Because the API
+  shape is identical, benchmarking Clef against our Jev-class routing needs zero
+  plumbing changes. Bench: swap base_url+key → re-run the Jev golden set v2
+  (71/95.2/67.7 gates) + the jevllama-bench corpus → compare accuracy, latency,
+  cost/comment, plus a vision-capability sanity check. Free tier = 10k neurons/day
+  (~700 calls) → do it across 2 days or self-host flash on Ollama. CONSOLIDATION-
+  eligible: doubles as a router-regression check on our own golden set.
 
 ## Monetization (after MVP proves the router)
 - Free open core: router + classifier + box scheduler + CLI (Apache-2.0).
