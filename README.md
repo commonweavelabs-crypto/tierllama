@@ -74,3 +74,12 @@ Cloud routers like [OpenRouter](https://openrouter.ai) are great at what they do
 
 **The short version:** cloud routers optimize *other people's* cloud models. Tierllama optimizes **everything you have** — starting with the hardware you already own.
 
+---
+
+Built open-source by **CommonWeave Labs** ([X](https://x.com/Commonweavelabs) · [YouTube](https://www.youtube.com/@CommonweaveLabs) · [ORIGIN.md](ORIGIN.md)). Open source is free to use — not free to build: every feature here was benchmarked on real GPU-hours and real cloud tokens. If Tierllama saves you money:
+
+- ⭐ **Star the repo** — free, tells the algorithm it matters
+- 🌱 **[Fund us on Compute Fund]** — patronage, not investment: fund the compute that keeps CommonWeave projects free, with public receipts of every batch spent
+
+Nothing is gated: every feature works with zero donations and zero accounts. Ever.
+
