@@ -111,6 +111,14 @@ auto-discovery, team dashboards, cloud pass-through billing, landing page, name 
   cost/comment, plus a vision-capability sanity check. Free tier = 10k neurons/day
   (~700 calls) → do it across 2 days or self-host flash on Ollama. CONSOLIDATION-
   eligible: doubles as a router-regression check on our own golden set.
+  CATEGORY UPDATE 10/6: OpenAI launched the Decisions API (GPT-6 Luna, <100ms,
+  vision input, closed weights) — third decision-model product in 3 weeks
+  (Jev 9/15, Clef 10/1, OpenAI 10/6). Category validated by OpenAI. Clef remains
+  the open-weights representative; bench = open options vs closed leader.
+  Tierllama is provider-agnostic across all three; our edge = transparent
+  decision log vs their black box. Source: openai-decisions-api-gpt6-luna in
+  the link archive (transcript saved).
+
 
 ## Monetization (after MVP proves the router)
 - Free open core: router + classifier + box scheduler + CLI (Apache-2.0).
