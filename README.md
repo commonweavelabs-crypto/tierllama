@@ -83,3 +83,4 @@ Built open-source by **CommonWeave Labs** ([X](https://x.com/Commonweavelabs) ·
 
 Nothing is gated: every feature works with zero donations and zero accounts. Ever.
 
+> Maintenance of this stack is funded via Compute Fund — compute receipts public. Patronage, not investment. `investors: none`
