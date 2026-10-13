@@ -457,3 +457,13 @@ untested against a real second machine), dispatch not yet wired into proxy.py's
   request-level routing vs our single-box defaults; results → REAL-SAVINGS-PROOF.md.
 - **Positioning citation (T1, done 2026-09-25):** COMPETITIVE-POSITIONING.md
   "Adjacent products" section. Case study: docs/PAIR-CASE-STUDY.md (T2).
+
+## J27 — PER-MODEL PROMPT PROFILES (2026-10-12, from Red Hat bench)
+*Source: Red Hat AI Safety bench (extract: link-archive/extracts/redhat-guardrail-bench.md + prompts.md)*
+Red Hat measured: prompt engineering does NOT transfer across decision models — Laya's tuned policy +17.83pp on
+Laya but -3.67pp on Jev (same text). Every lane model carries its own best-tested prompt template; a model swap
+must swap the template, not carry the old one. Seed data exists: Red Hat's appendix prompts (Shieldstral,
+Qwen3.6-35B, Nemotron-3.5, Laya per-issue YAML) + their GitHub benchmark-config repos.
+Plan: (1) prompt_profiles.json keyed by model id; (2) adapter layer applies profile overrides per lane; (3)
+model-swap test hook = bench prompts after any routing.json change (J12 floors pattern); (4) ship 2 profiles
+seeded from Red Hat appendix as the first cases.
